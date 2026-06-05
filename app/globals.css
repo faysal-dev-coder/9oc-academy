@@ -1,13 +1,13 @@
 /* ============================================
    🎓 9OC Academy — Global Styles
    Tailwind CSS v4 Configuration
+   (Updated for Phase 2D)
    ============================================ */
 
 @import "tailwindcss";
 
 /* ============================================
    🎨 Tailwind v4 Theme Configuration
-   এখানে সব Custom Colors, Fonts, Sizes Define করছি
    ============================================ */
 @theme {
   /* ===== 🔵 Primary Colors ===== */
@@ -162,7 +162,6 @@
 
 /* ============================================
    🎨 CSS Custom Properties (Variables)
-   এগুলো Custom CSS Classes এ ব্যবহার হবে
    ============================================ */
 :root {
   /* Glassmorphism */
@@ -373,7 +372,6 @@ a {
 
 /* ============================================
    🎬 PHASE 2C — Hero Section Enhancements
-   (নতুন Animations Phase 2C এর জন্য)
    ============================================ */
 
 /* ── Hero Card Premium Hover Effect ── */
@@ -519,7 +517,6 @@ a {
     min-height: 100vh;
   }
 
-  /* Mobile এ ছোট Font Size */
   .gradient-text-animated {
     background-size: 300% 300%;
   }
@@ -541,4 +538,34 @@ a {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ============================================
+   🎬 PHASE 2D — New Animations
+   (For CTA Section + Counter Numbers)
+   ============================================ */
+
+/* ── Float Delayed Animation ── */
+@keyframes floatDelayed {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-float {
+  animation: floatY 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: floatDelayed 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* ── Tabular Numbers (for Counter Animation) ── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }

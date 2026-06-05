@@ -1,3 +1,9 @@
+// components/home/HeroContent.jsx
+// ═══════════════════════════════════════
+// 🎯 Hero Content with Typing Animation
+// (Updated: Better Subtitle - Issue #8 Fixed)
+// ═══════════════════════════════════════
+
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -25,8 +31,6 @@ export default function HeroContent() {
   useEffect(() => {
     const currentWord = words[currentWordIndex];
 
-    // সব setState call setTimeout এর ভিতরে রাখি
-    // এতে ESLint Happy থাকে এবং Cascading Render এড়ানো যায়
     const timeout = setTimeout(
       () => {
         if (!isDeleting) {
@@ -34,7 +38,6 @@ export default function HeroContent() {
           if (typedText.length < currentWord.length) {
             setTypedText(currentWord.slice(0, typedText.length + 1));
           } else {
-            // পুরো Word টাইপ হয়ে গেছে — Delete শুরু
             setIsDeleting(true);
           }
         } else {
@@ -42,7 +45,6 @@ export default function HeroContent() {
           if (typedText.length > 0) {
             setTypedText(currentWord.slice(0, typedText.length - 1));
           } else {
-            // পুরো Delete হয়ে গেছে — পরের Word
             setIsDeleting(false);
             setCurrentWordIndex((prev) => (prev + 1) % words.length);
           }
@@ -116,12 +118,14 @@ export default function HeroContent() {
         </h1>
       </div>
 
-      {/* ── Subtitle ── */}
+      {/* ✅ FIX #8: Better Subtitle (More Professional + Motivating) */}
       <div ref={subtitleRef} className="opacity-0 mt-6">
         <p className="text-base sm:text-lg text-white/60 leading-relaxed max-w-lg">
-          ঘরে বসে প্রতিদিন <span className="text-secondary font-semibold">MCQ পরীক্ষা</span> দিন,
-          বিস্তারিত <span className="text-primary font-semibold">ব্যাখ্যা</span> পড়ুন, এবং নিজের
-          অবস্থান জানুন <span className="text-accent font-semibold">লিডারবোর্ডে</span>।
+          <span className="text-white font-semibold">৫০,০০০+</span> শিক্ষার্থীর সাথে যোগ দিয়ে
+          স্মার্টভাবে প্রস্তুতি নিন। প্রতিদিন{" "}
+          <span className="text-secondary font-semibold">MCQ পরীক্ষা</span>, বিস্তারিত{" "}
+          <span className="text-primary font-semibold">ব্যাখ্যা</span> ও লাইভ{" "}
+          <span className="text-accent font-semibold">লিডারবোর্ড</span> পাবেন একই জায়গায়।
         </p>
       </div>
 
