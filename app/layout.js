@@ -1,14 +1,13 @@
 // app/layout.js
 // ═══════════════════════════════════════════
-// 9OC Academy — Root Layout
-// (Updated for Phase 2D — Footer Added)
+// 9OC Academy — Root Layout (Minimal)
+// ═══════════════════════════════════════════
+// শুধু HTML Wrapper + Fonts + Metadata
+// Navbar/Footer Sub-Layout এ Move হয়েছে
 // ═══════════════════════════════════════════
 
 import { Plus_Jakarta_Sans, Inter, Hind_Siliguri } from "next/font/google";
 import "./globals.css";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
-import CustomCursor from "../components/ui/CustomCursor";
 
 // ─── Font Setup ─────────────────────────
 const jakarta = Plus_Jakarta_Sans({
@@ -94,7 +93,7 @@ export const metadata = {
   manifest: "/manifest.json",
 };
 
-// ─── Viewport Config (Next.js 15) ─────
+// ─── Viewport Config ──────────────────
 export const viewport = {
   themeColor: "#6C63FF",
   width: "device-width",
@@ -110,17 +109,7 @@ export default function RootLayout({ children }) {
         className="bg-[#0A0A1A] text-white antialiased overflow-x-hidden"
         style={{ fontFamily: "var(--font-hind), sans-serif" }}
       >
-        {/* Custom Cursor — Desktop Only */}
-        <CustomCursor />
-
-        {/* Navbar — সব Page এ দেখাবে */}
-        <Navbar />
-
-        {/* Page Content */}
-        <main>{children}</main>
-
-        {/* Footer — সব Page এ দেখাবে */}
-        <Footer />
+        {children}
       </body>
     </html>
   );
