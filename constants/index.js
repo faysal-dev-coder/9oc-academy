@@ -156,7 +156,7 @@ export const FOOTER_LINKS = {
 };
 
 // ═══════════════════════════════════════════
-// 📱 Social Links
+// 📱 Social Links (Footer Use)
 // ═══════════════════════════════════════════
 
 export const SOCIAL_LINKS = [
@@ -671,6 +671,7 @@ export function getCoursesByCategory(category) {
   if (category === "all") return COURSES;
   return COURSES.filter((c) => c.category === category);
 }
+
 // ═══════════════════════════════════════════════════════════
 // 📦 PHASE 2F — TESTIMONIALS DATA
 // ═══════════════════════════════════════════════════════════
@@ -810,7 +811,6 @@ export const FAQ_CATEGORIES = [
 ];
 
 export const FAQ_DATA = [
-  // === সাধারণ ===
   {
     id: 1,
     category: "general",
@@ -832,7 +832,6 @@ export const FAQ_DATA = [
     answer:
       "হ্যাঁ, অবশ্যই! 9OC Academy সম্পূর্ণ মোবাইল ফ্রেন্ডলি। আপনার Android বা iPhone এর ব্রাউজার থেকেই সব কোর্স ও পরীক্ষায় অংশ নিতে পারবেন। আলাদা কোনো অ্যাপ ডাউনলোড করার দরকার নেই। ইন্টারনেট কানেকশন থাকলেই যেকোনো জায়গা থেকে প্র্যাক্টিস করুন।",
   },
-  // === কোর্স ===
   {
     id: 4,
     category: "course",
@@ -854,7 +853,6 @@ export const FAQ_DATA = [
     answer:
       "প্রতিটি কোর্সে সাধারণত ৫০০ থেকে ৫০০০+ MCQ থাকে। কোর্সভেদে এটি ভিন্ন হতে পারে। এছাড়াও প্রতি সপ্তাহে নতুন MCQ যোগ করা হয়, তাই কনটেন্ট সবসময় আপডেটেড থাকে।",
   },
-  // === পরীক্ষা ===
   {
     id: 7,
     category: "exam",
@@ -876,7 +874,6 @@ export const FAQ_DATA = [
     answer:
       "হ্যাঁ, BCS ও ব্যাংক জবের মডেল টেস্টে নেগেটিভ মার্কিং সিস্টেম আছে (প্রতিটি ভুল উত্তরে ০.২৫ নম্বর কাটা যাবে)। এটি প্রকৃত পরীক্ষার মতো অভিজ্ঞতা দেবে। তবে প্র্যাক্টিস মোডে নেগেটিভ মার্কিং বন্ধ রাখা যাবে।",
   },
-  // === পেমেন্ট ===
   {
     id: 10,
     category: "payment",
@@ -905,24 +902,416 @@ export const FAQ_DATA = [
 // ═══════════════════════════════════════════════════════════
 
 export const NEWSLETTER_BENEFITS = [
+  { id: 1, icon: "📝", text: "প্রতি সপ্তাহে ফ্রি MCQ সেট" },
+  { id: 2, icon: "📢", text: "নতুন কোর্স ও অফারের আপডেট" },
+  { id: 3, icon: "📊", text: "পরীক্ষার টিপস ও ট্রিকস" },
+  { id: 4, icon: "🎁", text: "সাবস্ক্রাইবারদের এক্সক্লুসিভ ডিসকাউন্ট" },
+];
+
+// ═══════════════════════════════════════════════════
+// 🏢 PHASE 2G — ABOUT PAGE DATA
+// ═══════════════════════════════════════════════════
+
+export const COMPANY_INFO = {
+  name: "9OC Academy",
+  tagline: "বাংলাদেশের সেরা অনলাইন পরীক্ষা প্রস্তুতি প্ল্যাটফর্ম",
+  description:
+    "9OC Academy হলো বাংলাদেশের প্রথম AI-powered MCQ পরীক্ষা প্রস্তুতি প্ল্যাটফর্ম। আমরা BCS, ব্যাংক, NTRCA, প্রাইমারি শিক্ষক সহ সকল সরকারি চাকরির পরীক্ষার জন্য সেরা মানের কন্টেন্ট এবং মক টেস্ট প্রদান করি।",
+  founded: "২০২৩",
+  address: "বাড়ি ১২, রোড ৫, ব্লক-ডি, মিরপুর-১০, ঢাকা-১২১৬",
+  phone: "+৮৮০ ১৭XX-XXXXXX",
+  email: "info@9ocacademy.com",
+  supportEmail: "support@9ocacademy.com",
+  website: "www.9ocacademy.com",
+  socialLinks: {
+    facebook: "https://facebook.com/9ocacademy",
+    youtube: "https://youtube.com/@9ocacademy",
+    telegram: "https://t.me/9ocacademy",
+    whatsapp: "https://wa.me/8801XXXXXXXXX",
+  },
+};
+
+export const MISSION_VISION = [
   {
     id: 1,
-    icon: "📝",
-    text: "প্রতি সপ্তাহে ফ্রি MCQ সেট",
+    type: "mission",
+    title: "আমাদের মিশন",
+    subtitle: "Mission",
+    description:
+      "বাংলাদেশের প্রতিটি প্রান্তের শিক্ষার্থীদের কাছে মানসম্মত পরীক্ষা প্রস্তুতি সহজলভ্য করা। আমরা বিশ্বাস করি, শিক্ষা কোনো বিলাসিতা নয় — এটি প্রতিটি মানুষের অধিকার।",
+    icon: "target",
+    color: "primary",
+    points: [
+      "সকলের জন্য সাশ্রয়ী মূল্যে কোর্স",
+      "AI-powered ব্যক্তিগত শেখার অভিজ্ঞতা",
+      "গ্রামীণ শিক্ষার্থীদের জন্য বিশেষ সুবিধা",
+      "২৪/৭ সাপোর্ট ও গাইডেন্স",
+    ],
   },
   {
     id: 2,
-    icon: "📢",
-    text: "নতুন কোর্স ও অফারের আপডেট",
+    type: "vision",
+    title: "আমাদের ভিশন",
+    subtitle: "Vision",
+    description:
+      "২০৩০ সালের মধ্যে বাংলাদেশের ১ নম্বর অনলাইন শিক্ষা প্ল্যাটফর্ম হওয়া এবং প্রতি বছর ১ লক্ষ+ শিক্ষার্থীকে সরকারি চাকরি পেতে সাহায্য করা।",
+    icon: "eye",
+    color: "secondary",
+    points: [
+      "১ লক্ষ+ বার্ষিক সফল শিক্ষার্থী",
+      "৬৪ জেলায় অফলাইন সেন্টার",
+      "আন্তর্জাতিক মানের কন্টেন্ট",
+      "সম্পূর্ণ ডিজিটাল শিক্ষা ইকোসিস্টেম",
+    ],
+  },
+];
+
+export const TIMELINE_DATA = [
+  {
+    id: 1,
+    year: "২০২৩",
+    month: "জানুয়ারি",
+    title: "যাত্রা শুরু",
+    description:
+      "মাত্র ৩ জন সদস্য নিয়ে 9OC Academy-র যাত্রা শুরু। প্রথম মাসেই ৫০০+ শিক্ষার্থী যুক্ত হয়।",
+    icon: "rocket",
+    highlight: true,
+  },
+  {
+    id: 2,
+    year: "২০২৩",
+    month: "জুন",
+    title: "১০,০০০ শিক্ষার্থী",
+    description: "মাত্র ৬ মাসে ১০,০০০ শিক্ষার্থী পূরণ। প্রথম ব্যাচ থেকে ৪৫ জন BCS প্রিলি পাস করে।",
+    icon: "users",
+    highlight: false,
   },
   {
     id: 3,
-    icon: "📊",
-    text: "পরীক্ষার টিপস ও ট্রিকস",
+    year: "২০২৪",
+    month: "জানুয়ারি",
+    title: "Premium Launch",
+    description: "Premium কোর্স এবং Live Class ফিচার চালু। ২০+ অভিজ্ঞ শিক্ষক টিমে যোগ দেন।",
+    icon: "star",
+    highlight: true,
   },
   {
     id: 4,
-    icon: "🎁",
-    text: "সাবস্ক্রাইবারদের এক্সক্লুসিভ ডিসকাউন্ট",
+    year: "২০২৪",
+    month: "জুলাই",
+    title: "৫০,০০০+ শিক্ষার্থী",
+    description: "৫০,০০০ শিক্ষার্থী মাইলস্টোন অর্জন। মোবাইল অ্যাপ ডেভেলপমেন্ট শুরু।",
+    icon: "trophy",
+    highlight: false,
+  },
+  {
+    id: 5,
+    year: "২০২৫",
+    month: "বর্তমান",
+    title: "AI-Powered প্ল্যাটফর্ম",
+    description:
+      "AI-based Adaptive Learning চালু। প্রতিটি শিক্ষার্থীর জন্য কাস্টম স্টাডি প্ল্যান তৈরি হচ্ছে।",
+    icon: "brain",
+    highlight: true,
+  },
+];
+
+export const TEAM_MEMBERS = [
+  {
+    id: 1,
+    name: "ফয়সাল আহমেদ",
+    nameEn: "Faysal Ahmed",
+    role: "প্রতিষ্ঠাতা ও CEO",
+    roleEn: "Founder & CEO",
+    bio: "ঢাকা বিশ্ববিদ্যালয় থেকে CSE গ্র্যাজুয়েট। ৫+ বছরের EdTech অভিজ্ঞতা। শিক্ষার ডিজিটাল রূপান্তরে নিবেদিত।",
+    avatar: "FA",
+    color: "#6C63FF",
+    social: { facebook: "#", linkedin: "#" },
+  },
+  {
+    id: 2,
+    name: "রাহাত হোসেন",
+    nameEn: "Rahat Hossain",
+    role: "চিফ একাডেমিক অফিসার",
+    roleEn: "Chief Academic Officer",
+    bio: "৩৬তম BCS (শিক্ষা) ক্যাডার। ১০+ বছরের শিক্ষকতার অভিজ্ঞতা। কারিকুলাম ডিজাইন ও কন্টেন্ট ডেভেলপমেন্ট বিশেষজ্ঞ।",
+    avatar: "RH",
+    color: "#00D4AA",
+    social: { facebook: "#", linkedin: "#" },
+  },
+  {
+    id: 3,
+    name: "তানভীর ইসলাম",
+    nameEn: "Tanvir Islam",
+    role: "CTO ও লিড ডেভেলপার",
+    roleEn: "CTO & Lead Developer",
+    bio: "BUET CSE গ্র্যাজুয়েট। Google ও Microsoft এ কাজের অভিজ্ঞতা। AI ও Machine Learning বিশেষজ্ঞ।",
+    avatar: "TI",
+    color: "#FFB800",
+    social: { facebook: "#", linkedin: "#" },
+  },
+  {
+    id: 4,
+    name: "নুসরাত জাহান",
+    nameEn: "Nusrat Jahan",
+    role: "কন্টেন্ট ডিরেক্টর",
+    roleEn: "Content Director",
+    bio: "জাহাঙ্গীরনগর বিশ্ববিদ্যালয় থেকে বাংলা বিভাগে এমএ। ৮+ বছরের কন্টেন্ট রাইটিং ও এডিটিং অভিজ্ঞতা।",
+    avatar: "NJ",
+    color: "#FF6B6B",
+    social: { facebook: "#", linkedin: "#" },
+  },
+  {
+    id: 5,
+    name: "মাহমুদুল হাসান",
+    nameEn: "Mahmudul Hasan",
+    role: "সিনিয়র ইন্সট্রাক্টর (গণিত)",
+    roleEn: "Senior Instructor (Math)",
+    bio: "চট্টগ্রাম বিশ্ববিদ্যালয় গণিত বিভাগ। BCS গণিত বিষয়ে বাংলাদেশের শীর্ষ শিক্ষক। ১২,০০০+ শিক্ষার্থী পড়িয়েছেন।",
+    avatar: "MH",
+    color: "#A855F7",
+    social: { facebook: "#", linkedin: "#" },
+  },
+  {
+    id: 6,
+    name: "সাবরিনা আক্তার",
+    nameEn: "Sabrina Akter",
+    role: "সিনিয়র ইন্সট্রাক্টর (ইংরেজি)",
+    roleEn: "Senior Instructor (English)",
+    bio: "ইউনিভার্সিটি অব লন্ডন থেকে TESOL সার্টিফাইড। ব্যাংক ও BCS ইংরেজি বিষয়ে ৭+ বছরের অভিজ্ঞতা।",
+    avatar: "SA",
+    color: "#F97316",
+    social: { facebook: "#", linkedin: "#" },
+  },
+];
+
+export const WHY_CHOOSE_US = [
+  {
+    id: 1,
+    title: "অভিজ্ঞ শিক্ষক প্যানেল",
+    description:
+      "BCS ক্যাডার, বিশ্ববিদ্যালয়ের অধ্যাপক এবং বিষয়ভিত্তিক বিশেষজ্ঞদের সমন্বয়ে গঠিত আমাদের শিক্ষক প্যানেল।",
+    icon: "academic",
+    stat: "২০+",
+    statLabel: "অভিজ্ঞ শিক্ষক",
+  },
+  {
+    id: 2,
+    title: "আপডেটেড কন্টেন্ট",
+    description:
+      "সর্বশেষ সিলেবাস অনুযায়ী প্রতিনিয়ত আপডেট হওয়া কন্টেন্ট। পরীক্ষার ট্রেন্ড বিশ্লেষণ করে প্রশ্ন তৈরি।",
+    icon: "refresh",
+    stat: "১০,০০০+",
+    statLabel: "MCQ প্রশ্ন",
+  },
+  {
+    id: 3,
+    title: "রিয়েল পরীক্ষার পরিবেশ",
+    description: "প্রকৃত পরীক্ষার মতো টাইমার, নেগেটিভ মার্কিং এবং রেজাল্ট অ্যানালিসিস সহ মক টেস্ট।",
+    icon: "timer",
+    stat: "৫০০+",
+    statLabel: "মক টেস্ট",
+  },
+  {
+    id: 4,
+    title: "ব্যক্তিগত রিপোর্ট",
+    description:
+      "AI-powered পার্সোনালাইজড পারফরম্যান্স রিপোর্ট। দুর্বল বিষয় চিহ্নিত করে উন্নতির পরামর্শ।",
+    icon: "chart",
+    stat: "৯৮%",
+    statLabel: "সন্তুষ্টি হার",
+  },
+  {
+    id: 5,
+    title: "সাশ্রয়ী মূল্য",
+    description:
+      "মার্কেটের সবচেয়ে কম মূল্যে সেরা মানের কোর্স। ফ্রি কোর্স দিয়ে শুরু করুন, পরে আপগ্রেড করুন।",
+    icon: "wallet",
+    stat: "৫০%",
+    statLabel: "সাশ্রয়ী",
+  },
+  {
+    id: 6,
+    title: "২৪/৭ সাপোর্ট",
+    description: "যেকোনো সমস্যায় তাৎক্ষণিক সাহায্য। ডেডিকেটেড সাপোর্ট টিম সবসময় আপনার পাশে।",
+    icon: "support",
+    stat: "২৪/৭",
+    statLabel: "সাপোর্ট",
+  },
+];
+
+export const ACHIEVEMENT_STATS = [
+  {
+    id: 1,
+    number: "৫০,০০০+",
+    label: "মোট শিক্ষার্থী",
+    description: "সারা বাংলাদেশ থেকে",
+    icon: "users",
+    color: "#6C63FF",
+  },
+  {
+    id: 2,
+    number: "১,২০০+",
+    label: "সফল চাকরিপ্রাপ্ত",
+    description: "সরকারি চাকরিতে নিয়োগ",
+    icon: "trophy",
+    color: "#00D4AA",
+  },
+  {
+    id: 3,
+    number: "১০,০০০+",
+    label: "MCQ প্রশ্ন",
+    description: "সকল বিষয়ে",
+    icon: "document",
+    color: "#FFB800",
+  },
+  {
+    id: 4,
+    number: "২০+",
+    label: "অভিজ্ঞ শিক্ষক",
+    description: "BCS ক্যাডার সহ",
+    icon: "academic",
+    color: "#FF6B6B",
+  },
+  {
+    id: 5,
+    number: "৫০০+",
+    label: "মক টেস্ট",
+    description: "প্রতিদিন নতুন",
+    icon: "clipboard",
+    color: "#A855F7",
+  },
+  {
+    id: 6,
+    number: "৯৮%",
+    label: "সন্তুষ্টি হার",
+    description: "শিক্ষার্থীদের রেটিং",
+    icon: "heart",
+    color: "#F97316",
+  },
+];
+
+// ═══════════════════════════════════════════════════
+// 📞 PHASE 2G — CONTACT PAGE DATA
+// ═══════════════════════════════════════════════════
+
+export const CONTACT_INFO_CARDS = [
+  {
+    id: 1,
+    title: "অফিস ঠিকানা",
+    titleEn: "Office Address",
+    value: "বাড়ি ১২, রোড ৫, ব্লক-ডি, মিরপুর-১০, ঢাকা-১২১৬",
+    icon: "location",
+    color: "#6C63FF",
+    action: null,
+  },
+  {
+    id: 2,
+    title: "ফোন নম্বর",
+    titleEn: "Phone Number",
+    value: "+৮৮০ ১৭XX-XXXXXX",
+    icon: "phone",
+    color: "#00D4AA",
+    action: "tel:+8801XXXXXXXXX",
+  },
+  {
+    id: 3,
+    title: "ইমেইল",
+    titleEn: "Email Address",
+    value: "info@9ocacademy.com",
+    icon: "email",
+    color: "#FFB800",
+    action: "mailto:info@9ocacademy.com",
+  },
+  {
+    id: 4,
+    title: "সাপোর্ট ইমেইল",
+    titleEn: "Support Email",
+    value: "support@9ocacademy.com",
+    icon: "support",
+    color: "#FF6B6B",
+    action: "mailto:support@9ocacademy.com",
+  },
+];
+
+export const WORKING_HOURS = [
+  {
+    id: 1,
+    day: "শনিবার - বৃহস্পতিবার",
+    dayEn: "Saturday - Thursday",
+    time: "সকাল ৯:০০ - রাত ১০:০০",
+    timeEn: "9:00 AM - 10:00 PM",
+    isOpen: true,
+  },
+  {
+    id: 2,
+    day: "শুক্রবার",
+    dayEn: "Friday",
+    time: "বিকাল ৩:০০ - রাত ১০:০০",
+    timeEn: "3:00 PM - 10:00 PM",
+    isOpen: true,
+  },
+  {
+    id: 3,
+    day: "সরকারি ছুটি",
+    dayEn: "Government Holidays",
+    time: "বন্ধ",
+    timeEn: "Closed",
+    isOpen: false,
+  },
+];
+
+export const CONTACT_FORM_SUBJECTS = [
+  { id: 1, value: "general", label: "সাধারণ জিজ্ঞাসা" },
+  { id: 2, value: "course", label: "কোর্স সম্পর্কিত" },
+  { id: 3, value: "payment", label: "পেমেন্ট সমস্যা" },
+  { id: 4, value: "technical", label: "টেকনিক্যাল সমস্যা" },
+  { id: 5, value: "feedback", label: "মতামত ও পরামর্শ" },
+  { id: 6, value: "partnership", label: "পার্টনারশিপ" },
+  { id: 7, value: "other", label: "অন্যান্য" },
+];
+
+// ⚠️ Renamed from SOCIAL_LINKS → CONTACT_SOCIAL_LINKS
+// (পুরোনো SOCIAL_LINKS Footer এ use হচ্ছে, তাই Conflict এড়াতে নাম পরিবর্তন)
+export const CONTACT_SOCIAL_LINKS = [
+  {
+    id: 1,
+    name: "Facebook",
+    icon: "facebook",
+    url: "https://facebook.com/9ocacademy",
+    color: "#1877F2",
+    followers: "২৫,০০০+",
+    label: "ফলোয়ার্স",
+    description: "আমাদের ফেসবুক পেজে লাইক দিন",
+  },
+  {
+    id: 2,
+    name: "YouTube",
+    icon: "youtube",
+    url: "https://youtube.com/@9ocacademy",
+    color: "#FF0000",
+    followers: "১৫,০০০+",
+    label: "সাবস্ক্রাইবার",
+    description: "ফ্রি ভিডিও ক্লাস দেখুন",
+  },
+  {
+    id: 3,
+    name: "Telegram",
+    icon: "telegram",
+    url: "https://t.me/9ocacademy",
+    color: "#0088CC",
+    followers: "১০,০০০+",
+    label: "মেম্বার",
+    description: "ডেইলি কুইজে অংশ নিন",
+  },
+  {
+    id: 4,
+    name: "WhatsApp",
+    icon: "whatsapp",
+    url: "https://wa.me/8801XXXXXXXXX",
+    color: "#25D366",
+    followers: "৫,০০০+",
+    label: "মেম্বার",
+    description: "সরাসরি মেসেজ করুন",
   },
 ];
