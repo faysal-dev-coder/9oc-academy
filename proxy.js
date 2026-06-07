@@ -53,7 +53,6 @@ export async function proxy(request) {
     "/my-results",
     "/settings",
     "/admin",
-    "/exam",
   ];
 
   // 🚫 Auth Only — Already Logged In হলে Dashboard এ যাবে
@@ -69,11 +68,24 @@ export async function proxy(request) {
   const isAuthPath = authPaths.some((path) => pathname.startsWith(path));
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // ⭐ SPECIAL: Exam Routes Logic
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  //
+  // /exams              → Public (Listing) ✅
+  // /exams/[id]         → Public (Details) ✅
+  // /exams/[id]/start   → Protected (Login দরকার) 🔐
+  // /exams/[id]/result  → Protected (নিজের Result) 🔐
+  //
+  // Pattern: /exams/anything/start OR /exams/anything/result
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const isExamProtectedRoute = /^\/exams\/[^/]+\/(start|result)/.test(pathname);
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // Redirect Logic
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  // Case 1: Protected Route + Not Logged In → Login এ পাঠাও
-  if (isProtectedPath && !isLoggedIn) {
+  // Case 1: Protected Route (Including Exam Start/Result) + Not Logged In
+  if ((isProtectedPath || isExamProtectedRoute) && !isLoggedIn) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("redirect", pathname);
