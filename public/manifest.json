@@ -1,0 +1,16 @@
+{
+  "name": "9OC Academy",
+  "short_name": "9OC",
+  "description": "Bangladesh's #1 MCQ Exam Platform for Government Jobs",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A1A",
+  "theme_color": "#6C63FF",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

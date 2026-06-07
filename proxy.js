@@ -31,27 +31,57 @@ export async function proxy(request) {
     }
   );
 
-  // User Session Refresh
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // User Session Check (Server Side — Secure)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protected Routes — Login না থাকলে Redirect
-  const protectedPaths = ["/dashboard", "/admin", "/exam"];
-  const isProtectedPath = protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path));
+  const isLoggedIn = !!user;
+  const pathname = request.nextUrl.pathname;
 
-  if (isProtectedPath && !user) {
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Route Categories
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  // 🔐 Protected — Login ছাড়া ঢোকা যাবে না
+  const protectedPaths = [
+    "/dashboard",
+    "/profile",
+    "/my-courses",
+    "/my-results",
+    "/settings",
+    "/admin",
+    "/exam",
+  ];
+
+  // 🚫 Auth Only — Already Logged In হলে Dashboard এ যাবে
+  // ⚠️ /reset-password এখানে নাই — কারণ Email Link থেকে আসে
+  //    Session ছাড়াও এই Page এ আসতে হয়
+  const authPaths = ["/login", "/register", "/forgot-password"];
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Route Check
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const isProtectedPath = protectedPaths.some((path) => pathname.startsWith(path));
+
+  const isAuthPath = authPaths.some((path) => pathname.startsWith(path));
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Redirect Logic
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  // Case 1: Protected Route + Not Logged In → Login এ পাঠাও
+  if (isProtectedPath && !isLoggedIn) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    url.searchParams.set("redirect", request.nextUrl.pathname);
+    url.searchParams.set("redirect", pathname);
     return NextResponse.redirect(url);
   }
 
-  // Already Logged In — Login/Register Page এ গেলে Dashboard এ পাঠাও
-  const authPaths = ["/login", "/register"];
-  const isAuthPath = authPaths.some((path) => request.nextUrl.pathname.startsWith(path));
-
-  if (isAuthPath && user) {
+  // Case 2: Auth Route + Already Logged In → Dashboard এ পাঠাও
+  if (isAuthPath && isLoggedIn) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
     return NextResponse.redirect(url);

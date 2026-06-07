@@ -53,7 +53,7 @@ function ProfileDropdown({ user, profile, onLogout }) {
   const menuRef = useRef(null);
   const pathname = usePathname();
 
-  // Route change হলে Close
+  // Route change → Close
   useEffect(() => {
     const timer = setTimeout(() => setOpen(false), 0);
     return () => clearTimeout(timer);
@@ -87,7 +87,7 @@ function ProfileDropdown({ user, profile, onLogout }) {
   const avatarLetter = displayName.charAt(0).toUpperCase();
   const isAdmin = profile?.role === "admin";
 
-  // Logout Click Handler
+  // ⭐ Logout Click Handler — Simple & Direct
   const handleLogoutClick = async () => {
     setIsLoggingOut(true);
     setOpen(false);
@@ -101,7 +101,6 @@ function ProfileDropdown({ user, profile, onLogout }) {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-300 hover:border-primary/30 hover:bg-white/10"
       >
-        {/* Avatar */}
         <div
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white"
           style={{
@@ -110,13 +109,9 @@ function ProfileDropdown({ user, profile, onLogout }) {
         >
           {avatarLetter}
         </div>
-
-        {/* Name */}
         <span className="hidden text-sm font-medium text-white/80 sm:block">
           {displayName.split(" ")[0]}
         </span>
-
-        {/* Chevron */}
         <FaChevronDown
           className={`text-xs text-white/50 transition-transform duration-300 ${
             open ? "rotate-180" : ""
@@ -177,7 +172,6 @@ function ProfileDropdown({ user, profile, onLogout }) {
               </Link>
             ))}
 
-            {/* Admin Panel Link */}
             {isAdmin && (
               <Link
                 href="/admin"
@@ -190,7 +184,7 @@ function ProfileDropdown({ user, profile, onLogout }) {
             )}
           </div>
 
-          {/* Divider + Logout */}
+          {/* Logout Button */}
           <div className="border-t border-white/10 p-2">
             <button
               onClick={handleLogoutClick}
@@ -251,30 +245,25 @@ export default function Navbar() {
   const pathname = usePathname();
   const navRef = useRef(null);
 
-  // Auth Hooks
   const { user, profile, loading: userLoading } = useUser();
   const { logout } = useAuth();
 
-  // Mount Check (Hydration Safe)
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
   }, []);
 
-  // Scroll Effect
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Route change → Mobile Menu Close
   useEffect(() => {
     const timer = setTimeout(() => setMobileOpen(false), 0);
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  // Entrance Animation
   useEffect(() => {
     if (navRef.current) {
       gsap.fromTo(
@@ -285,34 +274,22 @@ export default function Navbar() {
     }
   }, []);
 
-  // ⭐ LOGOUT HANDLER — WITH SAFETY TIMEOUT
-  // ৩ সেকেন্ড এর মধ্যে signOut() Hang করলেও Force Redirect
+  // ⭐ LOGOUT HANDLER — Simple & Reliable
+  // logoutUser() এ Manual Clear হয়ে যায়
+  // তারপর Hard Reload করি → proxy.js refresh
   const handleLogout = async () => {
-    console.log("🚪 [Navbar] handleLogout STARTED");
-
-    // Safety: 3 sec পর Force Redirect (যদি signOut Hang করে)
-    const safetyRedirect = setTimeout(() => {
-      console.warn("⚠️ [Navbar] Safety timeout! Force redirect");
-      window.location.href = "/";
-    }, 3000);
-
     try {
-      console.log("🔄 [Navbar] Calling logout()...");
-      const result = await logout();
-      console.log("✅ [Navbar] logout() returned:", result);
-
-      clearTimeout(safetyRedirect);
-
-      console.log("🏠 [Navbar] Redirecting to /...");
-      window.location.href = "/";
+      // logout() always returns success (Manual Clear works)
+      await logout();
     } catch (error) {
-      console.error("💥 [Navbar] Logout error:", error);
-      clearTimeout(safetyRedirect);
-      window.location.href = "/";
+      console.warn("Logout error (ignored):", error);
     }
+
+    // Hard Reload — Server Side proxy.js নতুন Cookie Check করবে
+    // Cookie নাই → User Logged Out দেখাবে
+    window.location.href = "/";
   };
 
-  // Show Auth UI Logic
   const renderAuthSection = () => {
     if (!mounted || userLoading) {
       return <div className="h-10 w-32 animate-pulse rounded-xl bg-white/10" />;
@@ -335,10 +312,9 @@ export default function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            {/* ── LOGO ── */}
             <Logo />
 
-            {/* ── DESKTOP NAV LINKS ── */}
+            {/* Desktop Nav Links */}
             <div className="hidden items-center gap-1 md:flex">
               {navLinks.map((link) => (
                 <Link
@@ -358,10 +334,10 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* ── AUTH SECTION (Desktop) ── */}
+            {/* Auth Section (Desktop) */}
             <div className="hidden items-center gap-3 md:flex">{renderAuthSection()}</div>
 
-            {/* ── MOBILE MENU BUTTON ── */}
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="rounded-xl border border-white/10 bg-white/5 p-2.5 text-white/70 transition-all hover:text-white md:hidden"
@@ -371,10 +347,9 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* ── MOBILE MENU ── */}
+        {/* Mobile Menu */}
         {mobileOpen && (
           <div className="border-t border-white/10 bg-[#0A0A1A]/95 px-4 pb-4 pt-2 backdrop-blur-xl md:hidden">
-            {/* Nav Links */}
             <div className="space-y-1">
               {navLinks.map((link) => (
                 <Link
@@ -391,14 +366,11 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Auth Section Mobile */}
             <div className="mt-3 border-t border-white/10 pt-3">
               {!mounted || userLoading ? (
                 <div className="h-10 animate-pulse rounded-xl bg-white/10" />
               ) : user ? (
-                // Logged In Mobile
                 <div className="space-y-1">
-                  {/* User Info */}
                   <div className="mb-2 flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3">
                     <div
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white"
@@ -416,7 +388,6 @@ export default function Navbar() {
                     </div>
                   </div>
 
-                  {/* Menu Items */}
                   {profileMenuItems.map((item) => (
                     <Link
                       key={item.href}
@@ -428,7 +399,6 @@ export default function Navbar() {
                     </Link>
                   ))}
 
-                  {/* Admin Link */}
                   {profile?.role === "admin" && (
                     <Link
                       href="/admin"
@@ -439,7 +409,6 @@ export default function Navbar() {
                     </Link>
                   )}
 
-                  {/* Logout */}
                   <button
                     onClick={handleLogout}
                     className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-red-400 hover:bg-red-400/10"
@@ -449,7 +418,6 @@ export default function Navbar() {
                   </button>
                 </div>
               ) : (
-                // Not Logged In Mobile
                 <div className="flex flex-col gap-2">
                   <Link
                     href="/login"
@@ -472,7 +440,6 @@ export default function Navbar() {
         )}
       </nav>
 
-      {/* Spacer */}
       <div className="h-16" />
     </>
   );

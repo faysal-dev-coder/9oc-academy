@@ -1,10 +1,5 @@
 // app/(auth)/layout.js
-// ═══════════════════════════════════════════
-// Auth Pages Layout
-// Clean — কোনো Navbar/Footer নেই
-// ═══════════════════════════════════════════
-// Apply হবে: /login, /register, /forgot-password
-// ═══════════════════════════════════════════
+// Auth Pages এর জন্য Clean Layout (No Navbar/Footer)
 
 export default function AuthLayoutWrapper({ children }) {
   return <>{children}</>;

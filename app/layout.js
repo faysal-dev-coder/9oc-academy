@@ -104,7 +104,11 @@ export const viewport = {
 // ─── Root Layout Component ────────────
 export default function RootLayout({ children }) {
   return (
-    <html lang="bn" className={`${jakarta.variable} ${inter.variable} ${hind.variable}`}>
+    <html
+      lang="bn"
+      data-scroll-behavior="smooth"
+      className={`${jakarta.variable} ${inter.variable} ${hind.variable}`}
+    >
       <body
         className="bg-[#0A0A1A] text-white antialiased overflow-x-hidden"
         style={{ fontFamily: "var(--font-hind), sans-serif" }}
