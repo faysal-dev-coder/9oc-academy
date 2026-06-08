@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { getAllExams, getAllCategories, getExamQuestionCount } from "@/lib/supabase/exam";
 import ExamCard from "@/components/exam/ExamCard";
 import ExamFilter from "@/components/exam/ExamFilter";
 import { FaSearch, FaGraduationCap } from "react-icons/fa";
@@ -21,98 +21,94 @@ export default function ExamsPage() {
     type: "all",
   });
 
-  // ─── Data Load ───
+  // ─── Data Load (Mount এ একবার মাত্র) ───
   useEffect(() => {
+    let isMounted = true; // ✅ Race Condition Prevention
+
     async function loadData() {
-      console.log("🚀 [ExamsPage] useEffect START");
-      const supabase = createClient();
-      console.log("✅ [ExamsPage] Supabase Client Created");
+      console.log("🚀 [ExamsPage] Loading START");
+      const startTime = Date.now();
 
       try {
-        console.log("📡 [ExamsPage] Fetching Exams...");
-        const startTime = Date.now();
+        // ─── Parallel Fetch (Faster!) ───
+        console.log("📡 [ExamsPage] Fetching Exams + Categories...");
+        const [examsResult, categoriesResult] = await Promise.all([
+          getAllExams(),
+          getAllCategories(),
+        ]);
 
-        // Exams Fetch
-        const examsRes = await supabase
-          .from("exams")
-          .select(
-            `
-            id, title, description, duration_minutes,
-            total_marks, pass_marks, has_negative_marking,
-            negative_mark_value, is_free, is_randomized,
-            max_attempts, category_id, course_id,
-            categories (id, name)
-          `
-          )
-          .eq("is_published", true)
-          .order("created_at", { ascending: false });
-
-        console.log(`⏱️ [ExamsPage] Exams Query Time: ${Date.now() - startTime}ms`);
-        console.log("📦 [ExamsPage] Exams Response:", examsRes);
-
-        if (examsRes.error) {
-          console.error("❌ [ExamsPage] Exams Error:", examsRes.error);
-          throw examsRes.error;
+        // Component unmount হলে State Update করবো না
+        if (!isMounted) {
+          console.log("⚠️ [ExamsPage] Unmounted — skipping state update");
+          return;
         }
 
-        console.log(`✅ [ExamsPage] Exams Count: ${examsRes.data?.length || 0}`);
-
-        // Categories Fetch
-        console.log("📡 [ExamsPage] Fetching Categories...");
-        const categoriesRes = await supabase.from("categories").select("id, name").order("id");
-
-        console.log("📦 [ExamsPage] Categories Response:", categoriesRes);
-
-        if (categoriesRes.error) {
-          console.error("❌ [ExamsPage] Categories Error:", categoriesRes.error);
-          throw categoriesRes.error;
+        // ─── Exams Error Check ───
+        if (examsResult.error) {
+          console.error("❌ [ExamsPage] Exams Error:", examsResult.error);
+          throw new Error(examsResult.error);
         }
 
-        console.log(`✅ [ExamsPage] Categories Count: ${categoriesRes.data?.length || 0}`);
+        // ─── Categories Error Check ───
+        if (categoriesResult.error) {
+          console.error("❌ [ExamsPage] Categories Error:", categoriesResult.error);
+          throw new Error(categoriesResult.error);
+        }
 
-        const examsData = examsRes.data || [];
+        const examsData = examsResult.exams || [];
+        const categoriesData = categoriesResult.categories || [];
+
+        console.log(
+          `✅ [ExamsPage] Exams: ${examsData.length}, Categories: ${categoriesData.length}`
+        );
+
+        // ─── State Update ───
         setExams(examsData);
         setFilteredExams(examsData);
-        setCategories(categoriesRes.data || []);
+        setCategories(categoriesData);
 
-        // Question Count (each exam)
+        // ─── Question Counts (Parallel) ───
         if (examsData.length > 0) {
           console.log("📡 [ExamsPage] Fetching Question Counts...");
           const counts = await Promise.all(
             examsData.map(async (exam) => {
-              const { count } = await supabase
-                .from("questions")
-                .select("id", { count: "exact", head: true })
-                .eq("exam_id", exam.id);
-              return { id: exam.id, count: count || 0 };
+              const count = await getExamQuestionCount(exam.id);
+              return { id: exam.id, count };
             })
           );
 
-          console.log("✅ [ExamsPage] Question Counts:", counts);
+          if (!isMounted) return;
 
           const countsMap = {};
           counts.forEach((c) => {
             countsMap[c.id] = c.count;
           });
           setQuestionCounts(countsMap);
+          console.log("✅ [ExamsPage] Question Counts loaded");
         }
 
-        console.log("🎉 [ExamsPage] ALL DATA LOADED SUCCESSFULLY!");
+        console.log(`🎉 [ExamsPage] ALL DONE in ${Date.now() - startTime}ms`);
       } catch (err) {
         console.error("💥 [ExamsPage] Load Error:", err);
-        console.error("Message:", err.message);
-        console.error("Code:", err.code);
-        console.error("Details:", err.details);
-        console.error("Hint:", err.hint);
-        setError(err.message || "পরীক্ষা লোড করতে সমস্যা হয়েছে।");
+        if (isMounted) {
+          setError(err.message || "পরীক্ষা লোড করতে সমস্যা হয়েছে।");
+        }
       } finally {
-        console.log("🏁 [ExamsPage] Loading = false");
-        setLoading(false);
+        if (isMounted) {
+          console.log("🏁 [ExamsPage] Loading = false");
+          setLoading(false);
+        }
       }
     }
 
     loadData();
-  }, []);
+
+    // ─── Cleanup ───
+    return () => {
+      console.log("🧹 [ExamsPage] Cleanup");
+      isMounted = false;
+    };
+  }, []); // Empty deps — শুধু Mount এ একবার
 
   // ─── Apply Filter Function ───
   const applyFilters = (filters, query) => {
