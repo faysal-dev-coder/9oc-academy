@@ -19,6 +19,7 @@ import {
   FaClock,
   FaMedal,
   FaChartLine,
+  FaChartBar,
   FaFire,
 } from "react-icons/fa";
 
@@ -445,6 +446,13 @@ export default function DashboardClient({ user, profile, stats, recentAttempts =
                 description="সব পরীক্ষার ফলাফল দেখো"
                 href="/dashboard/history"
                 color="#00D4AA"
+              />
+              <QuickAction
+                icon={FaChartBar}
+                label="পারফরম্যান্স এনালিটিক্স"
+                description="বিস্তারিত বিশ্লেষণ দেখুন"
+                href="/dashboard/analytics"
+                color="#A855F7"
               />
               <QuickAction
                 icon={FaTrophy}
