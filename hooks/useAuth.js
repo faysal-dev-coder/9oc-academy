@@ -1,13 +1,13 @@
 // hooks/useAuth.js
 // ====================================
 // Login, Register, Logout Actions
-// Form এ ব্যবহার করা যাবে
+// ⭐ ?redirect parameter Support Added!
 // ====================================
 
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   loginUser,
   registerUser,
@@ -21,28 +21,39 @@ export function useAuth() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // Error Clear করো
   const clearMessages = () => {
     setError(null);
     setSuccess(null);
   };
 
-  // ─── LOGIN ───
+  // ─── LOGIN (⭐ Redirect Support) ───
   const login = async (formData) => {
     clearMessages();
     setLoading(true);
 
     try {
       await loginUser(formData);
-      setSuccess("Login সফল হয়েছে! Dashboard এ নিয়ে যাচ্ছি...");
-      setTimeout(() => router.push("/dashboard"), 1000);
+
+      // ⭐ ?redirect Parameter Check
+      const redirectTo = searchParams.get("redirect") || "/dashboard";
+
+      console.log("✅ [useAuth] Login successful. Redirecting to:", redirectTo);
+      setSuccess(
+        `Login সফল! ${redirectTo === "/dashboard" ? "Dashboard" : "পরীক্ষা পৃষ্ঠা"} এ নিয়ে যাচ্ছি...`
+      );
+
+      // ⭐ Hard Navigation — Auth State Properly Propagate হবে
+      setTimeout(() => {
+        window.location.href = redirectTo;
+      }, 1000);
+
       return { success: true };
     } catch (err) {
       setError(err.message);
-      return { success: false, error: err.message };
-    } finally {
       setLoading(false);
+      return { success: false, error: err.message };
     }
   };
 
@@ -63,19 +74,16 @@ export function useAuth() {
     }
   };
 
-  // ─── LOGOUT ⭐ DEBUG VERSION ───
+  // ─── LOGOUT ───
   const logout = async () => {
     console.log("🔓 [useAuth] logout() called");
     clearMessages();
     setLoading(true);
 
     try {
-      console.log("📤 [useAuth] Calling logoutUser()...");
       const result = await logoutUser();
       console.log("📥 [useAuth] logoutUser() result:", result);
-
       setLoading(false);
-      console.log("✅ [useAuth] Returning success");
       return { success: true };
     } catch (err) {
       console.error("💥 [useAuth] Error caught:", err);

@@ -23,11 +23,12 @@ import { useUser } from "@/hooks/useUser";
 import { useAuth } from "@/hooks/useAuth";
 
 // ══════════════════════════════════
-// NAV LINKS
+// NAV LINKS  ⭐ "পরীক্ষাসমূহ" ADDED!
 // ══════════════════════════════════
 const navLinks = [
   { href: "/", label: "হোম" },
   { href: "/courses", label: "কোর্সসমূহ" },
+  { href: "/exams", label: "পরীক্ষাসমূহ" }, // ⭐ NEW
   { href: "/about", label: "আমাদের সম্পর্কে" },
   { href: "/contact", label: "যোগাযোগ" },
 ];
@@ -53,13 +54,11 @@ function ProfileDropdown({ user, profile, onLogout }) {
   const menuRef = useRef(null);
   const pathname = usePathname();
 
-  // Route change → Close
   useEffect(() => {
     const timer = setTimeout(() => setOpen(false), 0);
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  // Click Outside → Close
   useEffect(() => {
     function handleClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -72,7 +71,6 @@ function ProfileDropdown({ user, profile, onLogout }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
-  // Dropdown Animation
   useEffect(() => {
     if (open && menuRef.current) {
       gsap.fromTo(
@@ -87,7 +85,6 @@ function ProfileDropdown({ user, profile, onLogout }) {
   const avatarLetter = displayName.charAt(0).toUpperCase();
   const isAdmin = profile?.role === "admin";
 
-  // ⭐ Logout Click Handler — Simple & Direct
   const handleLogoutClick = async () => {
     setIsLoggingOut(true);
     setOpen(false);
@@ -96,7 +93,6 @@ function ProfileDropdown({ user, profile, onLogout }) {
 
   return (
     <div ref={dropdownRef} className="relative">
-      {/* Avatar Button */}
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-300 hover:border-primary/30 hover:bg-white/10"
@@ -119,13 +115,11 @@ function ProfileDropdown({ user, profile, onLogout }) {
         />
       </button>
 
-      {/* Dropdown Menu */}
       {open && (
         <div
           ref={menuRef}
           className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A1A]/95 shadow-2xl backdrop-blur-xl"
         >
-          {/* User Info Header */}
           <div
             className="px-4 py-4"
             style={{
@@ -154,7 +148,6 @@ function ProfileDropdown({ user, profile, onLogout }) {
             </div>
           </div>
 
-          {/* Menu Items */}
           <div className="p-2">
             {profileMenuItems.map((item) => (
               <Link
@@ -184,7 +177,6 @@ function ProfileDropdown({ user, profile, onLogout }) {
             )}
           </div>
 
-          {/* Logout Button */}
           <div className="border-t border-white/10 p-2">
             <button
               onClick={handleLogoutClick}
@@ -274,19 +266,12 @@ export default function Navbar() {
     }
   }, []);
 
-  // ⭐ LOGOUT HANDLER — Simple & Reliable
-  // logoutUser() এ Manual Clear হয়ে যায়
-  // তারপর Hard Reload করি → proxy.js refresh
   const handleLogout = async () => {
     try {
-      // logout() always returns success (Manual Clear works)
       await logout();
     } catch (error) {
       console.warn("Logout error (ignored):", error);
     }
-
-    // Hard Reload — Server Side proxy.js নতুন Cookie Check করবে
-    // Cookie নাই → User Logged Out দেখাবে
     window.location.href = "/";
   };
 
@@ -314,7 +299,6 @@ export default function Navbar() {
           <div className="flex h-16 items-center justify-between">
             <Logo />
 
-            {/* Desktop Nav Links */}
             <div className="hidden items-center gap-1 md:flex">
               {navLinks.map((link) => (
                 <Link
@@ -334,10 +318,8 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Auth Section (Desktop) */}
             <div className="hidden items-center gap-3 md:flex">{renderAuthSection()}</div>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="rounded-xl border border-white/10 bg-white/5 p-2.5 text-white/70 transition-all hover:text-white md:hidden"
@@ -347,7 +329,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {mobileOpen && (
           <div className="border-t border-white/10 bg-[#0A0A1A]/95 px-4 pb-4 pt-2 backdrop-blur-xl md:hidden">
             <div className="space-y-1">

@@ -4,9 +4,11 @@
 // ═══════════════════════════════════════════
 // শুধু HTML Wrapper + Fonts + Metadata
 // Navbar/Footer Sub-Layout এ Move হয়েছে
+// ⭐ UserProvider Wrap Added — Global Auth State
 // ═══════════════════════════════════════════
 
 import { Plus_Jakarta_Sans, Inter, Hind_Siliguri } from "next/font/google";
+import { UserProvider } from "@/contexts/UserContext"; // ⭐ NEW
 import "./globals.css";
 
 // ─── Font Setup ─────────────────────────
@@ -113,7 +115,8 @@ export default function RootLayout({ children }) {
         className="bg-[#0A0A1A] text-white antialiased overflow-x-hidden"
         style={{ fontFamily: "var(--font-hind), sans-serif" }}
       >
-        {children}
+        {/* ⭐ Global User Provider — সব Route এ Auth State Available */}
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );

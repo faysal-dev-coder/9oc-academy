@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useUser } from "@/hooks/useUser";
 import { getAllExams, getAllCategories, getExamQuestionCount } from "@/lib/supabase/exam";
 import ExamCard from "@/components/exam/ExamCard";
 import ExamFilter from "@/components/exam/ExamFilter";
@@ -9,121 +10,123 @@ import { FaSearch, FaGraduationCap } from "react-icons/fa";
 import { HiOutlineDocumentSearch } from "react-icons/hi";
 
 export default function ExamsPage() {
+  const { user, loading: userLoading } = useUser();
+  const isLoggedIn = !!user;
+
   const [exams, setExams] = useState([]);
   const [filteredExams, setFilteredExams] = useState([]);
   const [categories, setCategories] = useState([]);
   const [questionCounts, setQuestionCounts] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [examsLoaded, setExamsLoaded] = useState(false); // ⭐ NEW
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [activeFilters, setActiveFilters] = useState({
     category: "all",
     type: "all",
   });
 
-  // ─── Data Load (Mount এ একবার মাত্র) ───
+  // ⭐ EFFECT 1: Mount এ একবার মাত্র Exams + Categories Fetch
   useEffect(() => {
-    let isMounted = true; // ✅ Race Condition Prevention
+    let isMounted = true;
 
-    async function loadData() {
-      console.log("🚀 [ExamsPage] Loading START");
+    async function loadExamsAndCategories() {
+      console.log("🚀 [ExamsPage] Loading Exams + Categories...");
       const startTime = Date.now();
 
       try {
-        // ─── Parallel Fetch (Faster!) ───
-        console.log("📡 [ExamsPage] Fetching Exams + Categories...");
         const [examsResult, categoriesResult] = await Promise.all([
           getAllExams(),
           getAllCategories(),
         ]);
 
-        // Component unmount হলে State Update করবো না
         if (!isMounted) {
-          console.log("⚠️ [ExamsPage] Unmounted — skipping state update");
+          console.log("⚠️ [ExamsPage] Unmounted before data arrived");
           return;
         }
 
-        // ─── Exams Error Check ───
-        if (examsResult.error) {
-          console.error("❌ [ExamsPage] Exams Error:", examsResult.error);
-          throw new Error(examsResult.error);
-        }
-
-        // ─── Categories Error Check ───
-        if (categoriesResult.error) {
-          console.error("❌ [ExamsPage] Categories Error:", categoriesResult.error);
-          throw new Error(categoriesResult.error);
-        }
+        if (examsResult.error) throw new Error(examsResult.error);
+        if (categoriesResult.error) throw new Error(categoriesResult.error);
 
         const examsData = examsResult.exams || [];
         const categoriesData = categoriesResult.categories || [];
 
         console.log(
-          `✅ [ExamsPage] Exams: ${examsData.length}, Categories: ${categoriesData.length}`
+          `✅ [ExamsPage] Got ${examsData.length} exams, ${categoriesData.length} categories in ${Date.now() - startTime}ms`
         );
 
-        // ─── State Update ───
         setExams(examsData);
         setFilteredExams(examsData);
         setCategories(categoriesData);
-
-        // ─── Question Counts (Parallel) ───
-        if (examsData.length > 0) {
-          console.log("📡 [ExamsPage] Fetching Question Counts...");
-          const counts = await Promise.all(
-            examsData.map(async (exam) => {
-              const count = await getExamQuestionCount(exam.id);
-              return { id: exam.id, count };
-            })
-          );
-
-          if (!isMounted) return;
-
-          const countsMap = {};
-          counts.forEach((c) => {
-            countsMap[c.id] = c.count;
-          });
-          setQuestionCounts(countsMap);
-          console.log("✅ [ExamsPage] Question Counts loaded");
-        }
-
-        console.log(`🎉 [ExamsPage] ALL DONE in ${Date.now() - startTime}ms`);
+        setExamsLoaded(true);
       } catch (err) {
-        console.error("💥 [ExamsPage] Load Error:", err);
+        console.error("💥 [ExamsPage] Error:", err);
         if (isMounted) {
           setError(err.message || "পরীক্ষা লোড করতে সমস্যা হয়েছে।");
-        }
-      } finally {
-        if (isMounted) {
-          console.log("🏁 [ExamsPage] Loading = false");
-          setLoading(false);
+          setExamsLoaded(true);
         }
       }
     }
 
-    loadData();
+    loadExamsAndCategories();
 
-    // ─── Cleanup ───
     return () => {
-      console.log("🧹 [ExamsPage] Cleanup");
       isMounted = false;
     };
-  }, []); // Empty deps — শুধু Mount এ একবার
+  }, []); // ⭐ Empty deps — শুধু Mount এ একবার
 
-  // ─── Apply Filter Function ───
+  // ⭐ EFFECT 2: Exams Load হলে → Question Counts Fetch
+  // userLoading=false অপেক্ষা করি (isLoggedIn জানার জন্য)
+  useEffect(() => {
+    if (!examsLoaded || exams.length === 0 || userLoading) {
+      return;
+    }
+
+    let isMounted = true;
+
+    async function loadCounts() {
+      console.log(
+        `📡 [ExamsPage] Loading question counts (user: ${isLoggedIn ? "logged-in" : "guest"})`
+      );
+
+      try {
+        const counts = await Promise.all(
+          exams.map(async (exam) => {
+            // Premium + Logout → Skip
+            if (!isLoggedIn && !exam.is_free) {
+              return { id: exam.id, count: null };
+            }
+            const count = await getExamQuestionCount(exam.id);
+            return { id: exam.id, count };
+          })
+        );
+
+        if (!isMounted) return;
+
+        const countsMap = {};
+        counts.forEach((c) => {
+          countsMap[c.id] = c.count;
+        });
+        setQuestionCounts(countsMap);
+        console.log("✅ [ExamsPage] Question counts loaded");
+      } catch (err) {
+        console.error("⚠️ [ExamsPage] Counts error:", err);
+      }
+    }
+
+    loadCounts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [examsLoaded, exams, isLoggedIn, userLoading]);
+
+  // ─── Filter Logic ───
   const applyFilters = (filters, query) => {
     let result = [...exams];
-
-    if (filters.category !== "all") {
+    if (filters.category !== "all")
       result = result.filter((e) => e.category_id === filters.category);
-    }
-
-    if (filters.type === "free") {
-      result = result.filter((e) => e.is_free === true);
-    } else if (filters.type === "paid") {
-      result = result.filter((e) => e.is_free === false);
-    }
-
+    if (filters.type === "free") result = result.filter((e) => e.is_free === true);
+    else if (filters.type === "paid") result = result.filter((e) => e.is_free === false);
     if (query.trim()) {
       const lowerQuery = query.toLowerCase();
       result = result.filter(
@@ -132,7 +135,6 @@ export default function ExamsPage() {
           (e.description || "").toLowerCase().includes(lowerQuery)
       );
     }
-
     setFilteredExams(result);
   };
 
@@ -146,15 +148,15 @@ export default function ExamsPage() {
     applyFilters(activeFilters, query);
   };
 
-  // ─── Loading UI ───
-  if (loading) {
+  // ⭐ Loading: শুধু exams না আসা পর্যন্ত
+  if (!examsLoaded) {
     return (
       <div className="min-h-screen bg-dark pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <div className="h-10 w-64 bg-white/5 rounded-xl mx-auto mb-4 animate-pulse" />
             <div className="h-4 w-96 bg-white/5 rounded-lg mx-auto animate-pulse" />
-            <p className="text-white/40 text-sm mt-4">Loading... (Check Console)</p>
+            <p className="text-white/40 text-sm mt-4">পরীক্ষা লোড হচ্ছে...</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
@@ -173,7 +175,6 @@ export default function ExamsPage() {
         <div className="text-center max-w-md">
           <div className="text-6xl mb-4">😓</div>
           <p className="text-white/60 text-lg mb-2">{error}</p>
-          <p className="text-white/30 text-sm mb-4">Console এ পুরো Error দেখো</p>
           <button
             onClick={() => window.location.reload()}
             className="px-6 py-2 bg-primary rounded-xl text-white hover:bg-primary/80 transition-colors cursor-pointer"
@@ -225,7 +226,12 @@ export default function ExamsPage() {
         {filteredExams.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredExams.map((exam) => (
-              <ExamCard key={exam.id} exam={exam} questionCount={questionCounts[exam.id] || 0} />
+              <ExamCard
+                key={exam.id}
+                exam={exam}
+                questionCount={questionCounts[exam.id]}
+                isLoggedIn={isLoggedIn}
+              />
             ))}
           </div>
         ) : (
