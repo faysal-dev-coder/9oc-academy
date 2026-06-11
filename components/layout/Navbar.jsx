@@ -1,8 +1,8 @@
-// components/layout/Navbar.jsx
 "use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import {
@@ -23,26 +23,59 @@ import { useUser } from "@/hooks/useUser";
 import { useAuth } from "@/hooks/useAuth";
 
 // ══════════════════════════════════
-// NAV LINKS  ⭐ "পরীক্ষাসমূহ" ADDED!
+// NAV LINKS
 // ══════════════════════════════════
 const navLinks = [
   { href: "/", label: "হোম" },
   { href: "/courses", label: "কোর্সসমূহ" },
-  { href: "/exams", label: "পরীক্ষাসমূহ" }, // ⭐ NEW
+  { href: "/exams", label: "পরীক্ষাসমূহ" },
   { href: "/about", label: "আমাদের সম্পর্কে" },
   { href: "/contact", label: "যোগাযোগ" },
 ];
 
 // ══════════════════════════════════
-// PROFILE DROPDOWN MENU
+// PROFILE DROPDOWN MENU (✅ FIXED PATHS)
 // ══════════════════════════════════
 const profileMenuItems = [
   { href: "/dashboard", label: "Dashboard", icon: HiAcademicCap },
-  { href: "/my-courses", label: "আমার কোর্স", icon: FaBook },
-  { href: "/my-results", label: "আমার Results", icon: FaTrophy },
-  { href: "/attempts", label: "পরীক্ষার ইতিহাস", icon: FaClipboardList },
-  { href: "/profile", label: "Profile Settings", icon: FaCog },
+  { href: "/dashboard/history", label: "পরীক্ষার ইতিহাস", icon: FaClipboardList },
+  { href: "/dashboard/analytics", label: "আমার Results", icon: FaTrophy },
+  { href: "/leaderboard", label: "লিডারবোর্ড", icon: FaTrophy },
+  { href: "/dashboard/profile", label: "Profile Settings", icon: FaCog },
 ];
+
+// ══════════════════════════════════
+// AVATAR COMPONENT (Image or Letter)
+// ══════════════════════════════════
+function UserAvatar({ avatarUrl, letter, size = "sm" }) {
+  const sizeClasses = size === "lg" ? "h-10 w-10 text-base" : "h-8 w-8 text-sm";
+
+  if (avatarUrl) {
+    return (
+      <div className={`relative ${sizeClasses} shrink-0 overflow-hidden rounded-lg`}>
+        <Image
+          src={avatarUrl}
+          alt="Avatar"
+          fill
+          className="object-cover"
+          unoptimized
+          sizes={size === "lg" ? "40px" : "32px"}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`flex ${sizeClasses} shrink-0 items-center justify-center rounded-lg font-bold text-white`}
+      style={{
+        background: "linear-gradient(135deg, #6C63FF 0%, #00D4AA 100%)",
+      }}
+    >
+      {letter}
+    </div>
+  );
+}
 
 // ══════════════════════════════════
 // PROFILE DROPDOWN COMPONENT
@@ -83,6 +116,7 @@ function ProfileDropdown({ user, profile, onLogout }) {
 
   const displayName = profile?.full_name || user?.email?.split("@")[0] || "User";
   const avatarLetter = displayName.charAt(0).toUpperCase();
+  const avatarUrl = profile?.avatar_url;
   const isAdmin = profile?.role === "admin";
 
   const handleLogoutClick = async () => {
@@ -97,14 +131,7 @@ function ProfileDropdown({ user, profile, onLogout }) {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-300 hover:border-primary/30 hover:bg-white/10"
       >
-        <div
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white"
-          style={{
-            background: "linear-gradient(135deg, #6C63FF 0%, #00D4AA 100%)",
-          }}
-        >
-          {avatarLetter}
-        </div>
+        <UserAvatar avatarUrl={avatarUrl} letter={avatarLetter} size="sm" />
         <span className="hidden text-sm font-medium text-white/80 sm:block">
           {displayName.split(" ")[0]}
         </span>
@@ -128,14 +155,7 @@ function ProfileDropdown({ user, profile, onLogout }) {
             }}
           >
             <div className="flex items-center gap-3">
-              <div
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-base font-bold text-white"
-                style={{
-                  background: "linear-gradient(135deg, #6C63FF 0%, #00D4AA 100%)",
-                }}
-              >
-                {avatarLetter}
-              </div>
+              <UserAvatar avatarUrl={avatarUrl} letter={avatarLetter} size="lg" />
               <div className="min-w-0">
                 <p className="truncate font-bold text-white">{displayName}</p>
                 <p className="truncate text-xs text-white/50">{user?.email}</p>
@@ -285,6 +305,8 @@ export default function Navbar() {
     return <AuthButtons />;
   };
 
+  const mobileAvatarLetter = (profile?.full_name || user?.email || "U").charAt(0).toUpperCase();
+
   return (
     <>
       <nav
@@ -353,14 +375,11 @@ export default function Navbar() {
               ) : user ? (
                 <div className="space-y-1">
                   <div className="mb-2 flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3">
-                    <div
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white"
-                      style={{
-                        background: "linear-gradient(135deg, #6C63FF 0%, #00D4AA 100%)",
-                      }}
-                    >
-                      {(profile?.full_name || user?.email || "U").charAt(0).toUpperCase()}
-                    </div>
+                    <UserAvatar
+                      avatarUrl={profile?.avatar_url}
+                      letter={mobileAvatarLetter}
+                      size="lg"
+                    />
                     <div className="min-w-0">
                       <p className="truncate text-sm font-bold text-white">
                         {profile?.full_name || user?.email?.split("@")[0]}
