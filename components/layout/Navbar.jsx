@@ -1,3 +1,14 @@
+// components/layout/Navbar.jsx
+// ═══════════════════════════════════════════════════════════════
+// 🧭 Premium Navbar — Light Theme
+// Phase 6B — Chat 23
+// ├── White background with subtle shadow on scroll
+// ├── Hi2 Icons (Heroicons v2 Outline)
+// ├── Light dropdown & mobile menu
+// ├── Avatar integration
+// └── All functionality preserved
+// ═══════════════════════════════════════════════════════════════
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -6,18 +17,17 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import {
-  FaBars,
-  FaTimes,
-  FaChevronDown,
-  FaBook,
-  FaClipboardList,
-  FaCog,
-  FaSignOutAlt,
-  FaTrophy,
-  FaSignInAlt,
-  FaUserPlus,
-} from "react-icons/fa";
-import { HiAcademicCap } from "react-icons/hi";
+  HiBars3,
+  HiXMark,
+  HiChevronDown,
+  HiAcademicCap,
+  HiClipboardDocumentList,
+  HiTrophy,
+  HiCog6Tooth,
+  HiArrowRightOnRectangle,
+  HiArrowLeftOnRectangle,
+  HiUserPlus,
+} from "react-icons/hi2";
 import Logo from "@/components/shared/Logo";
 import { useUser } from "@/hooks/useUser";
 import { useAuth } from "@/hooks/useAuth";
@@ -34,14 +44,14 @@ const navLinks = [
 ];
 
 // ══════════════════════════════════
-// PROFILE DROPDOWN MENU (✅ FIXED PATHS)
+// PROFILE DROPDOWN MENU
 // ══════════════════════════════════
 const profileMenuItems = [
   { href: "/dashboard", label: "Dashboard", icon: HiAcademicCap },
-  { href: "/dashboard/history", label: "পরীক্ষার ইতিহাস", icon: FaClipboardList },
-  { href: "/dashboard/analytics", label: "আমার Results", icon: FaTrophy },
-  { href: "/leaderboard", label: "লিডারবোর্ড", icon: FaTrophy },
-  { href: "/dashboard/profile", label: "Profile Settings", icon: FaCog },
+  { href: "/dashboard/history", label: "পরীক্ষার ইতিহাস", icon: HiClipboardDocumentList },
+  { href: "/dashboard/analytics", label: "আমার Results", icon: HiTrophy },
+  { href: "/leaderboard", label: "লিডারবোর্ড", icon: HiTrophy },
+  { href: "/dashboard/profile", label: "Profile Settings", icon: HiCog6Tooth },
 ];
 
 // ══════════════════════════════════
@@ -69,7 +79,7 @@ function UserAvatar({ avatarUrl, letter, size = "sm" }) {
     <div
       className={`flex ${sizeClasses} shrink-0 items-center justify-center rounded-lg font-bold text-white`}
       style={{
-        background: "linear-gradient(135deg, #6C63FF 0%, #00D4AA 100%)",
+        background: "linear-gradient(135deg, #1E9CD7 0%, #0A5A8A 100%)",
       }}
     >
       {letter}
@@ -78,7 +88,7 @@ function UserAvatar({ avatarUrl, letter, size = "sm" }) {
 }
 
 // ══════════════════════════════════
-// PROFILE DROPDOWN COMPONENT
+// PROFILE DROPDOWN COMPONENT (Light)
 // ══════════════════════════════════
 function ProfileDropdown({ user, profile, onLogout }) {
   const [open, setOpen] = useState(false);
@@ -87,11 +97,13 @@ function ProfileDropdown({ user, profile, onLogout }) {
   const menuRef = useRef(null);
   const pathname = usePathname();
 
+  // Close on route change
   useEffect(() => {
     const timer = setTimeout(() => setOpen(false), 0);
     return () => clearTimeout(timer);
   }, [pathname]);
 
+  // Close on outside click
   useEffect(() => {
     function handleClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -104,6 +116,7 @@ function ProfileDropdown({ user, profile, onLogout }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
+  // Animate dropdown
   useEffect(() => {
     if (open && menuRef.current) {
       gsap.fromTo(
@@ -127,40 +140,43 @@ function ProfileDropdown({ user, profile, onLogout }) {
 
   return (
     <div ref={dropdownRef} className="relative">
+      {/* Trigger Button — Light */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-300 hover:border-primary/30 hover:bg-white/10"
+        className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 transition-all duration-300 hover:border-[#1E9CD7]/30 hover:bg-[#F1F5F9]"
       >
         <UserAvatar avatarUrl={avatarUrl} letter={avatarLetter} size="sm" />
-        <span className="hidden text-sm font-medium text-white/80 sm:block">
+        <span className="hidden text-sm font-medium text-[#1F2937] sm:block">
           {displayName.split(" ")[0]}
         </span>
-        <FaChevronDown
-          className={`text-xs text-white/50 transition-transform duration-300 ${
+        <HiChevronDown
+          className={`text-sm text-[#64748B] transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
         />
       </button>
 
+      {/* Dropdown Menu — Light */}
       {open && (
         <div
           ref={menuRef}
-          className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A1A]/95 shadow-2xl backdrop-blur-xl"
+          className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-xl"
         >
+          {/* User Info Header */}
           <div
             className="px-4 py-4"
             style={{
               background:
-                "linear-gradient(135deg, rgba(108,99,255,0.15) 0%, rgba(0,212,170,0.08) 100%)",
+                "linear-gradient(135deg, rgba(30,156,215,0.08) 0%, rgba(10,90,138,0.04) 100%)",
             }}
           >
             <div className="flex items-center gap-3">
               <UserAvatar avatarUrl={avatarUrl} letter={avatarLetter} size="lg" />
               <div className="min-w-0">
-                <p className="truncate font-bold text-white">{displayName}</p>
-                <p className="truncate text-xs text-white/50">{user?.email}</p>
+                <p className="truncate font-bold text-[#1F2937]">{displayName}</p>
+                <p className="truncate text-xs text-[#64748B]">{user?.email}</p>
                 {isAdmin && (
-                  <span className="mt-1 inline-block rounded-full bg-accent/20 px-2 py-0.5 text-xs text-accent">
+                  <span className="mt-1 inline-block rounded-full bg-[#FBBF24]/15 px-2 py-0.5 text-xs font-medium text-[#D97706]">
                     👑 Admin
                   </span>
                 )}
@@ -168,6 +184,7 @@ function ProfileDropdown({ user, profile, onLogout }) {
             </div>
           </div>
 
+          {/* Menu Items */}
           <div className="p-2">
             {profileMenuItems.map((item) => (
               <Link
@@ -176,11 +193,11 @@ function ProfileDropdown({ user, profile, onLogout }) {
                 onClick={() => setOpen(false)}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-200 ${
                   pathname === item.href
-                    ? "bg-primary/20 text-primary"
-                    : "text-white/70 hover:bg-white/5 hover:text-white"
+                    ? "bg-[#1E9CD7]/10 font-medium text-[#1E9CD7]"
+                    : "text-[#475569] hover:bg-[#F1F5F9] hover:text-[#1F2937]"
                 }`}
               >
-                <item.icon className="shrink-0 text-base" />
+                <item.icon className="shrink-0 text-lg" />
                 {item.label}
               </Link>
             ))}
@@ -189,28 +206,29 @@ function ProfileDropdown({ user, profile, onLogout }) {
               <Link
                 href="/admin"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-accent transition-all duration-200 hover:bg-accent/10"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#D97706] transition-all duration-200 hover:bg-[#FBBF24]/10"
               >
-                <FaCog className="shrink-0 text-base" />
+                <HiCog6Tooth className="shrink-0 text-lg" />
                 Admin Panel
               </Link>
             )}
           </div>
 
-          <div className="border-t border-white/10 p-2">
+          {/* Logout */}
+          <div className="border-t border-[#E2E8F0] p-2">
             <button
               onClick={handleLogoutClick}
               disabled={isLoggingOut}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-red-400 transition-all duration-200 hover:bg-red-400/10 disabled:opacity-60"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#DC2626] transition-all duration-200 hover:bg-[#DC2626]/8 disabled:opacity-60"
             >
               {isLoggingOut ? (
                 <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-red-400/30 border-t-red-400" />
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#DC2626]/30 border-t-[#DC2626]" />
                   লগ আউট হচ্ছে...
                 </>
               ) : (
                 <>
-                  <FaSignOutAlt className="shrink-0" />
+                  <HiArrowRightOnRectangle className="shrink-0 text-lg" />
                   লগ আউট
                 </>
               )}
@@ -223,24 +241,27 @@ function ProfileDropdown({ user, profile, onLogout }) {
 }
 
 // ══════════════════════════════════
-// AUTH BUTTONS (Not Logged In)
+// AUTH BUTTONS (Not Logged In — Light)
 // ══════════════════════════════════
 function AuthButtons() {
   return (
     <>
       <Link
         href="/login"
-        className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/80 transition-all hover:border-white/20 hover:bg-white/10 hover:text-white"
+        className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-medium text-[#475569] transition-all hover:border-[#1E9CD7]/30 hover:bg-[#F1F5F9] hover:text-[#1F2937]"
       >
-        <FaSignInAlt className="text-xs" />
+        <HiArrowLeftOnRectangle className="text-base" />
         লগইন
       </Link>
       <Link
         href="/register"
-        className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary/80 hover:shadow-lg"
-        style={{ boxShadow: "0 0 20px rgba(108,99,255,0.3)" }}
+        className="flex items-center gap-2 rounded-xl px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg"
+        style={{
+          background: "linear-gradient(135deg, #1E9CD7 0%, #0A5A8A 100%)",
+          boxShadow: "0 4px 15px rgba(30,156,215,0.3)",
+        }}
       >
-        <FaUserPlus className="text-xs" />
+        <HiUserPlus className="text-base" />
         রেজিস্ট্রেশন
       </Link>
     </>
@@ -248,7 +269,7 @@ function AuthButtons() {
 }
 
 // ══════════════════════════════════
-// MAIN NAVBAR
+// MAIN NAVBAR — Light Theme
 // ══════════════════════════════════
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -260,22 +281,26 @@ export default function Navbar() {
   const { user, profile, loading: userLoading } = useUser();
   const { logout } = useAuth();
 
+  // Mount check
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
   }, []);
 
+  // Scroll detection
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on route change
   useEffect(() => {
     const timer = setTimeout(() => setMobileOpen(false), 0);
     return () => clearTimeout(timer);
   }, [pathname]);
 
+  // Entry animation
   useEffect(() => {
     if (navRef.current) {
       gsap.fromTo(
@@ -295,9 +320,10 @@ export default function Navbar() {
     window.location.href = "/";
   };
 
+  // Auth section renderer
   const renderAuthSection = () => {
     if (!mounted || userLoading) {
-      return <div className="h-10 w-32 animate-pulse rounded-xl bg-white/10" />;
+      return <div className="h-10 w-32 animate-pulse rounded-xl bg-[#E2E8F0]" />;
     }
     if (user) {
       return <ProfileDropdown user={user} profile={profile} onLogout={handleLogout} />;
@@ -309,18 +335,21 @@ export default function Navbar() {
 
   return (
     <>
+      {/* ═══ NAVBAR ═══ */}
       <nav
         ref={navRef}
         className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "border-b border-white/10 bg-[#0A0A1A]/90 shadow-2xl backdrop-blur-xl"
-            : "bg-transparent"
+            ? "border-b border-[#E2E8F0] bg-white/95 shadow-sm backdrop-blur-xl"
+            : "border-b border-transparent bg-white"
         }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
+            {/* ═══ Logo ═══ */}
             <Logo />
 
+            {/* ═══ Desktop Nav Links ═══ */}
             <div className="hidden items-center gap-1 md:flex">
               {navLinks.map((link) => (
                 <Link
@@ -328,31 +357,35 @@ export default function Navbar() {
                   href={link.href}
                   className={`relative rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300 ${
                     pathname === link.href
-                      ? "bg-primary/20 text-primary"
-                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                      ? "bg-[#1E9CD7]/10 text-[#1E9CD7]"
+                      : "text-[#475569] hover:bg-[#F1F5F9] hover:text-[#1F2937]"
                   }`}
                 >
                   {link.label}
                   {pathname === link.href && (
-                    <span className="absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-primary" />
+                    <span className="absolute bottom-0 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-[#1E9CD7]" />
                   )}
                 </Link>
               ))}
             </div>
 
+            {/* ═══ Desktop Auth / Profile ═══ */}
             <div className="hidden items-center gap-3 md:flex">{renderAuthSection()}</div>
 
+            {/* ═══ Mobile Menu Button ═══ */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="rounded-xl border border-white/10 bg-white/5 p-2.5 text-white/70 transition-all hover:text-white md:hidden"
+              className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-2.5 text-[#475569] transition-all hover:bg-[#F1F5F9] hover:text-[#1F2937] md:hidden"
             >
-              {mobileOpen ? <FaTimes className="text-lg" /> : <FaBars className="text-lg" />}
+              {mobileOpen ? <HiXMark className="text-xl" /> : <HiBars3 className="text-xl" />}
             </button>
           </div>
         </div>
 
+        {/* ═══ Mobile Menu — Light ═══ */}
         {mobileOpen && (
-          <div className="border-t border-white/10 bg-[#0A0A1A]/95 px-4 pb-4 pt-2 backdrop-blur-xl md:hidden">
+          <div className="border-t border-[#E2E8F0] bg-white px-4 pb-4 pt-2 md:hidden">
+            {/* Nav Links */}
             <div className="space-y-1">
               {navLinks.map((link) => (
                 <Link
@@ -360,8 +393,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`block rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                     pathname === link.href
-                      ? "bg-primary/20 text-primary"
-                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                      ? "bg-[#1E9CD7]/10 text-[#1E9CD7]"
+                      : "text-[#475569] hover:bg-[#F1F5F9] hover:text-[#1F2937]"
                   }`}
                 >
                   {link.label}
@@ -369,68 +402,81 @@ export default function Navbar() {
               ))}
             </div>
 
-            <div className="mt-3 border-t border-white/10 pt-3">
+            {/* Auth Section (Mobile) */}
+            <div className="mt-3 border-t border-[#E2E8F0] pt-3">
               {!mounted || userLoading ? (
-                <div className="h-10 animate-pulse rounded-xl bg-white/10" />
+                <div className="h-10 animate-pulse rounded-xl bg-[#E2E8F0]" />
               ) : user ? (
                 <div className="space-y-1">
-                  <div className="mb-2 flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3">
+                  {/* User Info Card */}
+                  <div className="mb-2 flex items-center gap-3 rounded-xl bg-[#F8FAFC] px-4 py-3">
                     <UserAvatar
                       avatarUrl={profile?.avatar_url}
                       letter={mobileAvatarLetter}
                       size="lg"
                     />
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-bold text-white">
+                      <p className="truncate text-sm font-bold text-[#1F2937]">
                         {profile?.full_name || user?.email?.split("@")[0]}
                       </p>
-                      <p className="truncate text-xs text-white/50">{user?.email}</p>
+                      <p className="truncate text-xs text-[#64748B]">{user?.email}</p>
                     </div>
                   </div>
 
+                  {/* Menu Items */}
                   {profileMenuItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-white/70 hover:bg-white/5 hover:text-white"
+                      className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm transition-all ${
+                        pathname === item.href
+                          ? "bg-[#1E9CD7]/10 font-medium text-[#1E9CD7]"
+                          : "text-[#475569] hover:bg-[#F1F5F9] hover:text-[#1F2937]"
+                      }`}
                     >
-                      <item.icon className="shrink-0" />
+                      <item.icon className="shrink-0 text-lg" />
                       {item.label}
                     </Link>
                   ))}
 
+                  {/* Admin Link */}
                   {profile?.role === "admin" && (
                     <Link
                       href="/admin"
-                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-accent hover:bg-accent/10"
+                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-[#D97706] hover:bg-[#FBBF24]/10"
                     >
-                      <FaCog className="shrink-0" />
+                      <HiCog6Tooth className="shrink-0 text-lg" />
                       Admin Panel
                     </Link>
                   )}
 
+                  {/* Logout */}
                   <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-red-400 hover:bg-red-400/10"
+                    className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-[#DC2626] hover:bg-[#DC2626]/8"
                   >
-                    <FaSignOutAlt className="shrink-0" />
+                    <HiArrowRightOnRectangle className="shrink-0 text-lg" />
                     লগ আউট
                   </button>
                 </div>
               ) : (
+                /* Guest Auth Buttons */
                 <div className="flex flex-col gap-2">
                   <Link
                     href="/login"
-                    className="flex items-center justify-center gap-2 rounded-xl border border-white/10 py-3 text-sm font-medium text-white/80 hover:border-white/20 hover:text-white"
+                    className="flex items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] py-3 text-sm font-medium text-[#475569] hover:border-[#1E9CD7]/30 hover:bg-[#F1F5F9] hover:text-[#1F2937]"
                   >
-                    <FaSignInAlt className="text-xs" />
+                    <HiArrowLeftOnRectangle className="text-base" />
                     লগইন
                   </Link>
                   <Link
                     href="/register"
-                    className="flex items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-white hover:bg-primary/80"
+                    className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white"
+                    style={{
+                      background: "linear-gradient(135deg, #1E9CD7 0%, #0A5A8A 100%)",
+                    }}
                   >
-                    <FaUserPlus className="text-xs" />
+                    <HiUserPlus className="text-base" />
                     রেজিস্ট্রেশন
                   </Link>
                 </div>
@@ -440,6 +486,7 @@ export default function Navbar() {
         )}
       </nav>
 
+      {/* Spacer — Navbar height */}
       <div className="h-16" />
     </>
   );
