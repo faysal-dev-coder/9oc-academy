@@ -1,7 +1,7 @@
-// app/page.js
+// app/(main)/page.js
 // ═══════════════════════════════════════
 // 🏠 Homepage — 9OC Academy
-// (Updated for Phase 2F — Testimonials + FAQ + Newsletter Added)
+// (Phase 6B — Light Theme Complete!)
 // ═══════════════════════════════════════
 
 import HeroSection from "@/components/home/HeroSection";
@@ -16,7 +16,7 @@ import NewsletterSection from "@/components/home/NewsletterSection";
 
 export default function HomePage() {
   return (
-    <main className="bg-dark">
+    <main className="bg-white">
       {/* ══════════════════════════════════════════ */}
       {/* ██  HERO SECTION — Premium                */}
       {/* ══════════════════════════════════════════ */}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HiCheckCircle, HiExclamationCircle, HiMail } from "react-icons/hi";
+import { HiCheckCircle, HiExclamationCircle, HiOutlineEnvelope } from "react-icons/hi2";
 import { FaPaperPlane } from "react-icons/fa";
 import { NEWSLETTER_BENEFITS } from "../../constants";
 
@@ -18,7 +18,6 @@ export default function NewsletterSection() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     if (status === "loading") return;
 
     const trimmedEmail = email.trim();
@@ -44,7 +43,6 @@ export default function NewsletterSection() {
       setMessage("ধন্যবাদ! আপনি সফলভাবে সাবস্ক্রাইব করেছেন।");
       setEmail("");
 
-      // Reset status after 5 seconds
       setTimeout(() => {
         setStatus("idle");
         setMessage("");
@@ -54,7 +52,6 @@ export default function NewsletterSection() {
 
   const handleInputChange = (event) => {
     setEmail(event.target.value);
-
     if (status === "error") {
       setStatus("idle");
       setMessage("");
@@ -62,29 +59,34 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section className="relative overflow-hidden py-24">
-      <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/3 to-transparent" />
-      <div className="absolute left-1/3 top-0 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
-      <div className="absolute right-1/3 bottom-0 h-96 w-96 rounded-full bg-secondary/10 blur-3xl" />
+    <section className="relative overflow-hidden bg-[#F8FAFC] py-20">
+      {/* Background blobs */}
+      <div className="absolute left-1/3 top-0 h-96 w-96 rounded-full bg-primary/8 blur-3xl" />
+      <div className="absolute right-1/3 bottom-0 h-96 w-96 rounded-full bg-secondary/8 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
-          {/* Animated Background Layers */}
-          <div className="absolute inset-0 bg-linear-to-br from-primary/15 via-transparent to-secondary/15" />
-          <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(108,99,255,0.08),transparent_50%)]" />
+        {/* Main Card */}
+        <div className="relative overflow-hidden rounded-3xl border border-[#E2E8F0] bg-white shadow-xl">
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-secondary/5" />
+          <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+          <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-secondary/10 blur-3xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(108,99,255,0.04),transparent_50%)]" />
 
-          {/* Content */}
+          {/* Content Grid */}
           <div className="relative grid gap-10 p-8 lg:grid-cols-2 lg:gap-12 lg:p-12">
-            {/* Left Side — Form */}
+            {/* ═══════════════════════════════ */}
+            {/* Left Side — Form                */}
+            {/* ═══════════════════════════════ */}
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
-                <HiMail className="text-base" />
+              {/* Badge */}
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
+                <HiOutlineEnvelope className="text-base" />
                 নিউজলেটার
               </span>
 
-              <h2 className="mt-5 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+              {/* Title */}
+              <h2 className="mt-5 text-3xl font-bold text-[#1F2937] sm:text-4xl lg:text-5xl">
                 পাচ্ছেন{" "}
                 <span className="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
                   ফ্রি MCQ সেট
@@ -92,7 +94,8 @@ export default function NewsletterSection() {
                 প্রতি সপ্তাহে
               </h2>
 
-              <p className="mt-4 text-base leading-8 text-white/70 sm:text-lg">
+              {/* Description */}
+              <p className="mt-4 text-base leading-7 text-[#475569] sm:text-lg">
                 সাবস্ক্রাইব করুন এবং পান এক্সক্লুসিভ পরীক্ষার টিপস, ফ্রি MCQ সেট, কোর্স আপডেট এবং
                 স্পেশাল ডিসকাউন্ট অফার — সরাসরি আপনার ইমেইলে।
               </p>
@@ -100,9 +103,10 @@ export default function NewsletterSection() {
               {/* Form */}
               <form onSubmit={handleSubmit} className="mt-8">
                 <div className="flex flex-col gap-3 sm:flex-row">
+                  {/* Email Input */}
                   <div className="relative flex-1">
-                    <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/40">
-                      <HiMail className="text-xl" />
+                    <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">
+                      <HiOutlineEnvelope className="text-xl" />
                     </div>
 
                     <input
@@ -111,18 +115,19 @@ export default function NewsletterSection() {
                       onChange={handleInputChange}
                       placeholder="আপনার ইমেইল ঠিকানা লিখুন"
                       disabled={status === "loading"}
-                      className={`h-14 w-full rounded-full border bg-white/5 pl-12 pr-5 text-base text-white placeholder-white/40 backdrop-blur-md outline-none transition-all duration-300 focus:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60 ${
+                      className={`h-14 w-full rounded-full border bg-white pl-12 pr-5 text-base text-[#1F2937] placeholder-[#94A3B8] outline-none transition-all duration-300 focus:bg-white disabled:cursor-not-allowed disabled:opacity-60 ${
                         status === "error"
-                          ? "border-red-500/50 focus:border-red-500"
-                          : "border-white/15 focus:border-primary"
+                          ? "border-red-500/50 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                          : "border-[#E2E8F0] focus:border-primary focus:ring-2 focus:ring-primary/20"
                       }`}
                     />
                   </div>
 
+                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="group flex h-14 items-center justify-center gap-2 rounded-full bg-linear-to-r from-primary to-secondary px-7 text-base font-semibold text-white shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+                    className="group flex h-14 items-center justify-center gap-2 rounded-full bg-linear-to-r from-primary to-secondary px-7 text-base font-semibold text-white shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
                   >
                     {status === "loading" ? (
                       <>
@@ -150,7 +155,7 @@ export default function NewsletterSection() {
                       className={`mt-4 flex items-center gap-2 rounded-2xl border px-4 py-3 text-sm font-medium ${
                         status === "success"
                           ? "border-secondary/30 bg-secondary/10 text-secondary"
-                          : "border-red-500/30 bg-red-500/10 text-red-400"
+                          : "border-red-500/30 bg-red-500/10 text-red-600"
                       }`}
                     >
                       {status === "success" ? (
@@ -165,7 +170,7 @@ export default function NewsletterSection() {
               </form>
 
               {/* Trust Indicators */}
-              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/50">
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#64748B]">
                 <div className="flex items-center gap-1.5">
                   <HiCheckCircle className="text-secondary" />
                   <span>কোনো স্প্যাম নেই</span>
@@ -183,17 +188,20 @@ export default function NewsletterSection() {
               </div>
             </div>
 
-            {/* Right Side — Benefits */}
+            {/* ═══════════════════════════════ */}
+            {/* Right Side — Benefits           */}
+            {/* ═══════════════════════════════ */}
             <div className="flex flex-col justify-center">
               <div className="mb-6">
-                <h3 className="text-xl font-bold text-white sm:text-2xl">
+                <h3 className="text-xl font-bold text-[#1F2937] sm:text-2xl">
                   সাবস্ক্রাইব করলে যা পাবেন:
                 </h3>
-                <p className="mt-2 text-sm text-white/60">
+                <p className="mt-2 text-sm text-[#64748B]">
                   ৫০,০০০+ শিক্ষার্থী ইতিমধ্যে আমাদের নিউজলেটার পাচ্ছেন
                 </p>
               </div>
 
+              {/* Benefits List */}
               <div className="space-y-3">
                 {NEWSLETTER_BENEFITS.map((benefit, index) => (
                   <motion.div
@@ -201,34 +209,35 @@ export default function NewsletterSection() {
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
-                    transition={{
-                      duration: 0.4,
-                      delay: index * 0.1,
-                    }}
-                    className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md transition-all duration-300 hover:border-primary/30 hover:bg-white/10"
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="group flex items-center gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-4 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md hover:-translate-y-0.5"
                   >
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-2xl transition-all duration-300 group-hover:scale-110 group-hover:border-primary/40 group-hover:bg-primary/20">
+                    {/* Icon */}
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-2xl transition-all duration-300 group-hover:scale-110 group-hover:border-primary/40 group-hover:bg-primary/10">
                       {benefit.icon}
                     </div>
 
+                    {/* Text */}
                     <div className="flex-1">
-                      <p className="text-base font-medium text-white">{benefit.text}</p>
+                      <p className="text-base font-medium text-[#1F2937]">{benefit.text}</p>
                     </div>
 
+                    {/* Check icon (hover) */}
                     <HiCheckCircle className="text-xl text-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   </motion.div>
                 ))}
               </div>
 
-              {/* Bottom Note */}
-              <div className="mt-6 rounded-2xl border border-accent/20 bg-accent/5 p-4">
+              {/* Bottom Gift Note */}
+              <div className="mt-6 rounded-2xl border border-accent/30 bg-accent/8 p-4">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">🎁</span>
                   <div>
-                    <p className="text-sm font-semibold text-accent">স্পেশাল গিফট!</p>
-                    <p className="mt-1 text-sm text-white/70">
+                    <p className="text-sm font-bold text-accent">স্পেশাল গিফট!</p>
+                    <p className="mt-1 text-sm text-[#475569]">
                       প্রথম সাবস্ক্রাইব করলেই পাবেন{" "}
-                      <span className="font-bold text-white">১০০টি ফ্রি BCS MCQ</span> একদম ফ্রি!
+                      <span className="font-bold text-[#1F2937]">১০০টি ফ্রি BCS MCQ</span> একদম
+                      ফ্রি!
                     </p>
                   </div>
                 </div>

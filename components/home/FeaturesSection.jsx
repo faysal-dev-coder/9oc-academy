@@ -1,7 +1,12 @@
 // components/home/FeaturesSection.jsx
-// ═══════════════════════════════════════
-// ✨ Premium Features with 3D Tilt + Scroll Reveal
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// ✨ Premium Features with 3D Tilt — Light Theme
+// Phase 6B+ — Chat 23
+// ├── White cards with colored borders
+// ├── 3D tilt on mouse move
+// ├── Soft glow follows cursor
+// └── Hi2 Outline icons
+// ═══════════════════════════════════════════════════════════════
 
 "use client";
 
@@ -9,12 +14,12 @@ import { useEffect, useRef, useMemo, useCallback } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import {
   HiOutlineAcademicCap,
-  HiOutlineDeviceMobile,
+  HiOutlineDevicePhoneMobile,
   HiOutlineChartBar,
   HiOutlineLightBulb,
   HiOutlineShieldCheck,
   HiOutlineClock,
-} from "react-icons/hi";
+} from "react-icons/hi2";
 
 // ─── Single Feature Card ───
 function FeatureCard({ icon: Icon, title, description, color, index }) {
@@ -37,7 +42,6 @@ function FeatureCard({ icon: Icon, title, description, color, index }) {
 
     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
 
-    // Move glow
     if (glowRef.current) {
       glowRef.current.style.left = `${x}px`;
       glowRef.current.style.top = `${y}px`;
@@ -56,7 +60,6 @@ function FeatureCard({ icon: Icon, title, description, color, index }) {
       glowRef.current.style.opacity = "0";
     }
 
-    // Remove transition after reset
     setTimeout(() => {
       if (card) card.style.transition = "none";
     }, 500);
@@ -90,50 +93,50 @@ function FeatureCard({ icon: Icon, title, description, color, index }) {
     return () => ctx.revert();
   }, [index]);
 
-  // Color mapping
+  // ✅ Color mapping — Light Theme
   const colorClasses = useMemo(() => {
     const colors = {
       primary: {
-        bg: "bg-primary/10",
-        border: "border-primary/30",
-        icon: "text-primary",
-        glow: "bg-primary/30",
-        hoverBorder: "group-hover:border-primary/50",
+        iconBg: "bg-[#1E9CD7]/10",
+        iconColor: "text-[#1E9CD7]",
+        glow: "bg-[#1E9CD7]/25",
+        cornerBg: "bg-[#1E9CD7]/20",
+        hoverBorder: "group-hover:border-[#1E9CD7]/40",
       },
       secondary: {
-        bg: "bg-secondary/10",
-        border: "border-secondary/30",
-        icon: "text-secondary",
-        glow: "bg-secondary/30",
-        hoverBorder: "group-hover:border-secondary/50",
+        iconBg: "bg-[#059669]/10",
+        iconColor: "text-[#059669]",
+        glow: "bg-[#059669]/25",
+        cornerBg: "bg-[#059669]/20",
+        hoverBorder: "group-hover:border-[#059669]/40",
       },
       accent: {
-        bg: "bg-accent/10",
-        border: "border-accent/30",
-        icon: "text-accent",
-        glow: "bg-accent/30",
-        hoverBorder: "group-hover:border-accent/50",
+        iconBg: "bg-[#FBBF24]/15",
+        iconColor: "text-[#D97706]",
+        glow: "bg-[#FBBF24]/30",
+        cornerBg: "bg-[#FBBF24]/25",
+        hoverBorder: "group-hover:border-[#FBBF24]/40",
       },
       pink: {
-        bg: "bg-pink-500/10",
-        border: "border-pink-500/30",
-        icon: "text-pink-400",
-        glow: "bg-pink-400/30",
-        hoverBorder: "group-hover:border-pink-500/50",
+        iconBg: "bg-pink-500/10",
+        iconColor: "text-pink-600",
+        glow: "bg-pink-400/25",
+        cornerBg: "bg-pink-500/20",
+        hoverBorder: "group-hover:border-pink-500/40",
       },
       cyan: {
-        bg: "bg-cyan-500/10",
-        border: "border-cyan-500/30",
-        icon: "text-cyan-400",
-        glow: "bg-cyan-400/30",
-        hoverBorder: "group-hover:border-cyan-500/50",
+        iconBg: "bg-cyan-500/10",
+        iconColor: "text-cyan-600",
+        glow: "bg-cyan-400/25",
+        cornerBg: "bg-cyan-500/20",
+        hoverBorder: "group-hover:border-cyan-500/40",
       },
       orange: {
-        bg: "bg-orange-500/10",
-        border: "border-orange-500/30",
-        icon: "text-orange-400",
-        glow: "bg-orange-400/30",
-        hoverBorder: "group-hover:border-orange-500/50",
+        iconBg: "bg-orange-500/10",
+        iconColor: "text-orange-600",
+        glow: "bg-orange-400/25",
+        cornerBg: "bg-orange-500/20",
+        hoverBorder: "group-hover:border-orange-500/40",
       },
     };
     return colors[color] || colors.primary;
@@ -150,54 +153,42 @@ function FeatureCard({ icon: Icon, title, description, color, index }) {
       {/* Mouse follow glow */}
       <div
         ref={glowRef}
-        className={`absolute w-40 h-40 ${colorClasses.glow} rounded-full
-          blur-3xl opacity-0 -translate-x-1/2 -translate-y-1/2
-          pointer-events-none transition-opacity duration-300 z-0`}
+        className={`pointer-events-none absolute z-0 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-300 ${colorClasses.glow}`}
       />
 
       {/* Card body */}
       <div
-        className={`relative z-10 p-8 rounded-2xl border ${colorClasses.border}
-          bg-white/5 backdrop-blur-sm h-full
-          ${colorClasses.hoverBorder}
-          transition-colors duration-300 overflow-hidden`}
+        className={`relative z-10 h-full overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-lg ${colorClasses.hoverBorder}`}
       >
         {/* Corner decoration */}
-        <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden">
+        <div className="absolute right-0 top-0 h-20 w-20 overflow-hidden">
           <div
-            className={`absolute top-3 -right-6 w-20 h-6 rotate-45 ${colorClasses.bg} opacity-50`}
+            className={`absolute -right-6 top-3 h-6 w-20 rotate-45 opacity-70 ${colorClasses.cornerBg}`}
           />
         </div>
 
         {/* Icon container */}
         <div
-          className={`inline-flex items-center justify-center w-14 h-14 rounded-xl
-            ${colorClasses.bg} mb-6
-            group-hover:scale-110 group-hover:rotate-3
-            transition-all duration-300`}
+          className={`mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl transition-all duration-300 group-hover:rotate-3 group-hover:scale-110 ${colorClasses.iconBg}`}
         >
-          <Icon className={`text-2xl ${colorClasses.icon}`} />
+          <Icon className={`text-2xl ${colorClasses.iconColor}`} />
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-white mb-3 group-hover:text-white/90 transition-colors">
-          {title}
-        </h3>
+        <h3 className="mb-3 text-xl font-bold text-[#1F2937] transition-colors">{title}</h3>
 
         {/* Description */}
-        <p className="text-white/50 leading-relaxed group-hover:text-white/60 transition-colors">
+        <p className="leading-relaxed text-[#64748B] transition-colors group-hover:text-[#475569]">
           {description}
         </p>
 
         {/* Bottom arrow */}
         <div
-          className={`mt-6 inline-flex items-center gap-2 text-sm font-medium
-            ${colorClasses.icon} opacity-0 group-hover:opacity-100
-            translate-y-2 group-hover:translate-y-0 transition-all duration-300`}
+          className={`mt-6 inline-flex translate-y-2 items-center gap-2 text-sm font-medium opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 ${colorClasses.iconColor}`}
         >
           <span>আরো জানুন</span>
           <svg
-            className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+            className="h-4 w-4 transition-transform group-hover:translate-x-1"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -229,7 +220,7 @@ export default function FeaturesSection() {
         color: "primary",
       },
       {
-        icon: HiOutlineDeviceMobile,
+        icon: HiOutlineDevicePhoneMobile,
         title: "মোবাইল ফ্রেন্ডলি",
         description:
           "যেকোনো ডিভাইসে পরীক্ষা দিন — মোবাইল, ট্যাবলেট বা কম্পিউটার। সব জায়গায় একই অভিজ্ঞতা।",
@@ -266,36 +257,50 @@ export default function FeaturesSection() {
   );
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#FAFBFC] py-24 md:py-32">
       {/* Background */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
-        <div className="absolute top-1/3 right-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 left-0 w-72 h-72 bg-secondary/5 rounded-full blur-3xl" />
+        <div className="absolute left-0 right-0 top-0 h-px bg-linear-to-r from-transparent via-[#E2E8F0] to-transparent" />
+        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-[#1E9CD7]/5 blur-3xl" />
+        <div className="absolute bottom-1/3 left-0 h-72 w-72 rounded-full bg-[#059669]/5 blur-3xl" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/20 mb-6">
+        <div className="mb-16 text-center">
+          {/* Badge */}
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#059669]/30 bg-[#059669]/10 px-4 py-2">
             <span className="text-lg">✨</span>
-            <span className="text-sm font-medium text-secondary">কেন আমাদের বেছে নিবেন</span>
+            <span className="text-sm font-medium text-[#059669]">কেন আমাদের বেছে নিবেন</span>
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+
+          <h2 className="mb-4 text-3xl font-bold text-[#1F2937] md:text-4xl lg:text-5xl">
             যা আমাদের{" "}
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-secondary to-primary">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(135deg, #059669, #1E9CD7)",
+              }}
+            >
               আলাদা করে
             </span>
           </h2>
-          <div className="h-1 w-24 mx-auto rounded-full bg-linear-to-r from-secondary via-primary to-accent mb-6" />
-          <p className="text-lg text-white/60 max-w-2xl mx-auto">
+
+          <div
+            className="mx-auto mb-6 h-1 w-24 rounded-full"
+            style={{
+              backgroundImage: "linear-gradient(90deg, #059669, #1E9CD7, #FBBF24)",
+            }}
+          />
+
+          <p className="mx-auto max-w-2xl text-lg text-[#64748B]">
             আধুনিক প্রযুক্তি আর অভিজ্ঞ শিক্ষকদের সমন্বয়ে তৈরি একটি অনন্য প্ল্যাটফর্ম
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <FeatureCard key={index} index={index} {...feature} />
           ))}

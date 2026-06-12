@@ -11,7 +11,6 @@ export default function HeroVisual() {
   const statCardsRef = useRef([]);
   const progressRef = useRef(null);
 
-  // ── MCQ Options Data (useMemo দিয়ে Cached) ──
   const mcqOptions = useMemo(
     () => [
       { letter: "ক", text: "৪ নভেম্বর ১৯৭২", status: "correct" },
@@ -22,23 +21,18 @@ export default function HeroVisual() {
     []
   );
 
-  // ── Main Entrance Animation ──
+  // Entrance Animation
   useEffect(() => {
     const mcqCard = mcqCardRef.current;
     const statCardElements = statCardsRef.current;
-
     if (!mcqCard) return;
 
     const tl = gsap.timeline({ delay: 1 });
-
-    // MCQ Card Entrance
     tl.fromTo(
       mcqCard,
       { opacity: 0, scale: 0.8, y: 40 },
       { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(1.4)" }
     );
-
-    // Stat Cards Stagger Entrance
     statCardElements.forEach((card) => {
       if (!card) return;
       tl.fromTo(
@@ -48,19 +42,16 @@ export default function HeroVisual() {
         "-=0.3"
       );
     });
-
     return () => {
       tl.kill();
     };
   }, []);
 
-  // ── Floating Animation for Stat Cards ──
+  // Floating Animation
   useEffect(() => {
     const cards = statCardsRef.current;
-
     cards.forEach((card, index) => {
       if (!card) return;
-
       gsap.to(card, {
         y: gsap.utils.random(-10, 10),
         duration: gsap.utils.random(2, 4),
@@ -70,7 +61,6 @@ export default function HeroVisual() {
         delay: index * 0.5,
       });
     });
-
     return () => {
       cards.forEach((card) => {
         if (card) gsap.killTweensOf(card);
@@ -78,54 +68,55 @@ export default function HeroVisual() {
     };
   }, []);
 
-  // ── Progress Bar Animation ──
+  // Progress Bar Animation
   useEffect(() => {
     const progress = progressRef.current;
     if (!progress) return;
-
     gsap.fromTo(
       progress,
       { width: "0%" },
       { width: "78%", duration: 2, ease: "power2.out", delay: 1.8 }
     );
-
     return () => {
       gsap.killTweensOf(progress);
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-lg mx-auto lg:mx-0">
+    <div ref={containerRef} className="relative mx-auto w-full max-w-lg lg:mx-0">
       {/* ══════════════════════════════════════════ */}
-      {/* ██  MCQ Card Preview                      */}
+      {/* ██  MCQ Card Preview — Light             */}
       {/* ══════════════════════════════════════════ */}
       <div
         ref={mcqCardRef}
-        className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 opacity-0"
+        className="relative rounded-2xl border border-[#E2E8F0] bg-white p-6 opacity-0 shadow-xl"
+        style={{
+          boxShadow: "0 20px 50px -12px rgba(30, 156, 215, 0.15)",
+        }}
       >
         {/* ── Card Header ── */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {/* Question Icon Box */}
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold text-white"
               style={{
-                backgroundImage: "linear-gradient(135deg, #6c63ff, #00d4aa)",
+                backgroundImage: "linear-gradient(135deg, #1E9CD7, #0A5A8A)",
               }}
             >
               Q
             </div>
             <div>
-              <p className="text-white text-sm font-semibold">বাংলাদেশ বিষয়াবলি</p>
-              <p className="text-white/40 text-xs">
+              <p className="text-sm font-semibold text-[#1F2937]">বাংলাদেশ বিষয়াবলি</p>
+              <p className="text-xs text-[#64748B]">
                 প্রশ্ন {toBanglaNumber(15)}/{toBanglaNumber(50)}
               </p>
             </div>
           </div>
 
           {/* Timer Badge */}
-          <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-accent/10 border border-accent/20">
-            <span className="text-accent text-xs font-bold">
+          <div className="flex items-center gap-1 rounded-full border border-[#FBBF24]/30 bg-[#FBBF24]/10 px-3 py-1">
+            <span className="text-xs font-bold text-[#D97706]">
               ⏱ {toBanglaNumber(24)}:{toBanglaNumber(35)}
             </span>
           </div>
@@ -133,7 +124,7 @@ export default function HeroVisual() {
 
         {/* ── Question Text ── */}
         <div className="mb-4">
-          <p className="text-white/90 text-sm font-medium leading-relaxed">
+          <p className="text-sm font-medium leading-relaxed text-[#1F2937]">
             বাংলাদেশের সংবিধান কত তারিখে গণপরিষদে গৃহীত হয়?
           </p>
         </div>
@@ -143,22 +134,22 @@ export default function HeroVisual() {
           {mcqOptions.map((option, index) => (
             <div
               key={index}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-all duration-300 ${
+              className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-all duration-300 ${
                 option.status === "correct"
-                  ? "border-secondary/50 bg-secondary/10"
+                  ? "border-[#059669]/40 bg-[#059669]/8"
                   : option.status === "wrong"
-                    ? "border-error/50 bg-error/10"
-                    : "border-white/5 bg-white/2"
+                    ? "border-[#DC2626]/40 bg-[#DC2626]/8"
+                    : "border-[#E2E8F0] bg-[#F8FAFC]"
               }`}
             >
               {/* Option Letter */}
               <span
-                className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
+                className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
                   option.status === "correct"
-                    ? "bg-secondary/20 text-secondary"
+                    ? "bg-[#059669]/15 text-[#059669]"
                     : option.status === "wrong"
-                      ? "bg-error/20 text-error"
-                      : "bg-white/10 text-white/50"
+                      ? "bg-[#DC2626]/15 text-[#DC2626]"
+                      : "bg-[#E2E8F0] text-[#64748B]"
                 }`}
               >
                 {option.letter}
@@ -166,36 +157,36 @@ export default function HeroVisual() {
 
               {/* Option Text */}
               <span
-                className={`text-sm flex-1 ${
+                className={`flex-1 text-sm ${
                   option.status === "correct"
-                    ? "text-secondary"
+                    ? "font-medium text-[#059669]"
                     : option.status === "wrong"
-                      ? "text-error"
-                      : "text-white/60"
+                      ? "font-medium text-[#DC2626]"
+                      : "text-[#475569]"
                 }`}
               >
                 {option.text}
               </span>
 
               {/* Status Icon */}
-              {option.status === "correct" && <HiCheckCircle className="w-5 h-5 text-secondary" />}
-              {option.status === "wrong" && <HiXCircle className="w-5 h-5 text-error" />}
+              {option.status === "correct" && <HiCheckCircle className="h-5 w-5 text-[#059669]" />}
+              {option.status === "wrong" && <HiXCircle className="h-5 w-5 text-[#DC2626]" />}
             </div>
           ))}
         </div>
 
         {/* ── Progress Bar ── */}
-        <div className="mt-4 pt-4 border-t border-white/5">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-white/40 text-xs">অগ্রগতি</span>
-            <span className="text-secondary text-xs font-bold">{toBanglaNumber(78)}%</span>
+        <div className="mt-4 border-t border-[#E2E8F0] pt-4">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-xs text-[#64748B]">অগ্রগতি</span>
+            <span className="text-xs font-bold text-[#059669]">{toBanglaNumber(78)}%</span>
           </div>
-          <div className="w-full h-2 rounded-full bg-white/5 overflow-hidden">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-[#F1F5F9]">
             <div
               ref={progressRef}
               className="h-full rounded-full"
               style={{
-                backgroundImage: "linear-gradient(90deg, #6c63ff, #00d4aa)",
+                backgroundImage: "linear-gradient(90deg, #1E9CD7, #059669)",
                 width: "0%",
               }}
             />
@@ -210,15 +201,15 @@ export default function HeroVisual() {
         ref={(el) => {
           statCardsRef.current[0] = el;
         }}
-        className="absolute -top-4 -right-4 rounded-xl border border-white/10 bg-dark-200/90 backdrop-blur-md px-4 py-3 opacity-0"
+        className="absolute -right-4 -top-4 rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 opacity-0 shadow-lg"
       >
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-secondary/20 flex items-center justify-center">
-            <span className="text-secondary text-lg">✅</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#059669]/15">
+            <span className="text-lg">✅</span>
           </div>
           <div>
-            <p className="text-white text-sm font-bold">{toBanglaNumber(85)}%</p>
-            <p className="text-white/40 text-[10px]">সঠিক উত্তর</p>
+            <p className="text-sm font-bold text-[#1F2937]">{toBanglaNumber(85)}%</p>
+            <p className="text-[10px] text-[#64748B]">সঠিক উত্তর</p>
           </div>
         </div>
       </div>
@@ -230,15 +221,15 @@ export default function HeroVisual() {
         ref={(el) => {
           statCardsRef.current[1] = el;
         }}
-        className="absolute -bottom-4 -left-4 rounded-xl border border-white/10 bg-dark-200/90 backdrop-blur-md px-4 py-3 opacity-0"
+        className="absolute -bottom-4 -left-4 rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 opacity-0 shadow-lg"
       >
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-            <span className="text-primary text-lg">🏆</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1E9CD7]/15">
+            <span className="text-lg">🏆</span>
           </div>
           <div>
-            <p className="text-white text-sm font-bold">#{toBanglaNumber(12)}</p>
-            <p className="text-white/40 text-[10px]">লিডারবোর্ড</p>
+            <p className="text-sm font-bold text-[#1F2937]">#{toBanglaNumber(12)}</p>
+            <p className="text-[10px] text-[#64748B]">লিডারবোর্ড</p>
           </div>
         </div>
       </div>
@@ -250,15 +241,15 @@ export default function HeroVisual() {
         ref={(el) => {
           statCardsRef.current[2] = el;
         }}
-        className="absolute top-1/3 -left-8 rounded-xl border border-white/10 bg-dark-200/90 backdrop-blur-md px-4 py-3 opacity-0 hidden lg:block"
+        className="absolute -left-8 top-1/3 hidden rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 opacity-0 shadow-lg lg:block"
       >
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-            <span className="text-accent text-lg">🔥</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#FBBF24]/15">
+            <span className="text-lg">🔥</span>
           </div>
           <div>
-            <p className="text-white text-sm font-bold">{toBanglaNumber(7)} দিন</p>
-            <p className="text-white/40 text-[10px]">ধারাবাহিক</p>
+            <p className="text-sm font-bold text-[#1F2937]">{toBanglaNumber(7)} দিন</p>
+            <p className="text-[10px] text-[#64748B]">ধারাবাহিক</p>
           </div>
         </div>
       </div>

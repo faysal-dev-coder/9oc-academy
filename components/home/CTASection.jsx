@@ -1,14 +1,6 @@
 // components/home/CTASection.jsx
 // ═══════════════════════════════════════
-// 🎯 Premium CTA Section with Animation
-// (Updated: All 7 Issues Fixed)
-// ├── Issue #4: Button Blurry → Solid + Bold
-// ├── Issue #5: Light Gradient → Solid Primary
-// ├── Issue #6: Low Contrast → font-bold
-// ├── Issue #7: Arrow চাপা → px-10 + strokeWidth 2.5
-// ├── Issue #9: Extra Space → py-16 md:py-20
-// ├── Issue #19: Trust Note Overlap → flex-wrap
-// └── Issue #20: Description Spacing → Highlight
+// 🎯 Premium CTA Section (Light Theme)
 // ═══════════════════════════════════════
 
 "use client";
@@ -49,13 +41,13 @@ export default function CTASection() {
   }, []);
 
   return (
-    // ✅ FIX #9: Reduced padding (py-24 md:py-32 → py-16 md:py-20)
-    <section ref={sectionRef} className="relative py-16 md:py-20 overflow-hidden">
+    <section ref={sectionRef} className="relative py-16 md:py-20 overflow-hidden bg-[#F8FAFC]">
       {/* Background */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+        {/* Top subtle divider */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[#E2E8F0] to-transparent" />
 
-        {/* Animated gradient background */}
+        {/* Soft gradient background */}
         <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-transparent to-secondary/5" />
 
         {/* Floating orbs */}
@@ -71,11 +63,11 @@ export default function CTASection() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8">
           <span className="text-lg">🚀</span>
-          <span className="text-sm font-medium text-primary">আজই শুরু করুন</span>
+          <span className="text-sm font-semibold text-primary">আজই শুরু করুন</span>
         </div>
 
         {/* Title */}
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1F2937] mb-6 leading-tight">
           আপনার সরকারি চাকরির স্বপ্ন
           <br />
           <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-secondary to-accent">
@@ -83,9 +75,9 @@ export default function CTASection() {
           </span>
         </h2>
 
-        {/* ✅ FIX #20: Description with highlighted number */}
-        <p className="text-lg text-white/60 mb-10 max-w-2xl mx-auto leading-relaxed">
-          <span className="text-secondary font-semibold">৫০,০০০+</span> শিক্ষার্থী ইতিমধ্যে তাদের
+        {/* Description */}
+        <p className="text-lg text-[#475569] mb-10 max-w-2xl mx-auto leading-relaxed">
+          <span className="text-secondary font-bold">৫০,০০০+</span> শিক্ষার্থী ইতিমধ্যে তাদের
           প্রস্তুতি শুরু করেছে।
           <br className="hidden sm:block" />
           আপনি কি পিছিয়ে থাকবেন?
@@ -93,7 +85,7 @@ export default function CTASection() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          {/* ✅ FIX #4, #5, #6, #7: Premium Visible Primary Button */}
+          {/* Primary Button — Premium */}
           <Link
             href="/register"
             className="group relative px-10 py-4 rounded-xl font-bold text-base text-white
@@ -123,30 +115,31 @@ export default function CTASection() {
             />
           </Link>
 
-          {/* Secondary Button */}
+          {/* Secondary Button — Light Outline */}
           <Link
             href="/courses"
-            className="px-10 py-4 rounded-xl font-semibold text-white/90
-              border border-white/20 hover:border-white/40
-              hover:bg-white/5 transition-all duration-300
+            className="px-10 py-4 rounded-xl font-semibold text-[#475569]
+              border border-[#E2E8F0] bg-white shadow-sm
+              hover:border-primary/40 hover:bg-primary/5 hover:text-primary
+              transition-all duration-300
               hover:-translate-y-1"
           >
             কোর্স দেখুন
           </Link>
         </div>
 
-        {/* ✅ FIX #19: Trust note with proper spacing (no overlap) */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/40">
+        {/* Trust Note */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-[#64748B]">
           <span className="flex items-center gap-1.5">
-            <span className="text-secondary">✓</span>
+            <span className="text-secondary font-bold">✓</span>
             <span>কোনো ক্রেডিট কার্ড লাগবে না</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="text-secondary">✓</span>
+            <span className="text-secondary font-bold">✓</span>
             <span>সম্পূর্ণ ফ্রি শুরু করুন</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="text-secondary">✓</span>
+            <span className="text-secondary font-bold">✓</span>
             <span>যেকোনো সময় বাতিল করুন</span>
           </span>
         </div>

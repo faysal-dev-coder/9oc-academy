@@ -1,3 +1,13 @@
+// components/home/FeaturedCourses.jsx
+// ═══════════════════════════════════════════════════════════════
+// 🎓 Featured Courses — Light Theme
+// Phase 6B+ — Chat 23
+// ├── Light background with subtle gradients
+// ├── Light grid pattern
+// ├── White CTA button with primary color
+// └── Section uses CourseCard (separate file)
+// ═══════════════════════════════════════════════════════════════
+
 "use client";
 
 import { useMemo } from "react";
@@ -8,36 +18,30 @@ import { COURSES } from "@/constants";
 import CourseCard from "@/components/courses/CourseCard";
 import SectionTitle from "@/components/shared/SectionTitle";
 
-// ═══════════════════════════════════════════
-// 🏠 FeaturedCourses — Homepage Section
-// ═══════════════════════════════════════════
-
 export default function FeaturedCourses() {
   // ─── Featured + Popular Top 6 ────────────
   const featuredCourses = useMemo(() => {
-    // First: Featured courses, then fill with Popular if needed
     const featured = COURSES.filter((c) => c.isFeatured);
     const popular = COURSES.filter((c) => c.isPopular && !c.isFeatured);
-
     const combined = [...featured, ...popular];
     return combined.slice(0, 6);
   }, []);
 
   return (
-    <section className="relative overflow-hidden border-t border-white/10 bg-dark py-20 md:py-28">
+    <section className="relative overflow-hidden border-t border-[#E2E8F0] bg-white py-20 md:py-28">
       {/* ─── Background Decoration ───────── */}
-      <div className="pointer-events-none absolute inset-0 opacity-20">
-        <div className="absolute right-1/4 top-0 h-96 w-96 rounded-full bg-secondary/20 blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 h-96 w-96 rounded-full bg-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute right-1/4 top-0 h-96 w-96 rounded-full bg-[#059669]/8 blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 h-96 w-96 rounded-full bg-[#1E9CD7]/8 blur-3xl" />
       </div>
 
-      {/* ─── Grid Pattern ────────────────── */}
+      {/* ─── Light Grid Pattern ──────────── */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-5"
+        className="pointer-events-none absolute inset-0 opacity-30"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)," +
-            "linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            "linear-gradient(rgba(30, 156, 215, 0.05) 1px, transparent 1px)," +
+            "linear-gradient(90deg, rgba(30, 156, 215, 0.05) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -57,7 +61,12 @@ export default function FeaturedCourses() {
           title={
             <>
               আমাদের{" "}
-              <span className="bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <span
+                className="bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: "linear-gradient(135deg, #1E9CD7, #059669, #FBBF24)",
+                }}
+              >
                 সেরা কোর্স
               </span>
             </>
@@ -86,13 +95,17 @@ export default function FeaturedCourses() {
         >
           <Link
             href="/courses"
-            className="group flex items-center gap-2 rounded-full bg-linear-to-r from-primary to-primary/80 px-8 py-4 text-base font-bold text-white shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/50"
+            className="group flex items-center gap-2 rounded-full px-8 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            style={{
+              backgroundImage: "linear-gradient(135deg, #1E9CD7, #0A5A8A)",
+              boxShadow: "0 10px 30px -10px rgba(30, 156, 215, 0.4)",
+            }}
           >
             <span>সব কোর্স দেখুন</span>
             <HiOutlineArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
 
-          <p className="text-sm text-white/40">১২+ কোর্স প্রস্তুত আছে আপনার জন্য</p>
+          <p className="text-sm text-[#64748B]">১২+ কোর্স প্রস্তুত আছে আপনার জন্য</p>
         </motion.div>
       </div>
     </section>

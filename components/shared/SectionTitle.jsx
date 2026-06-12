@@ -89,7 +89,7 @@ export default function SectionTitle({
       {/* Title */}
       <h2
         ref={titleRef}
-        className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 opacity-0"
+        className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1F2937] mb-4 opacity-0"
       >
         {title}{" "}
         {highlightText && (
@@ -110,7 +110,7 @@ export default function SectionTitle({
 
       {/* Subtitle */}
       {subtitle && (
-        <p ref={subtitleRef} className="text-lg text-white/60 max-w-2xl mx-auto opacity-0">
+        <p ref={subtitleRef} className="text-lg text-[#475569] max-w-2xl mx-auto opacity-0">
           {subtitle}
         </p>
       )}

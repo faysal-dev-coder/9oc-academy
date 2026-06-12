@@ -1,11 +1,13 @@
 // components/home/StatsSection.jsx
-// ═══════════════════════════════════════
-// 📊 Premium Stats with Counter Animation
-// (Updated: All 3 Issues Fixed)
-// ├── Issue #1: Decimal support (4.9 শো করবে)
-// ├── Issue #2: Number + Suffix inline (/৫ break হবে না)
-// └── Issue #3: Bangla Numbers (৫০,০০০+)
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// 📊 Premium Stats with Counter Animation — Light Theme
+// Phase 6B+ — Chat 23
+// ├── Light background with subtle effects
+// ├── White cards with colored shadows
+// ├── Hi2 Outline icons
+// ├── Bangla number support
+// └── Decimal counter preserved
+// ═══════════════════════════════════════════════════════════════
 
 "use client";
 
@@ -16,7 +18,7 @@ import {
   HiOutlineDocumentText,
   HiOutlineCheckCircle,
   HiOutlineStar,
-} from "react-icons/hi";
+} from "react-icons/hi2";
 
 // ─── Single Stat Card ───
 function StatCard({ icon: Icon, value, suffix, label, color, delay }) {
@@ -48,7 +50,7 @@ function StatCard({ icon: Icon, value, suffix, label, color, delay }) {
         }
       );
 
-      // ✅ FIX #1: Number counter animation with decimal support
+      // Number counter with decimal support
       const counterObj = { val: 0 };
       gsap.to(counterObj, {
         val: value,
@@ -61,7 +63,6 @@ function StatCard({ icon: Icon, value, suffix, label, color, delay }) {
           toggleActions: "play none none none",
         },
         onUpdate: () => {
-          // Decimal number হলে .toFixed(1), otherwise Math.floor()
           const isDecimal = value % 1 !== 0;
           setDisplayNumber(
             isDecimal ? parseFloat(counterObj.val.toFixed(1)) : Math.floor(counterObj.val)
@@ -73,60 +74,56 @@ function StatCard({ icon: Icon, value, suffix, label, color, delay }) {
     return () => ctx.revert();
   }, [value, delay]);
 
-  // Color mapping
+  // ✅ Color mapping — Light Theme
   const colorClasses = useMemo(() => {
     const colors = {
       primary: {
-        bg: "bg-primary/10",
-        border: "border-primary/20",
-        icon: "text-primary",
-        glow: "shadow-primary/20",
-        gradient: "from-primary/20 to-transparent",
+        iconBg: "bg-[#1E9CD7]/10",
+        iconColor: "text-[#1E9CD7]",
+        numberColor: "text-[#1E9CD7]",
+        glowColor: "rgba(30, 156, 215, 0.15)",
+        decoBg: "bg-[#1E9CD7]/10",
       },
       secondary: {
-        bg: "bg-secondary/10",
-        border: "border-secondary/20",
-        icon: "text-secondary",
-        glow: "shadow-secondary/20",
-        gradient: "from-secondary/20 to-transparent",
+        iconBg: "bg-[#059669]/10",
+        iconColor: "text-[#059669]",
+        numberColor: "text-[#059669]",
+        glowColor: "rgba(5, 150, 105, 0.15)",
+        decoBg: "bg-[#059669]/10",
       },
       accent: {
-        bg: "bg-accent/10",
-        border: "border-accent/20",
-        icon: "text-accent",
-        glow: "shadow-accent/20",
-        gradient: "from-accent/20 to-transparent",
+        iconBg: "bg-[#FBBF24]/15",
+        iconColor: "text-[#D97706]",
+        numberColor: "text-[#D97706]",
+        glowColor: "rgba(251, 191, 36, 0.15)",
+        decoBg: "bg-[#FBBF24]/15",
       },
       pink: {
-        bg: "bg-pink-500/10",
-        border: "border-pink-500/20",
-        icon: "text-pink-400",
-        glow: "shadow-pink-500/20",
-        gradient: "from-pink-500/20 to-transparent",
+        iconBg: "bg-pink-500/10",
+        iconColor: "text-pink-600",
+        numberColor: "text-pink-600",
+        glowColor: "rgba(236, 72, 153, 0.15)",
+        decoBg: "bg-pink-500/10",
       },
     };
     return colors[color] || colors.primary;
   }, [color]);
 
-  // ✅ FIX #3: Format number with English → Bangla conversion
+  // ✅ Format number with English → Bangla conversion
   const formattedNumber = useMemo(() => {
-    // English digits → Bangla digits converter
     const toBangla = (num) => {
       const banglaDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
       return num
         .toString()
         .split("")
         .map((char) => {
-          // "," এবং "." অপরিবর্তিত রাখো
           if (char === "," || char === ".") return char;
-          // Digit হলে Bangla তে convert করো
           const digit = parseInt(char);
           return isNaN(digit) ? char : banglaDigits[digit];
         })
         .join("");
     };
 
-    // Decimal number কিনা check
     const isDecimal = value % 1 !== 0;
     const displayValue = isDecimal
       ? displayNumber.toFixed(1)
@@ -137,45 +134,45 @@ function StatCard({ icon: Icon, value, suffix, label, color, delay }) {
 
   return (
     <div ref={cardRef} className="group relative opacity-0">
-      {/* Glow effect behind card */}
-      <div
-        className={`absolute -inset-1 rounded-2xl bg-linear-to-b ${colorClasses.gradient}
-          opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500`}
-      />
-
       {/* Card */}
       <div
-        className={`relative p-8 rounded-2xl border ${colorClasses.border}
-          bg-white/5 backdrop-blur-sm
-          hover:bg-white/10 transition-all duration-500
-          hover:border-opacity-50 hover:shadow-lg ${colorClasses.glow}
-          hover:-translate-y-2`}
+        className="relative rounded-2xl border border-[#E2E8F0] bg-white p-8 shadow-sm transition-all duration-500 hover:-translate-y-2"
+        style={{
+          // Subtle hover shadow with color
+          "--hover-shadow": colorClasses.glowColor,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = `0 20px 40px -10px ${colorClasses.glowColor}`;
+          e.currentTarget.style.borderColor = colorClasses.glowColor.replace("0.15", "0.3");
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = "";
+          e.currentTarget.style.borderColor = "";
+        }}
       >
         {/* Icon */}
         <div
-          className={`inline-flex items-center justify-center w-16 h-16 rounded-xl
-            ${colorClasses.bg} mb-5 group-hover:scale-110 transition-transform duration-300`}
+          className={`mb-5 inline-flex h-16 w-16 items-center justify-center rounded-xl ${colorClasses.iconBg} transition-transform duration-300 group-hover:scale-110`}
         >
-          <Icon className={`text-3xl ${colorClasses.icon}`} />
+          <Icon className={`text-3xl ${colorClasses.iconColor}`} />
         </div>
 
-        {/* ✅ FIX #2: Number + Suffix Inline (no break) */}
-        <div className="mb-2 flex items-baseline flex-wrap">
-          <span className="text-4xl md:text-5xl font-bold text-white tabular-nums">
+        {/* Number + Suffix Inline */}
+        <div className="mb-2 flex flex-wrap items-baseline">
+          <span className="text-4xl font-bold tabular-nums text-[#1F2937] md:text-5xl">
             {formattedNumber}
           </span>
-          <span className={`text-2xl md:text-3xl font-bold ${colorClasses.icon} ml-1`}>
+          <span className={`ml-1 text-2xl font-bold md:text-3xl ${colorClasses.numberColor}`}>
             {suffix}
           </span>
         </div>
 
         {/* Label */}
-        <p className="text-white/50 text-sm font-medium uppercase tracking-wider">{label}</p>
+        <p className="text-sm font-medium uppercase tracking-wider text-[#64748B]">{label}</p>
 
         {/* Bottom corner decoration */}
         <div
-          className={`absolute bottom-3 right-3 w-8 h-8 rounded-lg ${colorClasses.bg}
-            opacity-30 group-hover:opacity-60 transition-opacity duration-300`}
+          className={`absolute bottom-3 right-3 h-8 w-8 rounded-lg ${colorClasses.decoBg} opacity-50 transition-opacity duration-300 group-hover:opacity-80`}
         />
       </div>
     </div>
@@ -225,49 +222,59 @@ export default function StatsSection() {
   );
 
   return (
-    <section ref={sectionRef} className="relative py-20 md:py-24 overflow-hidden">
-      {/* Background Effects */}
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#FAFBFC] py-20 md:py-24">
+      {/* Background Effects — Subtle Light */}
       <div className="absolute inset-0">
-        {/* Grid */}
+        {/* Light Grid */}
         <div
-          className="absolute inset-0 opacity-5"
+          className="absolute inset-0 opacity-40"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(108,99,255,0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(108,99,255,0.3) 1px, transparent 1px)
+              linear-gradient(rgba(30, 156, 215, 0.06) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(30, 156, 215, 0.06) 1px, transparent 1px)
             `,
             backgroundSize: "60px 60px",
           }}
         />
 
-        {/* Gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
+        {/* Subtle gradient orbs */}
+        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-[#1E9CD7]/8 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[#059669]/6 blur-3xl" />
 
         {/* Top divider */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute left-0 right-0 top-0 h-px bg-linear-to-r from-transparent via-[#E2E8F0] to-transparent" />
         {/* Bottom divider */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[#E2E8F0] to-transparent" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+        <div className="mb-16 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-[#1F2937] md:text-4xl lg:text-5xl">
             আমাদের{" "}
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(135deg, #1E9CD7, #0A5A8A)",
+              }}
+            >
               সাফল্যের গল্প
             </span>
           </h2>
-          <div className="h-1 w-24 mx-auto rounded-full bg-linear-to-r from-primary via-secondary to-accent mb-6" />
-          <p className="text-lg text-white/60 max-w-2xl mx-auto">
+          <div
+            className="mx-auto mb-6 h-1 w-24 rounded-full"
+            style={{
+              backgroundImage: "linear-gradient(90deg, #1E9CD7, #059669, #FBBF24)",
+            }}
+          />
+          <p className="mx-auto max-w-2xl text-lg text-[#64748B]">
             সংখ্যা নিজেই কথা বলে — আমাদের প্ল্যাটফর্মের সাফল্য
           </p>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <StatCard key={index} {...stat} />
           ))}

@@ -10,18 +10,11 @@ export default function HeroBadge() {
   useEffect(() => {
     const badge = badgeRef.current;
     const dot = dotRef.current;
-
     if (!badge || !dot) return;
 
-    // ── Badge Entrance Animation ──
-    // নিচ থেকে উপরে আসবে + Scale Up
     gsap.fromTo(
       badge,
-      {
-        opacity: 0,
-        y: 20,
-        scale: 0.9,
-      },
+      { opacity: 0, y: 20, scale: 0.9 },
       {
         opacity: 1,
         y: 0,
@@ -32,8 +25,6 @@ export default function HeroBadge() {
       }
     );
 
-    // ── Pulsing Dot Animation ──
-    // সবুজ Dot ধীরে ধীরে বড়-ছোট হবে (Live Effect)
     gsap.to(dot, {
       scale: 1.5,
       opacity: 0.3,
@@ -43,7 +34,6 @@ export default function HeroBadge() {
       ease: "sine.inOut",
     });
 
-    // ── Cleanup ──
     return () => {
       gsap.killTweensOf(badge);
       gsap.killTweensOf(dot);
@@ -53,19 +43,17 @@ export default function HeroBadge() {
   return (
     <div
       ref={badgeRef}
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6 opacity-0"
+      className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#1E9CD7]/20 bg-[#1E9CD7]/8 px-4 py-2 opacity-0 backdrop-blur-sm"
     >
       {/* ── Live Pulsing Dot ── */}
       <span className="relative flex items-center justify-center">
-        {/* Outer Pulsing Circle */}
-        <span ref={dotRef} className="absolute w-3 h-3 rounded-full bg-secondary" />
-        {/* Inner Solid Dot */}
-        <span className="relative w-2 h-2 rounded-full bg-secondary" />
+        <span ref={dotRef} className="absolute h-3 w-3 rounded-full bg-[#059669]" />
+        <span className="relative h-2 w-2 rounded-full bg-[#059669]" />
       </span>
 
       {/* ── Badge Text ── */}
-      <span className="text-sm font-medium text-white/80">
-        🏆 বাংলাদেশের <span className="text-secondary font-bold">#১</span> MCQ পরীক্ষা প্ল্যাটফর্ম
+      <span className="text-sm font-medium text-[#1F2937]">
+        🏆 বাংলাদেশের <span className="font-bold text-[#1E9CD7]">#১</span> MCQ পরীক্ষা প্ল্যাটফর্ম
       </span>
     </div>
   );

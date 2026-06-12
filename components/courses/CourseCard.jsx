@@ -58,7 +58,7 @@ export default function CourseCard({ course, index = 0 }) {
     const hasHalf = rating % 1 >= 0.5;
 
     return Array.from({ length: 5 }, (_, i) => {
-      let opacity = "text-white/20";
+      let opacity = "text-[#CBD5E1]";
       if (i < fullStars) opacity = "text-[#FFB800]";
       else if (i === fullStars && hasHalf) opacity = "text-[#FFB800]/50";
 
@@ -83,13 +83,13 @@ export default function CourseCard({ course, index = 0 }) {
         ease: "easeOut",
       }}
       whileHover={{ y: -8 }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/8"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm transition-all duration-300 hover:border-[#1E9CD7]/30 hover:shadow-xl"
     >
       {/* ─── Outer Glow (Hover) ───────────── */}
       <div
-        className="pointer-events-none absolute -inset-1 -z-10 rounded-2xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute -inset-1 -z-10 rounded-2xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-60"
         style={{
-          background: `linear-gradient(135deg, ${gradient.from}25, ${gradient.to}15)`,
+          background: `linear-gradient(135deg, ${gradient.from}15, ${gradient.to}10)`,
         }}
       />
 
@@ -97,7 +97,7 @@ export default function CourseCard({ course, index = 0 }) {
       <div
         className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
-          boxShadow: `0 20px 60px -10px ${gradient.from}35`,
+          boxShadow: `0 20px 60px -10px ${gradient.from}20`,
         }}
       />
 
@@ -186,12 +186,12 @@ export default function CourseCard({ course, index = 0 }) {
       {/* ═══════════════════════════════════ */}
       <div className="flex flex-1 flex-col p-5">
         {/* Title */}
-        <h3 className="mb-2 line-clamp-2 text-base font-bold leading-snug text-white transition-colors duration-300 group-hover:text-[#6C63FF]">
+        <h3 className="mb-2 line-clamp-2 text-base font-bold leading-snug text-[#1F2937] transition-colors duration-300 group-hover:text-[#1E9CD7]">
           {course.title}
         </h3>
 
         {/* Description */}
-        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-white/55">
+        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-[#475569]">
           {course.shortDesc}
         </p>
 
@@ -199,11 +199,11 @@ export default function CourseCard({ course, index = 0 }) {
         <div className="mb-3 flex items-center gap-2">
           <div className="flex items-center gap-0.5">{renderStars(course.rating)}</div>
           <span className="text-sm font-bold text-[#FFB800]">{toBangla(course.rating)}</span>
-          <span className="text-xs text-white/40">({toBangla(course.totalRatings)} রিভিউ)</span>
+          <span className="text-xs text-[#94A3B8]">({toBangla(course.totalRatings)} রিভিউ)</span>
         </div>
 
         {/* ─── Stats Row ───────────────────── */}
-        <div className="mb-4 flex items-center gap-4 text-xs text-white/50">
+        <div className="mb-4 flex items-center gap-4 text-xs text-[#64748B]">
           <div className="flex items-center gap-1">
             <HiOutlineUsers className="h-3.5 w-3.5" />
             <span>{formatStudents(course.students)}</span>
@@ -216,7 +216,7 @@ export default function CourseCard({ course, index = 0 }) {
             <span
               className="rounded px-1.5 py-0.5 text-[10px] font-semibold"
               style={{
-                background: `${gradient.from}25`,
+                background: `${gradient.from}18`,
                 color: gradient.from,
               }}
             >
@@ -227,34 +227,36 @@ export default function CourseCard({ course, index = 0 }) {
 
         {/* ─── Instructor ──────────────────── */}
         {instructor && (
-          <div className="mb-4 flex items-center gap-2 border-t border-white/8 pt-4">
+          <div className="mb-4 flex items-center gap-2 border-t border-[#E2E8F0] pt-4">
             <div
               className="flex h-8 w-8 items-center justify-center rounded-full text-base"
               style={{
-                background: `linear-gradient(135deg, ${gradient.from}40, ${gradient.to}25)`,
-                border: `1px solid ${gradient.from}30`,
+                background: `linear-gradient(135deg, ${gradient.from}30, ${gradient.to}20)`,
+                border: `1px solid ${gradient.from}25`,
               }}
             >
               {instructor.avatar}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="truncate text-xs font-semibold text-white/80">{instructor.shortName}</p>
-              <p className="truncate text-[10px] text-white/45">{instructor.title}</p>
+              <p className="truncate text-xs font-semibold text-[#374151]">
+                {instructor.shortName}
+              </p>
+              <p className="truncate text-[10px] text-[#64748B]">{instructor.title}</p>
             </div>
           </div>
         )}
 
         {/* ─── Price + CTA ─────────────────── */}
-        <div className="mt-auto flex items-center justify-between border-t border-white/8 pt-4">
+        <div className="mt-auto flex items-center justify-between border-t border-[#E2E8F0] pt-4">
           {/* Price */}
           <div className="flex items-baseline gap-2">
             {course.isFree ? (
-              <span className="text-xl font-bold text-[#00D4AA]">ফ্রি</span>
+              <span className="text-xl font-bold text-[#059669]">ফ্রি</span>
             ) : (
               <>
-                <span className="text-xl font-bold text-white">৳{toBangla(course.price)}</span>
+                <span className="text-xl font-bold text-[#1F2937]">৳{toBangla(course.price)}</span>
                 {course.originalPrice > course.price && (
-                  <span className="text-sm text-white/35 line-through">
+                  <span className="text-sm text-[#94A3B8] line-through">
                     ৳{toBangla(course.originalPrice)}
                   </span>
                 )}
@@ -265,7 +267,7 @@ export default function CourseCard({ course, index = 0 }) {
           {/* CTA Button */}
           <button
             type="button"
-            className="group/btn flex items-center gap-1.5 rounded-full bg-white/8 px-4 py-2 text-sm font-semibold text-white/80 transition-all duration-300 hover:bg-[#6C63FF] hover:text-white hover:shadow-lg hover:shadow-[#6C63FF]/30 cursor-pointer"
+            className="group/btn flex items-center gap-1.5 rounded-full bg-[#F1F5F9] px-4 py-2 text-sm font-semibold text-[#475569] transition-all duration-300 hover:bg-[#1E9CD7] hover:text-white hover:shadow-lg hover:shadow-[#1E9CD7]/30 cursor-pointer"
           >
             <span>দেখুন</span>
             <HiOutlineArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
