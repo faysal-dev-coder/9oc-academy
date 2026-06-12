@@ -85,6 +85,7 @@ const LineChart = ({ data }) => {
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto">
+      {/* Grid Lines */}
       {yLabels.map((label, i) => (
         <g key={i}>
           <line
@@ -92,14 +93,14 @@ const LineChart = ({ data }) => {
             y1={label.y}
             x2={width - padding.right}
             y2={label.y}
-            stroke="rgba(255,255,255,0.08)"
+            stroke="rgba(30,41,59,0.1)"
             strokeDasharray="3,3"
           />
           <text
             x={padding.left - 5}
             y={label.y + 4}
             textAnchor="end"
-            fill="rgba(255,255,255,0.4)"
+            fill="rgba(30,41,59,0.4)"
             fontSize="9"
           >
             {label.val}%
@@ -107,13 +108,15 @@ const LineChart = ({ data }) => {
         </g>
       ))}
 
+      {/* Area Gradient */}
       <defs>
         <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#10B981" stopOpacity="0.3" />
+          <stop offset="0%" stopColor="#10B981" stopOpacity="0.2" />
           <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
         </linearGradient>
       </defs>
 
+      {/* Area Fill */}
       {points.length > 1 && (
         <polygon
           points={`${padding.left},${padding.top + chartHeight} ${polylinePoints} ${
@@ -123,6 +126,7 @@ const LineChart = ({ data }) => {
         />
       )}
 
+      {/* Line */}
       {points.length > 1 && (
         <polyline
           points={polylinePoints}
@@ -134,16 +138,11 @@ const LineChart = ({ data }) => {
         />
       )}
 
+      {/* Dots */}
       {points.map((p, i) => (
         <g key={i}>
-          <circle cx={p.x} cy={p.y} r="5" fill="#0A0A1A" stroke="#10B981" strokeWidth="2.5" />
-          <text
-            x={p.x}
-            y={height - 8}
-            textAnchor="middle"
-            fill="rgba(255,255,255,0.4)"
-            fontSize="9"
-          >
+          <circle cx={p.x} cy={p.y} r="5" fill="white" stroke="#10B981" strokeWidth="2.5" />
+          <text x={p.x} y={height - 8} textAnchor="middle" fill="rgba(30,41,59,0.4)" fontSize="9">
             {i + 1}
           </text>
         </g>
@@ -181,22 +180,24 @@ const DonutChart = ({ correct, wrong, skipped }) => {
     <div className="flex flex-col items-center gap-4">
       <div className="relative">
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+          {/* Background Track */}
           <circle
             cx={center}
             cy={center}
             r={radius}
             fill="none"
-            stroke="rgba(255,255,255,0.05)"
+            stroke="#E2E8F0"
             strokeWidth={strokeWidth}
           />
 
+          {/* Skipped Segment */}
           {skipped > 0 && (
             <circle
               cx={center}
               cy={center}
               r={radius}
               fill="none"
-              stroke="#6B7280"
+              stroke="#94A3B8"
               strokeWidth={strokeWidth}
               strokeDasharray={`${skippedDash} ${circumference - skippedDash}`}
               strokeDashoffset={skippedOffset}
@@ -205,6 +206,7 @@ const DonutChart = ({ correct, wrong, skipped }) => {
             />
           )}
 
+          {/* Wrong Segment */}
           {wrong > 0 && (
             <circle
               cx={center}
@@ -220,6 +222,7 @@ const DonutChart = ({ correct, wrong, skipped }) => {
             />
           )}
 
+          {/* Correct Segment */}
           {correct > 0 && (
             <circle
               cx={center}
@@ -235,40 +238,36 @@ const DonutChart = ({ correct, wrong, skipped }) => {
             />
           )}
 
+          {/* Center Text */}
           <text
             x={center}
             y={center - 6}
             textAnchor="middle"
-            fill="white"
+            fill="#1F2937"
             fontSize="20"
             fontWeight="bold"
           >
             {toBangla(total)}
           </text>
-          <text
-            x={center}
-            y={center + 12}
-            textAnchor="middle"
-            fill="rgba(255,255,255,0.5)"
-            fontSize="10"
-          >
+          <text x={center} y={center + 12} textAnchor="middle" fill="#94A3B8" fontSize="10">
             মোট উত্তর
           </text>
         </svg>
       </div>
 
+      {/* Legend */}
       <div className="flex flex-wrap justify-center gap-4 text-sm">
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-emerald-500 shrink-0" />
-          <span className="text-white/70">সঠিক: {toBangla(correct)}</span>
+          <span className="text-slate-600">সঠিক: {toBangla(correct)}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-red-500 shrink-0" />
-          <span className="text-white/70">ভুল: {toBangla(wrong)}</span>
+          <span className="text-slate-600">ভুল: {toBangla(wrong)}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-gray-500 shrink-0" />
-          <span className="text-white/70">স্কিপ: {toBangla(skipped)}</span>
+          <span className="w-3 h-3 rounded-full bg-slate-400 shrink-0" />
+          <span className="text-slate-600">স্কিপ: {toBangla(skipped)}</span>
         </div>
       </div>
     </div>
@@ -284,13 +283,15 @@ const HorizontalBar = ({ label, value, max, color = "bg-emerald-500" }) => {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
-        <span className="text-white/70">{label}</span>
-        <span className="text-white/90 font-medium">{toBangla(value)}টি</span>
+        <span className="text-slate-600">{label}</span>
+        <span className="text-gray-800 font-medium">{toBangla(value)}টি</span>
       </div>
-      <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+      <div className="h-3 bg-[#F1F5F9] rounded-full overflow-hidden">
         <div
           className={`h-full ${color} rounded-full transition-all duration-700`}
-          style={{ width: `${Math.max(percentage, percentage > 0 ? 4 : 0)}%` }}
+          style={{
+            width: `${Math.max(percentage, percentage > 0 ? 4 : 0)}%`,
+          }}
         />
       </div>
     </div>
@@ -371,19 +372,19 @@ export default function AnalyticsClient({ attempts = [] }) {
       tips.push({
         icon: "warning",
         text: "আপনার পাস রেট ০%। বেসিক থেকে শুরু করুন এবং নিয়মিত অনুশীলন করুন।",
-        color: "text-amber-400",
+        color: "text-amber-600",
       });
     } else if (passRate < 50) {
       tips.push({
         icon: "warning",
         text: `পাস রেট ${toBangla(passRate)}%। প্রতিটি ভুল উত্তর বিশ্লেষণ করুন।`,
-        color: "text-amber-400",
+        color: "text-amber-600",
       });
     } else {
       tips.push({
         icon: "star",
         text: `দারুণ! পাস রেট ${toBangla(passRate)}%। এভাবে চালিয়ে যান!`,
-        color: "text-emerald-400",
+        color: "text-emerald-600",
       });
     }
 
@@ -391,19 +392,19 @@ export default function AnalyticsClient({ attempts = [] }) {
       tips.push({
         icon: "info",
         text: "গড় স্কোর কম। প্রতিদিন কমপক্ষে ১টি পরীক্ষা দিন।",
-        color: "text-blue-400",
+        color: "text-primary",
       });
     } else if (avgScore < 60) {
       tips.push({
         icon: "info",
         text: "গড় স্কোর মাঝামাঝি। দুর্বল বিষয়গুলোতে বেশি ফোকাস করুন।",
-        color: "text-blue-400",
+        color: "text-primary",
       });
     } else {
       tips.push({
         icon: "star",
         text: "গড় স্কোর ভালো! আরো কঠিন পরীক্ষায় চ্যালেঞ্জ নিন।",
-        color: "text-emerald-400",
+        color: "text-emerald-600",
       });
     }
 
@@ -411,13 +412,13 @@ export default function AnalyticsClient({ attempts = [] }) {
       tips.push({
         icon: "star",
         text: `আপনি ${toBangla(totalAttempts)}টি পরীক্ষা দিয়েছেন! ধারাবাহিকতা বজায় রাখুন।`,
-        color: "text-emerald-400",
+        color: "text-emerald-600",
       });
     } else {
       tips.push({
         icon: "info",
         text: "আরো বেশি পরীক্ষা দিন। অনুশীলনই সফলতার চাবিকাঠি।",
-        color: "text-blue-400",
+        color: "text-primary",
       });
     }
 
@@ -425,7 +426,7 @@ export default function AnalyticsClient({ attempts = [] }) {
       tips.push({
         icon: "warning",
         text: "স্কিপ করা প্রশ্ন বেশি। সব প্রশ্নের উত্তর দেওয়ার চেষ্টা করুন।",
-        color: "text-amber-400",
+        color: "text-amber-600",
       });
     }
 
@@ -453,29 +454,34 @@ export default function AnalyticsClient({ attempts = [] }) {
   // ═══════════════════════════════════
   if (attempts.length === 0) {
     return (
-      <div className="min-h-screen bg-[#0A0A1A]">
+      <div className="min-h-screen bg-[#FAFBFC]">
+        {/* Background Orbs */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto p-4 pt-6">
+          {/* Back Button */}
           <button
             onClick={() => router.push("/dashboard")}
-            className="flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-6 cursor-pointer"
+            className="flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-6 cursor-pointer font-medium"
           >
             <HiArrowLeft className="text-lg" />
             <span>ড্যাশবোর্ডে ফিরুন</span>
           </button>
 
+          {/* Empty Card */}
           <div className="flex items-center justify-center min-h-[60vh]">
-            <div className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 max-w-sm w-full">
-              <HiChartBar className="text-white/20 text-6xl mx-auto mb-4" />
-              <h2 className="text-white text-xl font-semibold mb-2">কোনো ডেটা নেই</h2>
-              <p className="text-white/50 mb-6">এনালিটিক্স দেখতে অন্তত একটি পরীক্ষা দিন</p>
+            <div className="text-center bg-white border border-[#E2E8F0] rounded-2xl p-8 shadow-sm max-w-sm w-full">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <HiChartBar className="text-primary text-3xl" />
+              </div>
+              <h2 className="text-gray-900 text-xl font-semibold mb-2">কোনো ডেটা নেই</h2>
+              <p className="text-slate-500 mb-6">এনালিটিক্স দেখতে অন্তত একটি পরীক্ষা দিন</p>
               <button
                 onClick={() => router.push("/exams")}
-                className="px-6 py-2.5 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer"
+                className="px-6 py-2.5 bg-primary text-white rounded-xl hover:bg-primary-dark shadow-md shadow-primary/25 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
               >
                 পরীক্ষা দিন
               </button>
@@ -494,7 +500,7 @@ export default function AnalyticsClient({ attempts = [] }) {
     "bg-red-500",
     "bg-orange-500",
     "bg-amber-500",
-    "bg-blue-500",
+    "bg-primary",
     "bg-emerald-500",
   ];
   const maxDist = Math.max(...stats.scoreDistribution, 1);
@@ -503,11 +509,12 @@ export default function AnalyticsClient({ attempts = [] }) {
   // 🎨 MAIN RENDER
   // ═══════════════════════════════════
   return (
-    <div className="min-h-screen bg-[#0A0A1A]">
+    <div className="min-h-screen bg-[#FAFBFC]">
+      {/* Background Orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-500/8 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-primary/3 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto p-4 pt-6 pb-20">
@@ -515,76 +522,92 @@ export default function AnalyticsClient({ attempts = [] }) {
         <div className="mb-8">
           <button
             onClick={() => router.push("/dashboard")}
-            className="flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-4 cursor-pointer"
+            className="flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-4 cursor-pointer font-medium"
           >
             <HiArrowLeft className="text-lg" />
             <span>ড্যাশবোর্ডে ফিরুন</span>
           </button>
 
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-primary to-secondary flex items-center justify-center shrink-0 shadow-md shadow-primary/20">
               <HiChartBar className="text-white text-2xl" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">পারফরম্যান্স এনালিটিক্স</h1>
-              <p className="text-white/50 text-sm">আপনার পরীক্ষার বিস্তারিত বিশ্লেষণ</p>
+              <h1 className="text-2xl font-bold text-gray-900">পারফরম্যান্স এনালিটিক্স</h1>
+              <p className="text-slate-500 text-sm">আপনার পরীক্ষার বিস্তারিত বিশ্লেষণ</p>
             </div>
           </div>
         </div>
 
         {/* ═══════════ SECTION 1: Overview Stats ═══════════ */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+          {/* মোট পরীক্ষা */}
+          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-2 mb-2">
-              <HiAcademicCap className="text-emerald-400 text-lg" />
-              <span className="text-white/50 text-xs">মোট পরীক্ষা</span>
+              <div className="w-7 h-7 bg-emerald-50 rounded-lg flex items-center justify-center">
+                <HiAcademicCap className="text-emerald-600 text-base" />
+              </div>
+              <span className="text-slate-500 text-xs">মোট পরীক্ষা</span>
             </div>
-            <p className="text-2xl font-bold text-white">{toBangla(stats.totalAttempts)}</p>
+            <p className="text-2xl font-bold text-gray-900">{toBangla(stats.totalAttempts)}</p>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+          {/* গড় স্কোর */}
+          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-2 mb-2">
-              <HiTrendingUp className="text-blue-400 text-lg" />
-              <span className="text-white/50 text-xs">গড় স্কোর</span>
+              <div className="w-7 h-7 bg-primary/10 rounded-lg flex items-center justify-center">
+                <HiTrendingUp className="text-primary text-base" />
+              </div>
+              <span className="text-slate-500 text-xs">গড় স্কোর</span>
             </div>
-            <p className="text-2xl font-bold text-white">{toBangla(stats.avgScore)}%</p>
+            <p className="text-2xl font-bold text-gray-900">{toBangla(stats.avgScore)}%</p>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+          {/* পাস রেট */}
+          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-2 mb-2">
-              <HiCheckCircle className="text-amber-400 text-lg" />
-              <span className="text-white/50 text-xs">পাস রেট</span>
+              <div className="w-7 h-7 bg-amber-50 rounded-lg flex items-center justify-center">
+                <HiCheckCircle className="text-amber-600 text-base" />
+              </div>
+              <span className="text-slate-500 text-xs">পাস রেট</span>
             </div>
-            <p className="text-2xl font-bold text-white">{toBangla(stats.passRate)}%</p>
+            <p className="text-2xl font-bold text-gray-900">{toBangla(stats.passRate)}%</p>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+          {/* সেরা স্কোর */}
+          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-2 mb-2">
-              <HiStar className="text-purple-400 text-lg" />
-              <span className="text-white/50 text-xs">সেরা স্কোর</span>
+              <div className="w-7 h-7 bg-purple-50 rounded-lg flex items-center justify-center">
+                <HiStar className="text-purple-600 text-base" />
+              </div>
+              <span className="text-slate-500 text-xs">সেরা স্কোর</span>
             </div>
-            <p className="text-2xl font-bold text-white">{toBangla(stats.bestScore)}%</p>
+            <p className="text-2xl font-bold text-gray-900">{toBangla(stats.bestScore)}%</p>
           </div>
         </div>
 
         {/* ═══════════ SECTION 2: Score Trend ═══════════ */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 mb-6">
-          <div className="flex items-center gap-2 mb-4">
-            <HiTrendingUp className="text-emerald-400 text-xl" />
-            <h2 className="text-lg font-semibold text-white">স্কোর ট্রেন্ড</h2>
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 shadow-sm mb-6">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-7 h-7 bg-emerald-50 rounded-lg flex items-center justify-center">
+              <HiTrendingUp className="text-emerald-600 text-base" />
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900">স্কোর ট্রেন্ড</h2>
           </div>
-          <p className="text-white/40 text-xs mb-4">প্রতিটি পরীক্ষায় আপনার স্কোর (%)</p>
+          <p className="text-slate-500 text-xs mb-4 ml-9">প্রতিটি পরীক্ষায় আপনার স্কোর (%)</p>
           <LineChart data={stats.trendData} />
-          <p className="text-center text-white/30 text-xs mt-2">পরীক্ষা ক্রম →</p>
+          <p className="text-center text-slate-400 text-xs mt-2">পরীক্ষা ক্রম →</p>
         </div>
 
         {/* ═══════════ SECTION 3: Score Distribution ═══════════ */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 mb-6">
-          <div className="flex items-center gap-2 mb-4">
-            <HiChartBar className="text-blue-400 text-xl" />
-            <h2 className="text-lg font-semibold text-white">স্কোর ডিস্ট্রিবিউশন</h2>
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 shadow-sm mb-6">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-7 h-7 bg-primary/10 rounded-lg flex items-center justify-center">
+              <HiChartBar className="text-primary text-base" />
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900">স্কোর ডিস্ট্রিবিউশন</h2>
           </div>
-          <p className="text-white/40 text-xs mb-5">কোন স্কোর রেঞ্জে কতটি পরীক্ষা</p>
+          <p className="text-slate-500 text-xs mb-5 ml-9">কোন স্কোর রেঞ্জে কতটি পরীক্ষা</p>
 
           <div className="space-y-4">
             {distLabels.map((label, i) => (
@@ -600,12 +623,14 @@ export default function AnalyticsClient({ attempts = [] }) {
         </div>
 
         {/* ═══════════ SECTION 4: Accuracy Donut ═══════════ */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 mb-6">
-          <div className="flex items-center gap-2 mb-4">
-            <HiCheckCircle className="text-emerald-400 text-xl" />
-            <h2 className="text-lg font-semibold text-white">উত্তরের নির্ভুলতা</h2>
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 shadow-sm mb-6">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-7 h-7 bg-emerald-50 rounded-lg flex items-center justify-center">
+              <HiCheckCircle className="text-emerald-600 text-base" />
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900">উত্তরের নির্ভুলতা</h2>
           </div>
-          <p className="text-white/40 text-xs mb-5">সব পরীক্ষা মিলিয়ে সঠিক, ভুল ও স্কিপ</p>
+          <p className="text-slate-500 text-xs mb-5 ml-9">সব পরীক্ষা মিলিয়ে সঠিক, ভুল ও স্কিপ</p>
 
           <DonutChart
             correct={stats.totalCorrect}
@@ -614,8 +639,8 @@ export default function AnalyticsClient({ attempts = [] }) {
           />
 
           <div className="mt-5 text-center">
-            <p className="text-white/50 text-sm">নির্ভুলতার হার</p>
-            <p className="text-3xl font-bold text-emerald-400">
+            <p className="text-slate-500 text-sm">নির্ভুলতার হার</p>
+            <p className="text-3xl font-bold text-emerald-600 mt-1">
               {toBangla(
                 stats.totalQuestions > 0
                   ? Math.round((stats.totalCorrect / stats.totalQuestions) * 100)
@@ -627,71 +652,84 @@ export default function AnalyticsClient({ attempts = [] }) {
         </div>
 
         {/* ═══════════ SECTION 5: Performance Summary ═══════════ */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 mb-6">
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 shadow-sm mb-6">
           <div className="flex items-center gap-2 mb-5">
-            <HiStar className="text-amber-400 text-xl" />
-            <h2 className="text-lg font-semibold text-white">পারফরম্যান্স সারাংশ</h2>
+            <div className="w-7 h-7 bg-amber-50 rounded-lg flex items-center justify-center">
+              <HiStar className="text-amber-600 text-base" />
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900">পারফরম্যান্স সারাংশ</h2>
           </div>
 
-          <div className="bg-white/5 rounded-xl p-4 border border-white/5 mb-4">
-            <h3 className="text-emerald-400 font-medium text-sm mb-3 flex items-center gap-2">
+          {/* Best Records */}
+          <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 mb-4">
+            <h3 className="text-emerald-700 font-semibold text-sm mb-3 flex items-center gap-2">
               <HiStar className="text-lg" />
               ব্যক্তিগত সেরা রেকর্ড
             </h3>
             <div className="space-y-2.5">
               <div className="flex justify-between text-sm">
-                <span className="text-white/50">সর্বোচ্চ স্কোর</span>
-                <span className="text-white font-medium">{toBangla(stats.bestScore)}%</span>
+                <span className="text-slate-500">সর্বোচ্চ স্কোর</span>
+                <span className="text-gray-900 font-semibold">{toBangla(stats.bestScore)}%</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-white/50">দ্রুততম সময়</span>
-                <span className="text-white font-medium">{formatTime(stats.bestTime)}</span>
+                <span className="text-slate-500">দ্রুততম সময়</span>
+                <span className="text-gray-900 font-semibold">{formatTime(stats.bestTime)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-white/50">সবচেয়ে বেশি সঠিক</span>
-                <span className="text-white font-medium">{toBangla(stats.maxCorrect)}টি</span>
+                <span className="text-slate-500">সবচেয়ে বেশি সঠিক</span>
+                <span className="text-gray-900 font-semibold">{toBangla(stats.maxCorrect)}টি</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-            <h3 className="text-blue-400 font-medium text-sm mb-3 flex items-center gap-2">
+          {/* Overall Stats */}
+          <div className="bg-primary/5 rounded-xl p-4 border border-primary/15">
+            <h3 className="text-primary font-semibold text-sm mb-3 flex items-center gap-2">
               <HiClock className="text-lg" />
               সামগ্রিক পরিসংখ্যান
             </h3>
             <div className="space-y-2.5">
               <div className="flex justify-between text-sm">
-                <span className="text-white/50">গড় সময়</span>
-                <span className="text-white font-medium">{formatTime(stats.avgTime)}</span>
+                <span className="text-slate-500">গড় সময়</span>
+                <span className="text-gray-900 font-semibold">{formatTime(stats.avgTime)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-white/50">মোট প্রশ্নের উত্তর</span>
-                <span className="text-white font-medium">{toBangla(stats.totalQuestions)}টি</span>
+                <span className="text-slate-500">মোট প্রশ্নের উত্তর</span>
+                <span className="text-gray-900 font-semibold">
+                  {toBangla(stats.totalQuestions)}টি
+                </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-white/50">সর্বশেষ পরীক্ষা</span>
-                <span className="text-white font-medium">{formatDate(stats.lastExamDate)}</span>
+                <span className="text-slate-500">সর্বশেষ পরীক্ষা</span>
+                <span className="text-gray-900 font-semibold">
+                  {formatDate(stats.lastExamDate)}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         {/* ═══════════ SECTION 6: Improvement Tips ═══════════ */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 mb-6">
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 shadow-sm mb-6">
           <div className="flex items-center gap-2 mb-5">
-            <HiLightBulb className="text-amber-400 text-xl" />
-            <h2 className="text-lg font-semibold text-white">উন্নতির টিপস</h2>
+            <div className="w-7 h-7 bg-amber-50 rounded-lg flex items-center justify-center">
+              <HiLightBulb className="text-amber-600 text-base" />
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900">উন্নতির টিপস</h2>
           </div>
 
           <div className="space-y-3">
             {stats.tips.map((tip, i) => (
-              <div key={i} className="flex gap-3 bg-white/5 rounded-xl p-4 border border-white/5">
+              <div
+                key={i}
+                className="flex gap-3 bg-[#F8FAFC] rounded-xl p-4 border border-[#E2E8F0]"
+              >
                 <div className="shrink-0 mt-0.5">
                   {tip.icon === "warning" && <HiMinusCircle className={`text-xl ${tip.color}`} />}
                   {tip.icon === "info" && <HiLightBulb className={`text-xl ${tip.color}`} />}
                   {tip.icon === "star" && <HiStar className={`text-xl ${tip.color}`} />}
                 </div>
-                <p className="text-white/70 text-sm leading-relaxed">{tip.text}</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{tip.text}</p>
               </div>
             ))}
           </div>
@@ -701,13 +739,13 @@ export default function AnalyticsClient({ attempts = [] }) {
         <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={() => router.push("/dashboard/history")}
-            className="flex-1 py-3 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 transition-colors text-center cursor-pointer"
+            className="flex-1 py-3 bg-white border border-[#E2E8F0] text-gray-700 rounded-xl hover:bg-[#F1F5F9] hover:border-primary/30 transition-all duration-200 text-center cursor-pointer font-medium"
           >
             📋 পরীক্ষার ইতিহাস দেখুন
           </button>
           <button
             onClick={() => router.push("/exams")}
-            className="flex-1 py-3 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors text-center cursor-pointer"
+            className="flex-1 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark shadow-md shadow-primary/25 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200 text-center cursor-pointer font-medium"
           >
             📝 নতুন পরীক্ষা দিন
           </button>

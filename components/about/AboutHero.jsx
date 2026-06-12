@@ -11,33 +11,33 @@ const QUICK_STATS = [
     icon: FaCalendarAlt,
     value: COMPANY_INFO.founded,
     label: "প্রতিষ্ঠিত",
-    color: "#6C63FF",
+    color: "#1E9CD7",
   },
   {
     id: 2,
     icon: FaUsers,
     value: "৫০,০০০+",
     label: "শিক্ষার্থী",
-    color: "#00D4AA",
+    color: "#059669",
   },
   {
     id: 3,
     icon: FaGraduationCap,
     value: "১,২০০+",
     label: "সফল চাকরি",
-    color: "#FFB800",
+    color: "#D97706",
   },
 ];
 
 export default function AboutHero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark pt-24 pb-16">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white pt-24 pb-16">
       {/* Background Layers */}
       <div className="absolute inset-0 z-0">
         {/* Gradient Base */}
-        <div className="absolute inset-0 bg-linear-to-br from-dark via-primary/10 to-dark" />
+        <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-white to-[#F8FAFC]" />
 
-        {/* Floating Orb 1 */}
+        {/* Floating Orb 1 — Blue */}
         <motion.div
           animate={{
             x: [0, 100, 0],
@@ -49,10 +49,10 @@ export default function AboutHero() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-20 left-10 w-96 h-96 bg-primary/30 rounded-full blur-3xl"
+          className="absolute top-20 left-10 w-96 h-96 bg-primary/8 rounded-full blur-3xl"
         />
 
-        {/* Floating Orb 2 */}
+        {/* Floating Orb 2 — Green */}
         <motion.div
           animate={{
             x: [0, -80, 0],
@@ -64,10 +64,10 @@ export default function AboutHero() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/30 rounded-full blur-3xl"
+          className="absolute bottom-20 right-10 w-96 h-96 bg-[#059669]/8 rounded-full blur-3xl"
         />
 
-        {/* Floating Orb 3 */}
+        {/* Floating Orb 3 — Amber center */}
         <motion.div
           animate={{
             x: [0, 50, 0],
@@ -78,21 +78,20 @@ export default function AboutHero() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-accent/10 rounded-full blur-3xl"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-amber-400/5 rounded-full blur-3xl"
         />
 
-        {/* Grid Pattern Overlay */}
+        {/* Dot Pattern Overlay */}
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `linear-gradient(rgba(108,99,255,0.1) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(108,99,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: "50px 50px",
+            backgroundImage: `radial-gradient(circle, #1E9CD720 1px, transparent 1px)`,
+            backgroundSize: "32px 32px",
           }}
         />
 
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-linear-to-b from-dark/50 via-transparent to-dark/80" />
+        {/* Bottom fade */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-[#FAFBFC] to-transparent" />
       </div>
 
       {/* Content */}
@@ -103,7 +102,7 @@ export default function AboutHero() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 mb-8 bg-white/5 backdrop-blur-md border border-primary/30 rounded-full"
+            className="inline-flex items-center gap-2 px-5 py-2.5 mb-8 bg-white border border-primary/20 rounded-full shadow-sm shadow-primary/10"
           >
             <motion.div
               animate={{ rotate: 360 }}
@@ -113,10 +112,10 @@ export default function AboutHero() {
                 ease: "linear",
               }}
             >
-              <HiSparkles className="w-5 h-5 text-accent" />
+              <HiSparkles className="w-5 h-5 text-amber-500" />
             </motion.div>
-            <span className="text-sm font-medium text-white">আমাদের সম্পর্কে জানুন</span>
-            <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs font-bold rounded-full">
+            <span className="text-sm font-medium text-[#475569]">আমাদের সম্পর্কে জানুন</span>
+            <span className="px-2 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded-full">
               About Us
             </span>
           </motion.div>
@@ -128,8 +127,8 @@ export default function AboutHero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
           >
-            <span className="block text-white mb-2">বাংলাদেশের প্রথম</span>
-            <span className="block bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <span className="block text-[#1F2937] mb-2">বাংলাদেশের প্রথম</span>
+            <span className="block bg-linear-to-r from-primary via-[#0A5A8A] to-amber-500 bg-clip-text text-transparent">
               AI-Powered শিক্ষা প্ল্যাটফর্ম
             </span>
           </motion.h1>
@@ -139,7 +138,7 @@ export default function AboutHero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-base sm:text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-12 leading-relaxed"
+            className="text-base sm:text-lg md:text-xl text-[#475569] max-w-3xl mx-auto mb-12 leading-relaxed"
           >
             {COMPANY_INFO.description}
           </motion.p>
@@ -163,20 +162,20 @@ export default function AboutHero() {
                     delay: 0.8 + index * 0.1,
                   }}
                   whileHover={{ y: -5, scale: 1.02 }}
-                  className="group relative p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl hover:border-primary/50 transition-all"
+                  className="group relative p-6 bg-white border border-[#E2E8F0] rounded-2xl hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
                 >
                   {/* Hover Glow */}
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 rounded-2xl blur-xl transition-opacity -z-10"
-                    style={{ backgroundColor: `${stat.color}30` }}
+                    style={{ backgroundColor: `${stat.color}15` }}
                   />
 
-                  {/* Icon */}
+                  {/* Icon Circle */}
                   <div
                     className="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center"
                     style={{
-                      backgroundColor: `${stat.color}20`,
-                      border: `1px solid ${stat.color}40`,
+                      backgroundColor: `${stat.color}12`,
+                      border: `1px solid ${stat.color}30`,
                     }}
                   >
                     <Icon className="w-7 h-7" style={{ color: stat.color }} />
@@ -191,7 +190,7 @@ export default function AboutHero() {
                   </div>
 
                   {/* Label */}
-                  <div className="text-sm text-white/60 font-medium">{stat.label}</div>
+                  <div className="text-sm text-[#64748B] font-medium">{stat.label}</div>
                 </motion.div>
               );
             })}
@@ -211,7 +210,7 @@ export default function AboutHero() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="flex flex-col items-center gap-2 text-white/50"
+              className="flex flex-col items-center gap-2 text-[#94A3B8]"
             >
               <span className="text-xs font-medium uppercase tracking-wider">স্ক্রল করুন</span>
               <HiArrowDown className="w-5 h-5" />

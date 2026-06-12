@@ -11,38 +11,40 @@ const ICON_MAP = {
   eye: FaEye,
 };
 
-// Color Map (Tailwind v4 — Direct Color Values)
+// Color Map — Light Theme (Brand Colors)
 const COLOR_MAP = {
   primary: {
     bg: "bg-primary/10",
     border: "border-primary/30",
     text: "text-primary",
-    hex: "#6C63FF",
-    gradient: "from-primary/20 via-primary/5 to-transparent",
+    hex: "#1E9CD7",
+    gradient: "from-primary/10 via-primary/5 to-transparent",
   },
   secondary: {
-    bg: "bg-secondary/10",
-    border: "border-secondary/30",
-    text: "text-secondary",
-    hex: "#00D4AA",
-    gradient: "from-secondary/20 via-secondary/5 to-transparent",
+    bg: "bg-[#059669]/10",
+    border: "border-[#059669]/30",
+    text: "text-[#059669]",
+    hex: "#059669",
+    gradient: "from-[#059669]/10 via-[#059669]/5 to-transparent",
   },
 };
 
 export default function MissionVision() {
   return (
-    <section className="relative py-20 sm:py-28 bg-dark overflow-hidden">
+    <section className="relative py-20 sm:py-28 bg-white overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 z-0">
+        {/* Dot Pattern */}
         <div
-          className="absolute inset-0 opacity-5"
+          className="absolute inset-0 opacity-40"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle, #1E9CD718 1px, transparent 1px)`,
             backgroundSize: "40px 40px",
           }}
         />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+        {/* Orbs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/6 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#059669]/6 rounded-full blur-3xl" />
       </div>
 
       {/* Container */}
@@ -55,19 +57,22 @@ export default function MissionVision() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-primary/10 border border-primary/20 rounded-full">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-primary/8 border border-primary/20 rounded-full">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
             <span className="text-sm font-medium text-primary">আমাদের লক্ষ্য</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+          {/* Title */}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2937] mb-4">
             মিশন ও{" "}
-            <span className="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-primary to-[#059669] bg-clip-text text-transparent">
               ভিশন
             </span>
           </h2>
 
-          <p className="text-white/60 text-base sm:text-lg leading-relaxed">
+          {/* Subtitle */}
+          <p className="text-[#64748B] text-base sm:text-lg leading-relaxed">
             আমরা স্বপ্ন দেখি বাংলাদেশের প্রতিটি শিক্ষার্থীর সফলতার। আমাদের লক্ষ্য ও পরিকল্পনা জানুন।
           </p>
         </motion.div>
@@ -91,14 +96,14 @@ export default function MissionVision() {
                 whileHover={{ y: -8 }}
                 className="group relative"
               >
-                {/* Glow Effect */}
+                {/* Hover Glow */}
                 <div
                   className={`absolute -inset-1 bg-linear-to-r ${colors.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
                 />
 
                 {/* Card */}
                 <div
-                  className={`relative h-full p-8 sm:p-10 bg-white/5 backdrop-blur-md border ${colors.border} rounded-3xl overflow-hidden transition-all duration-500`}
+                  className={`relative h-full p-8 sm:p-10 bg-white border ${colors.border} rounded-3xl overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/8`}
                 >
                   {/* Top Gradient Border */}
                   <div
@@ -108,45 +113,49 @@ export default function MissionVision() {
                     }}
                   />
 
-                  {/* Decorative Corner Pattern */}
+                  {/* Decorative Corner */}
                   <div
-                    className="absolute top-0 right-0 w-40 h-40 opacity-10 rounded-full blur-2xl"
+                    className="absolute top-0 right-0 w-40 h-40 opacity-6 rounded-full blur-2xl"
                     style={{ backgroundColor: colors.hex }}
                   />
 
-                  {/* Icon */}
+                  {/* Icon Circle */}
                   <motion.div
                     whileHover={{ rotate: 5, scale: 1.1 }}
                     transition={{ duration: 0.3 }}
                     className={`relative w-20 h-20 ${colors.bg} ${colors.border} border rounded-2xl flex items-center justify-center mb-6`}
                   >
-                    <Icon className={`w-10 h-10 ${colors.text}`} style={{ color: colors.hex }} />
+                    <Icon className="w-10 h-10" style={{ color: colors.hex }} />
 
                     {/* Pulse Ring */}
                     <span
-                      className="absolute inset-0 rounded-2xl animate-ping opacity-20"
+                      className="absolute inset-0 rounded-2xl animate-ping opacity-15"
                       style={{ backgroundColor: colors.hex }}
                     />
                   </motion.div>
 
-                  {/* Subtitle */}
+                  {/* Subtitle row */}
                   <div className="flex items-center gap-3 mb-2">
                     <span
-                      className={`text-sm font-bold uppercase tracking-wider ${colors.text}`}
+                      className="text-sm font-bold uppercase tracking-wider"
                       style={{ color: colors.hex }}
                     >
                       {item.subtitle}
                     </span>
-                    <span className="h-px flex-1 bg-linear-to-r from-white/20 to-transparent" />
+                    <span className="h-px flex-1 bg-[#E2E8F0]" />
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">{item.title}</h3>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-[#1F2937] mb-4">
+                    {item.title}
+                  </h3>
 
                   {/* Description */}
-                  <p className="text-white/70 text-base leading-relaxed mb-6">{item.description}</p>
+                  <p className="text-[#475569] text-base leading-relaxed mb-6">
+                    {item.description}
+                  </p>
 
-                  {/* Points */}
+                  {/* Points List */}
                   <ul className="space-y-3">
                     {item.points.map((point, idx) => (
                       <motion.li
@@ -160,19 +169,22 @@ export default function MissionVision() {
                         }}
                         className="flex items-start gap-3 group/item"
                       >
+                        {/* Check Icon */}
                         <div
                           className={`shrink-0 w-6 h-6 ${colors.bg} rounded-full flex items-center justify-center mt-0.5 group-hover/item:scale-110 transition-transform`}
                         >
                           <HiCheckCircle className="w-5 h-5" style={{ color: colors.hex }} />
                         </div>
-                        <span className="text-white/80 text-sm sm:text-base leading-relaxed">
+
+                        {/* Point Text */}
+                        <span className="text-[#374151] text-sm sm:text-base leading-relaxed">
                           {point}
                         </span>
                       </motion.li>
                     ))}
                   </ul>
 
-                  {/* Bottom Accent Line */}
+                  {/* Bottom Accent Line (animated) */}
                   <div
                     className="absolute bottom-0 left-0 h-1 rounded-b-3xl transition-all duration-500 group-hover:w-full"
                     style={{
@@ -194,20 +206,23 @@ export default function MissionVision() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-[#E2E8F0] rounded-full shadow-sm">
+            {/* Avatar Stack */}
             <span className="flex -space-x-2">
-              <span className="w-8 h-8 bg-primary rounded-full border-2 border-dark flex items-center justify-center text-xs text-white">
-                ৫০K+
+              <span className="w-8 h-8 bg-primary rounded-full border-2 border-white flex items-center justify-center text-xs text-white font-bold">
+                ৫০K
               </span>
-              <span className="w-8 h-8 bg-secondary rounded-full border-2 border-dark flex items-center justify-center text-xs text-white">
+              <span className="w-8 h-8 bg-[#059669] rounded-full border-2 border-white flex items-center justify-center text-xs text-white">
                 👥
               </span>
-              <span className="w-8 h-8 bg-accent rounded-full border-2 border-dark flex items-center justify-center text-xs text-dark">
+              <span className="w-8 h-8 bg-amber-400 rounded-full border-2 border-white flex items-center justify-center text-xs">
                 🏆
               </span>
             </span>
-            <span className="text-sm text-white/70">
-              <span className="text-white font-bold">৫০,০০০+</span> শিক্ষার্থী আমাদের সাথে যুক্ত
+
+            {/* Text */}
+            <span className="text-sm text-[#475569]">
+              <span className="text-[#1F2937] font-bold">৫০,০০০+</span> শিক্ষার্থী আমাদের সাথে যুক্ত
               আছেন
             </span>
           </div>

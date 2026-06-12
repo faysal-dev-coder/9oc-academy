@@ -10,7 +10,7 @@ const QUICK_CONTACTS = [
     icon: FaEnvelope,
     label: "ইমেইল",
     value: "info@9ocacademy.com",
-    color: "#6C63FF",
+    color: "#1E9CD7",
     action: "mailto:info@9ocacademy.com",
   },
   {
@@ -18,7 +18,7 @@ const QUICK_CONTACTS = [
     icon: FaPhoneAlt,
     label: "ফোন",
     value: "+৮৮০ ১৭XX-XXXXXX",
-    color: "#00D4AA",
+    color: "#059669",
     action: "tel:+8801XXXXXXXXX",
   },
   {
@@ -26,20 +26,20 @@ const QUICK_CONTACTS = [
     icon: FaMapMarkerAlt,
     label: "ঠিকানা",
     value: "ঢাকা, বাংলাদেশ",
-    color: "#FFB800",
+    color: "#D97706",
     action: null,
   },
 ];
 
 export default function ContactHero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark pt-24 pb-16">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white pt-24 pb-16">
       {/* Background Layers */}
       <div className="absolute inset-0 z-0">
         {/* Gradient Base */}
-        <div className="absolute inset-0 bg-linear-to-br from-dark via-secondary/10 to-dark" />
+        <div className="absolute inset-0 bg-linear-to-br from-[#059669]/5 via-white to-[#F8FAFC]" />
 
-        {/* Floating Orb 1 */}
+        {/* Floating Orb 1 — Green */}
         <motion.div
           animate={{
             x: [0, 80, 0],
@@ -51,10 +51,10 @@ export default function ContactHero() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-20 right-10 w-96 h-96 bg-secondary/30 rounded-full blur-3xl"
+          className="absolute top-20 right-10 w-96 h-96 bg-[#059669]/8 rounded-full blur-3xl"
         />
 
-        {/* Floating Orb 2 */}
+        {/* Floating Orb 2 — Blue */}
         <motion.div
           animate={{
             x: [0, -60, 0],
@@ -66,10 +66,10 @@ export default function ContactHero() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute bottom-20 left-10 w-96 h-96 bg-primary/30 rounded-full blur-3xl"
+          className="absolute bottom-20 left-10 w-96 h-96 bg-primary/8 rounded-full blur-3xl"
         />
 
-        {/* Floating Orb 3 */}
+        {/* Floating Orb 3 — Amber center */}
         <motion.div
           animate={{
             x: [0, 50, 0],
@@ -80,21 +80,20 @@ export default function ContactHero() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-accent/10 rounded-full blur-3xl"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-amber-400/5 rounded-full blur-3xl"
         />
 
-        {/* Grid Pattern Overlay */}
+        {/* Dot Pattern */}
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `linear-gradient(rgba(0,212,170,0.1) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0,212,170,0.1) 1px, transparent 1px)`,
-            backgroundSize: "50px 50px",
+            backgroundImage: `radial-gradient(circle, #05966920 1px, transparent 1px)`,
+            backgroundSize: "32px 32px",
           }}
         />
 
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-linear-to-b from-dark/50 via-transparent to-dark/80" />
+        {/* Bottom Fade */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-[#FAFBFC] to-transparent" />
       </div>
 
       {/* Content */}
@@ -105,7 +104,7 @@ export default function ContactHero() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 mb-8 bg-white/5 backdrop-blur-md border border-secondary/30 rounded-full"
+            className="inline-flex items-center gap-2 px-5 py-2.5 mb-8 bg-white border border-[#059669]/20 rounded-full shadow-sm shadow-[#059669]/10"
           >
             <motion.div
               animate={{ rotate: 360 }}
@@ -115,10 +114,10 @@ export default function ContactHero() {
                 ease: "linear",
               }}
             >
-              <HiSparkles className="w-5 h-5 text-accent" />
+              <HiSparkles className="w-5 h-5 text-amber-500" />
             </motion.div>
-            <span className="text-sm font-medium text-white">আমাদের সাথে যোগাযোগ করুন</span>
-            <span className="px-2 py-0.5 bg-secondary/20 text-secondary text-xs font-bold rounded-full">
+            <span className="text-sm font-medium text-[#475569]">আমাদের সাথে যোগাযোগ করুন</span>
+            <span className="px-2 py-0.5 bg-[#059669]/10 text-[#059669] text-xs font-bold rounded-full">
               Contact
             </span>
           </motion.div>
@@ -130,8 +129,8 @@ export default function ContactHero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
           >
-            <span className="block text-white mb-2">আছে কোনো প্রশ্ন?</span>
-            <span className="block bg-linear-to-r from-secondary via-primary to-accent bg-clip-text text-transparent">
+            <span className="block text-[#1F2937] mb-2">আছে কোনো প্রশ্ন?</span>
+            <span className="block bg-linear-to-r from-[#059669] via-primary to-amber-500 bg-clip-text text-transparent">
               আমরা সাহায্য করতে প্রস্তুত
             </span>
           </motion.h1>
@@ -141,7 +140,7 @@ export default function ContactHero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-base sm:text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-12 leading-relaxed"
+            className="text-base sm:text-lg md:text-xl text-[#475569] max-w-3xl mx-auto mb-12 leading-relaxed"
           >
             কোর্স, পেমেন্ট, টেকনিক্যাল সমস্যা — যেকোনো বিষয়ে আমাদের সাথে যোগাযোগ করুন। আমরা ২৪
             ঘণ্টার মধ্যে উত্তর দেওয়ার চেষ্টা করি।
@@ -170,27 +169,27 @@ export default function ContactHero() {
                     delay: 0.8 + index * 0.1,
                   }}
                   whileHover={{ y: -5, scale: 1.02 }}
-                  className="group relative p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl hover:border-secondary/50 transition-all cursor-pointer block"
+                  className="group relative p-6 bg-white border border-[#E2E8F0] rounded-2xl hover:border-[#059669]/35 hover:shadow-lg hover:shadow-[#059669]/8 transition-all duration-300 cursor-pointer block"
                 >
                   {/* Hover Glow */}
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 rounded-2xl blur-xl transition-opacity -z-10"
-                    style={{ backgroundColor: `${contact.color}30` }}
+                    style={{ backgroundColor: `${contact.color}15` }}
                   />
 
-                  {/* Icon */}
+                  {/* Icon Circle */}
                   <div
                     className="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center"
                     style={{
-                      backgroundColor: `${contact.color}20`,
-                      border: `1px solid ${contact.color}40`,
+                      backgroundColor: `${contact.color}12`,
+                      border: `1px solid ${contact.color}30`,
                     }}
                   >
                     <Icon className="w-6 h-6" style={{ color: contact.color }} />
                   </div>
 
                   {/* Label */}
-                  <div className="text-xs text-white/50 font-medium uppercase tracking-wider mb-1">
+                  <div className="text-xs text-[#94A3B8] font-medium uppercase tracking-wider mb-1">
                     {contact.label}
                   </div>
 
@@ -225,10 +224,10 @@ export default function ContactHero() {
               }}
               className="relative"
             >
-              <div className="w-20 h-20 bg-linear-to-br from-secondary/30 to-primary/30 backdrop-blur-md border border-secondary/40 rounded-3xl flex items-center justify-center">
-                <HiChatBubbleLeftRight className="w-10 h-10 text-secondary" />
+              <div className="w-20 h-20 bg-linear-to-br from-[#059669]/15 to-primary/15 border border-[#059669]/30 rounded-3xl flex items-center justify-center shadow-lg shadow-[#059669]/15">
+                <HiChatBubbleLeftRight className="w-10 h-10 text-[#059669]" />
               </div>
-              <span className="absolute -top-2 -right-2 w-6 h-6 bg-accent text-dark text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+              <span className="absolute -top-2 -right-2 w-6 h-6 bg-amber-400 text-[#0A5A8A] text-xs font-bold rounded-full flex items-center justify-center animate-pulse shadow-md">
                 ৩
               </span>
             </motion.div>
@@ -248,7 +247,7 @@ export default function ContactHero() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="flex flex-col items-center gap-2 text-white/50"
+              className="flex flex-col items-center gap-2 text-[#94A3B8]"
             >
               <span className="text-xs font-medium uppercase tracking-wider">নিচে স্ক্রল করুন</span>
               <HiArrowDown className="w-5 h-5" />

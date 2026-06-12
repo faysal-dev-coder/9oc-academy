@@ -22,23 +22,35 @@ const ICON_MAP = {
   support: FaHeadset,
 };
 
-// Color Cycle
+// Brand Color Cycle — Light Theme
 const COLORS = [
-  "#6C63FF", // Primary
-  "#00D4AA", // Secondary
-  "#FFB800", // Accent
-  "#FF6B6B", // Red
-  "#A855F7", // Purple
-  "#F97316", // Orange
+  "#1E9CD7", // Brand Blue
+  "#059669", // Brand Green
+  "#D97706", // Brand Amber
+  "#DC2626", // Brand Red
+  "#7C3AED", // Purple
+  "#EA580C", // Orange
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section className="relative py-20 sm:py-28 bg-dark overflow-hidden">
+    <section className="relative py-20 sm:py-28 bg-[#F8FAFC] overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-linear-to-br from-dark via-primary/5 to-dark" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-primary/10 rounded-full blur-3xl" />
+        {/* Gradient Base */}
+        <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-[#F8FAFC] to-[#F0F9FF]" />
+
+        {/* Center Orb */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-primary/5 rounded-full blur-3xl" />
+
+        {/* Dot Pattern */}
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `radial-gradient(circle, #1E9CD715 1px, transparent 1px)`,
+            backgroundSize: "36px 36px",
+          }}
+        />
       </div>
 
       {/* Container */}
@@ -51,19 +63,22 @@ export default function WhyChooseUs() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-primary/10 border border-primary/20 rounded-full">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-primary/8 border border-primary/20 rounded-full">
             <HiSparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">কেন আমাদের বেছে নিবেন</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+          {/* Title */}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2937] mb-4">
             আমাদের{" "}
-            <span className="bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-primary via-[#0A5A8A] to-amber-500 bg-clip-text text-transparent">
               বিশেষত্ব
             </span>
           </h2>
 
-          <p className="text-white/60 text-base sm:text-lg leading-relaxed">
+          {/* Subtitle */}
+          <p className="text-[#64748B] text-base sm:text-lg leading-relaxed">
             ৫০,০০০+ শিক্ষার্থীর আস্থা ও ভালোবাসায় আমরা পৌঁছেছি এখানে। জানুন কেন আমরা সেরা পরীক্ষা
             প্রস্তুতি প্ল্যাটফর্ম।
           </p>
@@ -88,42 +103,42 @@ export default function WhyChooseUs() {
                 whileHover={{ y: -8 }}
                 className="group relative"
               >
-                {/* Glow on Hover */}
+                {/* Hover Glow */}
                 <div
-                  className="absolute -inset-1 rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500"
+                  className="absolute -inset-1 rounded-3xl blur-2xl opacity-0 group-hover:opacity-15 transition-opacity duration-500"
                   style={{ backgroundColor: color }}
                 />
 
                 {/* Card */}
-                <div className="relative h-full p-7 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 group-hover:border-white/20">
+                <div className="relative h-full p-7 bg-white border border-[#E2E8F0] rounded-3xl overflow-hidden transition-all duration-300 group-hover:border-primary/25 group-hover:shadow-lg group-hover:shadow-primary/8">
                   {/* Top Right Decoration */}
                   <div
-                    className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"
+                    className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-2xl opacity-8 group-hover:opacity-15 transition-opacity"
                     style={{ backgroundColor: color }}
                   />
 
                   {/* Header — Icon + Stat */}
                   <div className="flex items-start justify-between mb-5">
-                    {/* Icon */}
+                    {/* Icon Circle */}
                     <motion.div
                       whileHover={{ rotate: 12, scale: 1.1 }}
                       transition={{ duration: 0.3 }}
                       className="relative w-14 h-14 rounded-2xl flex items-center justify-center"
                       style={{
-                        backgroundColor: `${color}20`,
-                        border: `1px solid ${color}40`,
+                        backgroundColor: `${color}15`,
+                        border: `1px solid ${color}35`,
                       }}
                     >
                       <Icon className="w-7 h-7" style={{ color: color }} />
 
                       {/* Glow Behind Icon */}
                       <span
-                        className="absolute inset-0 rounded-2xl blur-md opacity-30 group-hover:opacity-50 transition-opacity -z-10"
+                        className="absolute inset-0 rounded-2xl blur-md opacity-20 group-hover:opacity-35 transition-opacity -z-10"
                         style={{ backgroundColor: color }}
                       />
                     </motion.div>
 
-                    {/* Big Stat */}
+                    {/* Stat */}
                     <div className="text-right">
                       <div
                         className="text-3xl sm:text-4xl font-bold leading-none"
@@ -131,19 +146,17 @@ export default function WhyChooseUs() {
                       >
                         {feature.stat}
                       </div>
-                      <div className="text-xs text-white/40 mt-1 font-medium">
+                      <div className="text-xs text-[#94A3B8] mt-1 font-medium">
                         {feature.statLabel}
                       </div>
                     </div>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-white transition-colors">
-                    {feature.title}
-                  </h3>
+                  <h3 className="text-xl font-bold text-[#1F2937] mb-3">{feature.title}</h3>
 
                   {/* Description */}
-                  <p className="text-white/60 text-sm leading-relaxed group-hover:text-white/80 transition-colors">
+                  <p className="text-[#64748B] text-sm leading-relaxed group-hover:text-[#475569] transition-colors">
                     {feature.description}
                   </p>
 
@@ -156,8 +169,8 @@ export default function WhyChooseUs() {
                     }}
                   />
 
-                  {/* Number Badge (Top Left Corner) */}
-                  <div className="absolute top-3 left-3 opacity-30 group-hover:opacity-100 transition-opacity">
+                  {/* Number Badge */}
+                  <div className="absolute top-3 left-3 opacity-20 group-hover:opacity-70 transition-opacity">
                     <span className="text-xs font-bold" style={{ color: color }}>
                       0{feature.id}
                     </span>
@@ -176,22 +189,29 @@ export default function WhyChooseUs() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 max-w-4xl mx-auto"
         >
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-linear-to-r from-primary/10 via-secondary/10 to-accent/10 backdrop-blur-md border border-white/10 rounded-2xl">
-            <div className="text-center border-r border-white/10 last:border-r-0">
-              <div className="text-2xl sm:text-3xl font-bold text-white">৫০K+</div>
-              <div className="text-xs text-white/60 mt-1">শিক্ষার্থী</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-0 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm overflow-hidden">
+            {/* Stat 1 */}
+            <div className="text-center p-6 border-r border-[#E2E8F0]">
+              <div className="text-2xl sm:text-3xl font-bold text-primary">৫০K+</div>
+              <div className="text-xs text-[#64748B] mt-1 font-medium">শিক্ষার্থী</div>
             </div>
-            <div className="text-center sm:border-r border-white/10">
-              <div className="text-2xl sm:text-3xl font-bold text-white">৯৮%</div>
-              <div className="text-xs text-white/60 mt-1">সন্তুষ্টি</div>
+
+            {/* Stat 2 */}
+            <div className="text-center p-6 sm:border-r border-[#E2E8F0]">
+              <div className="text-2xl sm:text-3xl font-bold text-[#059669]">৯৮%</div>
+              <div className="text-xs text-[#64748B] mt-1 font-medium">সন্তুষ্টি</div>
             </div>
-            <div className="text-center border-r border-white/10 last:border-r-0">
-              <div className="text-2xl sm:text-3xl font-bold text-white">১,২০০+</div>
-              <div className="text-xs text-white/60 mt-1">চাকরি</div>
+
+            {/* Stat 3 */}
+            <div className="text-center p-6 border-r border-t sm:border-t-0 border-[#E2E8F0]">
+              <div className="text-2xl sm:text-3xl font-bold text-[#D97706]">১,২০০+</div>
+              <div className="text-xs text-[#64748B] mt-1 font-medium">চাকরি</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white">২৪/৭</div>
-              <div className="text-xs text-white/60 mt-1">সাপোর্ট</div>
+
+            {/* Stat 4 */}
+            <div className="text-center p-6 border-t sm:border-t-0 border-[#E2E8F0]">
+              <div className="text-2xl sm:text-3xl font-bold text-[#DC2626]">২৪/৭</div>
+              <div className="text-xs text-[#64748B] mt-1 font-medium">সাপোর্ট</div>
             </div>
           </div>
         </motion.div>

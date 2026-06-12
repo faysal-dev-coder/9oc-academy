@@ -21,18 +21,20 @@ const ICON_MAP = {
 
 export default function ContactInfo() {
   return (
-    <section className="relative py-20 sm:py-28 bg-dark overflow-hidden">
+    <section className="relative py-20 sm:py-28 bg-[#F8FAFC] overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
+        {/* Dot Pattern */}
         <div
-          className="absolute inset-0 opacity-5"
+          className="absolute inset-0 opacity-35"
           style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle, #05966915 1px, transparent 1px)`,
             backgroundSize: "50px 50px",
           }}
         />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        {/* Orbs */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#059669]/6 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/6 rounded-full blur-3xl" />
       </div>
 
       {/* Container */}
@@ -45,19 +47,22 @@ export default function ContactInfo() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-secondary/10 border border-secondary/20 rounded-full">
-            <HiSparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm font-medium text-secondary">যোগাযোগের তথ্য</span>
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-[#059669]/8 border border-[#059669]/20 rounded-full">
+            <HiSparkles className="w-4 h-4 text-[#059669]" />
+            <span className="text-sm font-medium text-[#059669]">যোগাযোগের তথ্য</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+          {/* Title */}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2937] mb-4">
             আমাদের{" "}
-            <span className="bg-linear-to-r from-secondary to-primary bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-[#059669] to-primary bg-clip-text text-transparent">
               ঠিকানা
             </span>
           </h2>
 
-          <p className="text-white/60 text-base sm:text-lg leading-relaxed">
+          {/* Subtitle */}
+          <p className="text-[#64748B] text-base sm:text-lg leading-relaxed">
             যেকোনো প্রয়োজনে নিচের যেকোনো মাধ্যমে আমাদের সাথে সরাসরি যোগাযোগ করতে পারেন।
           </p>
         </motion.div>
@@ -85,14 +90,14 @@ export default function ContactInfo() {
                 whileHover={{ y: -8 }}
                 className={`group relative block ${isClickable ? "cursor-pointer" : ""}`}
               >
-                {/* Glow on Hover */}
+                {/* Hover Glow */}
                 <div
-                  className="absolute -inset-1 rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500"
+                  className="absolute -inset-1 rounded-3xl blur-2xl opacity-0 group-hover:opacity-15 transition-opacity duration-500"
                   style={{ backgroundColor: info.color }}
                 />
 
                 {/* Card */}
-                <div className="relative h-full p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 group-hover:border-white/20">
+                <div className="relative h-full p-6 bg-white border border-[#E2E8F0] rounded-3xl overflow-hidden transition-all duration-300 group-hover:border-primary/25 group-hover:shadow-lg group-hover:shadow-primary/8">
                   {/* Top Color Border */}
                   <div
                     className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
@@ -103,46 +108,46 @@ export default function ContactInfo() {
 
                   {/* Decorative Corner Glow */}
                   <div
-                    className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"
+                    className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-8 group-hover:opacity-15 transition-opacity"
                     style={{ backgroundColor: info.color }}
                   />
 
-                  {/* External Link Icon (if clickable) */}
+                  {/* External Link Icon */}
                   {isClickable && (
                     <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                       <HiArrowTopRightOnSquare className="w-4 h-4" style={{ color: info.color }} />
                     </div>
                   )}
 
-                  {/* Icon */}
+                  {/* Icon Circle */}
                   <motion.div
                     whileHover={{ rotate: 12, scale: 1.1 }}
                     transition={{ duration: 0.3 }}
                     className="relative w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
                     style={{
-                      backgroundColor: `${info.color}20`,
-                      border: `1px solid ${info.color}40`,
+                      backgroundColor: `${info.color}12`,
+                      border: `1px solid ${info.color}30`,
                     }}
                   >
                     <Icon className="w-8 h-8" style={{ color: info.color }} />
 
                     {/* Pulse Ring */}
                     <span
-                      className="absolute inset-0 rounded-2xl animate-ping opacity-20"
+                      className="absolute inset-0 rounded-2xl animate-ping opacity-15"
                       style={{ backgroundColor: info.color }}
                     />
                   </motion.div>
 
                   {/* Title (Bangla) */}
-                  <h3 className="text-lg font-bold text-white mb-1">{info.title}</h3>
+                  <h3 className="text-lg font-bold text-[#1F2937] mb-1">{info.title}</h3>
 
                   {/* Title (English) */}
-                  <p className="text-xs text-white/40 mb-4 font-medium uppercase tracking-wider">
+                  <p className="text-xs text-[#94A3B8] mb-4 font-medium uppercase tracking-wider">
                     {info.titleEn}
                   </p>
 
                   {/* Divider */}
-                  <div className="h-px bg-linear-to-r from-transparent via-white/10 to-transparent mb-4" />
+                  <div className="h-px bg-[#E2E8F0] mb-4" />
 
                   {/* Value */}
                   <p
@@ -152,7 +157,7 @@ export default function ContactInfo() {
                     {info.value}
                   </p>
 
-                  {/* Bottom Accent Line (Hover Expand) */}
+                  {/* Bottom Accent Line */}
                   <div
                     className="absolute bottom-0 left-0 h-1 rounded-tr-full transition-all duration-500 group-hover:w-full"
                     style={{
@@ -166,7 +171,7 @@ export default function ContactInfo() {
           })}
         </div>
 
-        {/* Bottom Note */}
+        {/* Bottom Note — Status Indicator */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -174,14 +179,22 @@ export default function ContactInfo() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 text-center"
         >
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full">
-            <span className="flex items-center gap-2 text-white/60 text-sm">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span>এখনই উপলব্ধ</span>
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-[#E2E8F0] rounded-full shadow-sm">
+            {/* Online Status */}
+            <span className="flex items-center gap-2 text-[#475569] text-sm">
+              <span className="relative flex w-2 h-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-[#059669] opacity-75 animate-ping" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#059669]" />
+              </span>
+              <span className="font-medium">এখনই উপলব্ধ</span>
             </span>
-            <span className="h-4 w-px bg-white/20" />
-            <span className="text-sm text-white/70">
-              গড় রেসপন্স টাইম: <span className="text-accent font-bold">২ ঘণ্টা</span>
+
+            {/* Divider */}
+            <span className="h-4 w-px bg-[#E2E8F0]" />
+
+            {/* Response Time */}
+            <span className="text-sm text-[#64748B]">
+              গড় রেসপন্স টাইম: <span className="text-amber-600 font-bold">২ ঘণ্টা</span>
             </span>
           </div>
         </motion.div>

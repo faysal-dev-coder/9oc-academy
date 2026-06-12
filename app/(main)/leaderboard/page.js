@@ -30,7 +30,6 @@ export default async function LeaderboardPage() {
 
   // ─────────────────────────────────────────
   // 2️⃣ Fetch all completed attempts
-  // (3-level sort: score DESC, wrong ASC, time ASC)
   // ─────────────────────────────────────────
   const { data: attempts, error } = await supabase
     .from("attempts")
@@ -43,15 +42,20 @@ export default async function LeaderboardPage() {
   if (error) {
     console.error("Leaderboard fetch error:", error);
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0A0A1A] text-white">
-        <p>লিডারবোর্ড লোড করতে সমস্যা হয়েছে!</p>
+      <div className="min-h-screen flex items-center justify-center bg-white pt-24 pb-16">
+        <div className="text-center max-w-md px-4">
+          <div className="text-6xl mb-4">😓</div>
+          <h2 className="text-2xl font-bold text-[#1F2937] mb-2">
+            লিডারবোর্ড লোড করতে সমস্যা হয়েছে!
+          </h2>
+          <p className="text-[#64748B]">কিছুক্ষণ পর আবার চেষ্টা করুন।</p>
+        </div>
       </div>
     );
   }
 
   // ─────────────────────────────────────────
   // 3️⃣ Keep only FIRST attempt per user
-  // (Map keeps first occurrence per user_id)
   // ─────────────────────────────────────────
   const firstAttemptsMap = new Map();
   attempts.forEach((attempt) => {
@@ -60,7 +64,6 @@ export default async function LeaderboardPage() {
     }
   });
 
-  // ⚠️ Re-sort by ranking criteria
   const rankedAttempts = Array.from(firstAttemptsMap.values()).sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (a.wrong_count !== b.wrong_count) return a.wrong_count - b.wrong_count;
@@ -68,7 +71,7 @@ export default async function LeaderboardPage() {
   });
 
   // ─────────────────────────────────────────
-  // 4️⃣ Add rank + anonymous ID (#0001, #0002...)
+  // 4️⃣ Add rank + anonymous ID
   // ─────────────────────────────────────────
   const leaderboard = rankedAttempts.map((attempt, index) => ({
     rank: index + 1,

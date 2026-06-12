@@ -4,11 +4,12 @@
 // ═══════════════════════════════════════════
 // শুধু HTML Wrapper + Fonts + Metadata
 // Navbar/Footer Sub-Layout এ Move হয়েছে
-// ⭐ UserProvider Wrap Added — Global Auth State
+// ⭐ UserProvider Wrap — Global Auth State
+// ⭐ LIGHT THEME — Phase 6B
 // ═══════════════════════════════════════════
 
 import { Plus_Jakarta_Sans, Inter, Hind_Siliguri } from "next/font/google";
-import { UserProvider } from "@/contexts/UserContext"; // ⭐ NEW
+import { UserProvider } from "@/contexts/UserContext";
 import "./globals.css";
 
 // ─── Font Setup ─────────────────────────
@@ -97,7 +98,7 @@ export const metadata = {
 
 // ─── Viewport Config ──────────────────
 export const viewport = {
-  themeColor: "#6C63FF",
+  themeColor: "#1E9CD7", // ⭐ Brand Blue (updated from purple)
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -112,7 +113,7 @@ export default function RootLayout({ children }) {
       className={`${jakarta.variable} ${inter.variable} ${hind.variable}`}
     >
       <body
-        className="bg-[#0A0A1A] text-white antialiased overflow-x-hidden"
+        className="bg-white text-[#1F2937] antialiased overflow-x-hidden"
         style={{ fontFamily: "var(--font-hind), sans-serif" }}
       >
         {/* ⭐ Global User Provider — সব Route এ Auth State Available */}

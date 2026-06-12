@@ -1,7 +1,7 @@
 /* ============================================
    🎓 9OC Academy — Global Styles
    Tailwind CSS v4 Configuration
-   (Updated for Phase 2D)
+   LIGHT THEME — Phase 6B Final
    ============================================ */
 
 @import "tailwindcss";
@@ -10,59 +10,60 @@
    🎨 Tailwind v4 Theme Configuration
    ============================================ */
 @theme {
-  /* ===== 🔵 Primary Colors ===== */
-  --color-primary-50: #f0eeff;
-  --color-primary-100: #d9d6ff;
-  --color-primary-200: #b3adff;
-  --color-primary-300: #8d85ff;
-  --color-primary-400: #6c63ff;
-  --color-primary-500: #5a50f0;
-  --color-primary-600: #4840d4;
-  --color-primary-700: #3630a8;
-  --color-primary-800: #24207c;
-  --color-primary-900: #121050;
-  --color-primary: #6c63ff;
+  /* ===== 🔵 Primary Colors (Sky Blue — Brand) ===== */
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #1e9cd7;
+  --color-primary-600: #0a5a8a;
+  --color-primary-700: #075985;
+  --color-primary-800: #0c4a6e;
+  --color-primary-900: #082f49;
+  --color-primary: #1e9cd7;
+  --color-primary-dark: #0a5a8a;
 
-  /* ===== 🟢 Secondary Colors ===== */
-  --color-secondary-50: #e6fff8;
-  --color-secondary-100: #b3ffe8;
-  --color-secondary-200: #80ffd9;
-  --color-secondary-300: #4dffc9;
-  --color-secondary-400: #1affba;
-  --color-secondary-500: #00d4aa;
-  --color-secondary-600: #00a888;
-  --color-secondary-700: #007c66;
-  --color-secondary-800: #005044;
-  --color-secondary-900: #002422;
-  --color-secondary: #00d4aa;
+  /* ===== 🟢 Secondary Colors (Emerald Green) ===== */
+  --color-secondary-50: #ecfdf5;
+  --color-secondary-100: #d1fae5;
+  --color-secondary-200: #a7f3d0;
+  --color-secondary-300: #6ee7b7;
+  --color-secondary-400: #34d399;
+  --color-secondary-500: #059669;
+  --color-secondary-600: #047857;
+  --color-secondary-700: #065f46;
+  --color-secondary-800: #064e3b;
+  --color-secondary-900: #022c22;
+  --color-secondary: #059669;
 
-  /* ===== 🟡 Accent Colors ===== */
-  --color-accent-50: #fff8e6;
-  --color-accent-100: #ffeab3;
-  --color-accent-200: #ffdd80;
-  --color-accent-300: #ffcf4d;
-  --color-accent-400: #ffc21a;
-  --color-accent-500: #ffb800;
-  --color-accent-600: #cc9300;
-  --color-accent-700: #996e00;
-  --color-accent-800: #664a00;
-  --color-accent-900: #332500;
-  --color-accent: #ffb800;
+  /* ===== 🟡 Accent Colors (Amber) ===== */
+  --color-accent-50: #fffbeb;
+  --color-accent-100: #fef3c7;
+  --color-accent-200: #fde68a;
+  --color-accent-300: #fcd34d;
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #d97706;
+  --color-accent-600: #b45309;
+  --color-accent-700: #92400e;
+  --color-accent-800: #78350f;
+  --color-accent-900: #451a03;
+  --color-accent: #d97706;
 
-  /* ===== ⚫ Dark Colors ===== */
-  --color-dark-50: #2a2a4a;
-  --color-dark-100: #1a1a3e;
-  --color-dark-200: #12122a;
-  --color-dark-300: #0a0a1a;
-  --color-dark-400: #060612;
-  --color-dark-500: #02020a;
-  --color-dark: #0a0a1a;
+  /* ===== ⚫ Dark Colors (Kept for backward compat) ===== */
+  --color-dark-50: #f8fafc;
+  --color-dark-100: #f1f5f9;
+  --color-dark-200: #e2e8f0;
+  --color-dark-300: #cbd5e1;
+  --color-dark-400: #94a3b8;
+  --color-dark-500: #64748b;
+  --color-dark: #1f2937;
 
   /* ===== 🚦 Status Colors ===== */
-  --color-success: #00d4aa;
-  --color-error: #ff4d4d;
-  --color-warning: #ffb800;
-  --color-info: #3b82f6;
+  --color-success: #059669;
+  --color-error: #dc2626;
+  --color-warning: #d97706;
+  --color-info: #1e9cd7;
 
   /* ===== 🅰️ Custom Fonts ===== */
   --font-heading: var(--font-jakarta), sans-serif;
@@ -99,13 +100,13 @@
   --text-caption: 0.75rem;
   --text-caption--line-height: 1.5;
 
-  /* ===== ✨ Custom Box Shadows ===== */
-  --shadow-glow: 0 0 20px rgba(108, 99, 255, 0.3);
-  --shadow-glow-lg: 0 0 40px rgba(108, 99, 255, 0.4);
-  --shadow-glow-green: 0 0 20px rgba(0, 212, 170, 0.3);
-  --shadow-glow-yellow: 0 0 20px rgba(255, 184, 0, 0.3);
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.25);
-  --shadow-card-hover: 0 8px 40px rgba(108, 99, 255, 0.2);
+  /* ===== ✨ Custom Box Shadows (Light Theme) ===== */
+  --shadow-glow: 0 0 20px rgba(30, 156, 215, 0.2);
+  --shadow-glow-lg: 0 0 40px rgba(30, 156, 215, 0.25);
+  --shadow-glow-green: 0 0 20px rgba(5, 150, 105, 0.2);
+  --shadow-glow-amber: 0 0 20px rgba(217, 119, 6, 0.2);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 8px 32px rgba(30, 156, 215, 0.12);
 
   /* ===== 🎬 Custom Animations ===== */
   --animate-float: float 6s ease-in-out infinite;
@@ -133,10 +134,10 @@
 
 @keyframes glow {
   0% {
-    box-shadow: 0 0 5px rgba(108, 99, 255, 0.2);
+    box-shadow: 0 0 5px rgba(30, 156, 215, 0.15);
   }
   100% {
-    box-shadow: 0 0 20px rgba(108, 99, 255, 0.6);
+    box-shadow: 0 0 20px rgba(30, 156, 215, 0.4);
   }
 }
 
@@ -164,10 +165,10 @@
    🎨 CSS Custom Properties (Variables)
    ============================================ */
 :root {
-  /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  /* Light Theme Surface Cards */
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 
   /* Transitions */
   --transition-fast: 0.2s ease;
@@ -185,8 +186,8 @@ html {
 }
 
 body {
-  background-color: #0a0a1a;
-  color: #b4b4c8;
+  background-color: #ffffff;
+  color: #1f2937;
   overflow-x: hidden;
   min-height: 100vh;
 }
@@ -198,74 +199,57 @@ a {
 }
 
 /* ============================================
-   📜 Custom Scrollbar
+   📜 Custom Scrollbar (Light Theme)
    ============================================ */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a1a;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6c63ff;
+  background: #1e9cd7;
   border-radius: 10px;
+  border: 2px solid #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4840d4;
+  background: #0a5a8a;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #6c63ff #0a0a1a;
+  scrollbar-color: #1e9cd7 #f1f5f9;
 }
 
 /* ============================================
-   🔘 Selection Color
+   🔘 Selection Color (Brand Blue)
    ============================================ */
 ::selection {
-  background-color: #6c63ff;
+  background-color: #1e9cd7;
   color: white;
 }
 
 ::-moz-selection {
-  background-color: #6c63ff;
+  background-color: #1e9cd7;
   color: white;
 }
 
 /* ============================================
-   ✨ Glassmorphism Utility Classes
-   ============================================ */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-.glass-strong {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: var(--glass-shadow);
-}
-
-/* ============================================
-   🌈 Gradient Text Utilities
+   🌈 Gradient Text Utilities (Brand)
    ============================================ */
 .gradient-text {
-  background: linear-gradient(135deg, #6c63ff 0%, #00d4aa 100%);
+  background: linear-gradient(135deg, #1e9cd7 0%, #0a5a8a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-accent {
-  background: linear-gradient(135deg, #ffb800 0%, #6c63ff 100%);
+  background: linear-gradient(135deg, #1e9cd7 0%, #059669 50%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -275,37 +259,37 @@ a {
    🔵 Gradient Background Utilities
    ============================================ */
 .gradient-primary {
-  background: linear-gradient(135deg, #6c63ff 0%, #8b83ff 100%);
+  background: linear-gradient(135deg, #1e9cd7 0%, #0a5a8a 100%);
 }
 
 .gradient-secondary {
-  background: linear-gradient(135deg, #00d4aa 0%, #33ddbb 100%);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
 }
 
-.gradient-dark {
-  background: linear-gradient(180deg, #0a0a1a 0%, #12122a 100%);
+.gradient-light {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
 }
 
 /* ============================================
-   ⭕ Glow Effects
+   ⭕ Glow Effects (Subtle on light bg)
    ============================================ */
 .glow-primary {
-  box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(30, 156, 215, 0.15);
 }
 
 .glow-primary-hover:hover {
-  box-shadow: 0 0 30px rgba(108, 99, 255, 0.5);
+  box-shadow: 0 8px 24px rgba(30, 156, 215, 0.25);
 }
 
 .glow-secondary {
-  box-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+  box-shadow: 0 4px 16px rgba(5, 150, 105, 0.15);
 }
 
 /* ============================================
-   🟣 Dot Grid Background Pattern
+   🟣 Dot Grid Background Pattern (Light)
    ============================================ */
 .dot-pattern {
-  background-image: radial-gradient(rgba(108, 99, 255, 0.15) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(30, 156, 215, 0.12) 1px, transparent 1px);
   background-size: 30px 30px;
 }
 
@@ -319,10 +303,10 @@ a {
 @keyframes pulseGlow {
   0%,
   100% {
-    box-shadow: 0 0 5px rgba(108, 99, 255, 0.2);
+    box-shadow: 0 0 5px rgba(30, 156, 215, 0.15);
   }
   50% {
-    box-shadow: 0 0 25px rgba(108, 99, 255, 0.5);
+    box-shadow: 0 0 20px rgba(30, 156, 215, 0.35);
   }
 }
 
@@ -337,7 +321,7 @@ a {
   position: absolute;
   inset: -2px;
   border-radius: inherit;
-  background: linear-gradient(45deg, #6c63ff, #00d4aa, #ffb800, #6c63ff);
+  background: linear-gradient(45deg, #1e9cd7, #059669, #d97706, #1e9cd7);
   background-size: 400% 400%;
   animation: borderRotate 4s linear infinite;
   z-index: -1;
@@ -371,20 +355,20 @@ a {
 }
 
 /* ============================================
-   🎬 PHASE 2C — Hero Section Enhancements
+   🎬 Hero Section Enhancements (Light Theme)
    ============================================ */
 
-/* ── Hero Card Premium Hover Effect ── */
+/* ── Card Hover Effect ── */
 .hero-card-hover {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(108, 99, 255, 0.15);
+  box-shadow: 0 12px 32px rgba(30, 156, 215, 0.12);
 }
 
-/* ── Shimmer Effect for Cards ── */
+/* ── Shimmer Effect ── */
 @keyframes shimmer {
   0% {
     background-position: -1000px 0;
@@ -397,9 +381,9 @@ a {
 .shimmer {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(255, 255, 255, 0) 100%
+    rgba(30, 156, 215, 0) 0%,
+    rgba(30, 156, 215, 0.08) 50%,
+    rgba(30, 156, 215, 0) 100%
   );
   background-size: 1000px 100%;
   animation: shimmer 3s infinite;
@@ -420,7 +404,7 @@ a {
   animation: floatY 4s ease-in-out infinite;
 }
 
-/* ── Animated Gradient Text (Multi Color) ── */
+/* ── Animated Gradient Text (Brand) ── */
 @keyframes gradientShift {
   0%,
   100% {
@@ -432,7 +416,7 @@ a {
 }
 
 .gradient-text-animated {
-  background: linear-gradient(135deg, #6c63ff 0%, #00d4aa 50%, #ffb800 100%);
+  background: linear-gradient(135deg, #1e9cd7 0%, #059669 50%, #d97706 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -440,14 +424,14 @@ a {
   animation: gradientShift 5s ease infinite;
 }
 
-/* ── Glow Pulse Animation ── */
+/* ── Glow Pulse ── */
 @keyframes glowPulse {
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
+    box-shadow: 0 0 20px rgba(30, 156, 215, 0.2);
   }
   50% {
-    box-shadow: 0 0 40px rgba(108, 99, 255, 0.6);
+    box-shadow: 0 0 40px rgba(30, 156, 215, 0.4);
   }
 }
 
@@ -455,18 +439,18 @@ a {
   animation: glowPulse 2s ease-in-out infinite;
 }
 
-/* ── Hero Section Wrapper ── */
+/* ── Hero Section Wrapper (Light) ── */
 .hero-section {
-  background: radial-gradient(ellipse at top, rgba(108, 99, 255, 0.05) 0%, transparent 50%);
+  background: radial-gradient(ellipse at top, rgba(30, 156, 215, 0.06) 0%, transparent 50%);
 }
 
-/* ── Better Text Selection in Hero ── */
+/* ── Text Selection in Hero ── */
 .hero-section ::selection {
-  background-color: rgba(108, 99, 255, 0.4);
-  color: white;
+  background-color: rgba(30, 156, 215, 0.3);
+  color: #1f2937;
 }
 
-/* ── Smooth Card Reveal Animation ── */
+/* ── Card Reveal Animation ── */
 @keyframes cardReveal {
   0% {
     opacity: 0;
@@ -496,7 +480,7 @@ a {
   animation: spinSlow 20s linear infinite;
 }
 
-/* ── Pulse Slow (for Subtle Effects) ── */
+/* ── Pulse Slow ── */
 @keyframes pulseSlow {
   0%,
   100% {
@@ -522,14 +506,14 @@ a {
   }
 }
 
-/* ── Smooth Scroll Behavior (Enhanced) ── */
+/* ── Smooth Scroll Behavior ── */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
 }
 
-/* ── Disable Animations for Accessibility ── */
+/* ── Accessibility — Reduced Motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -541,11 +525,10 @@ a {
 }
 
 /* ============================================
-   🎬 PHASE 2D — New Animations
-   (For CTA Section + Counter Numbers)
+   🎬 Additional Animations
    ============================================ */
 
-/* ── Float Delayed Animation ── */
+/* ── Float Delayed ── */
 @keyframes floatDelayed {
   0%,
   100% {
@@ -565,7 +548,35 @@ a {
   animation-delay: 2s;
 }
 
-/* ── Tabular Numbers (for Counter Animation) ── */
+/* ── Tabular Numbers (Counter) ── */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
+
+/* ============================================
+   🎨 Card Surface Utilities (Light Theme)
+   ============================================ */
+
+.surface-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.surface-card-hover {
+  transition: all 0.3s ease;
+}
+
+.surface-card-hover:hover {
+  border-color: rgba(30, 156, 215, 0.3);
+  box-shadow: 0 4px 16px rgba(30, 156, 215, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   ⚠️ REMOVED IN LIGHT THEME:
+   ── .glass, .glass-strong (dark glass)
+   ── .gradient-dark
+   ── Dark scrollbar
+   Use bg-white + border-[#E2E8F0] instead
+   ============================================ */

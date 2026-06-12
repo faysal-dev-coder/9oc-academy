@@ -48,7 +48,7 @@ function formatDate(dateStr) {
 // ═══════════════════════════════════════════════
 // COMPONENT: Summary Card
 // ═══════════════════════════════════════════════
-function SummaryCard({ icon: Icon, label, value, color, suffix = "" }) {
+function SummaryCard({ icon: Icon, label, value, color, bgColor, suffix = "" }) {
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -63,25 +63,24 @@ function SummaryCard({ icon: Icon, label, value, color, suffix = "" }) {
   return (
     <div
       ref={cardRef}
-      className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
+      className="relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm hover:shadow-md transition-all duration-200"
     >
       <div
-        className="absolute -right-4 -top-4 h-16 w-16 rounded-full opacity-20 blur-xl"
-        style={{ backgroundColor: color }}
+        className={`absolute -right-4 -top-4 h-16 w-16 rounded-full opacity-20 blur-xl ${bgColor}`}
       />
       <div className="relative flex items-center gap-4">
         <div
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
-          style={{ backgroundColor: `${color}20` }}
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border"
+          style={{ backgroundColor: `${color}15`, borderColor: `${color}30` }}
         >
           <Icon className="text-xl" style={{ color }} />
         </div>
         <div>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-bold text-[#1F2937]">
             {toBangla(value)}
             {suffix}
           </p>
-          <p className="text-xs text-white/60">{label}</p>
+          <p className="text-xs text-[#64748B] font-medium">{label}</p>
         </div>
       </div>
     </div>
@@ -101,17 +100,19 @@ function AttemptCard({ attempt, index }) {
   return (
     <Link
       href={`/exams/${attempt.exams?.id}/result/${attempt.id}`}
-      className="group block rounded-xl border border-white/10 bg-white/5 p-4 transition-all duration-200 hover:border-white/20 hover:bg-white/8 hover:-translate-y-0.5"
+      className="group block rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm transition-all duration-200 hover:border-primary/40 hover:shadow-md hover:-translate-y-0.5"
     >
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/20 text-sm font-bold text-primary">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 border border-primary/30 text-sm font-bold text-primary-dark">
           {toBangla(index)}
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-white truncate">{attempt.exams?.title || "পরীক্ষা"}</h3>
+          <h3 className="font-semibold text-[#1F2937] truncate group-hover:text-primary transition-colors">
+            {attempt.exams?.title || "পরীক্ষা"}
+          </h3>
 
-          <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-white/50">
+          <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-[#64748B]">
             <span className="flex items-center gap-1">
               <FaCalendarAlt className="text-xs" />
               {formatDate(attempt.completed_at)}
@@ -120,37 +121,46 @@ function AttemptCard({ attempt, index }) {
               <FaClock className="text-xs" />
               {formatTime(attempt.time_taken_seconds)}
             </span>
-            <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs">{categoryName}</span>
+            <span className="rounded-full bg-[#F1F5F9] border border-[#E2E8F0] px-2 py-0.5 text-xs text-[#475569]">
+              {categoryName}
+            </span>
           </div>
 
           <div className="mt-2 flex flex-wrap gap-3 text-xs">
-            <span className="text-green-400">✓ সঠিক: {toBangla(attempt.correct_count || 0)}</span>
-            <span className="text-red-400">✗ ভুল: {toBangla(attempt.wrong_count || 0)}</span>
-            <span className="text-white/40">− বাদ: {toBangla(attempt.skipped_count || 0)}</span>
+            <span className="text-green-600 font-medium">
+              ✓ সঠিক: {toBangla(attempt.correct_count || 0)}
+            </span>
+            <span className="text-red-600 font-medium">
+              ✗ ভুল: {toBangla(attempt.wrong_count || 0)}
+            </span>
+            <span className="text-amber-600 font-medium">
+              − বাদ: {toBangla(attempt.skipped_count || 0)}
+            </span>
           </div>
         </div>
 
         <div className="flex sm:flex-col items-center sm:items-end gap-3 sm:gap-1 shrink-0">
           <div className="text-right">
-            <p className="text-2xl font-bold" style={{ color: isPassed ? "#00D4AA" : "#FF6B6B" }}>
+            <p className="text-2xl font-bold" style={{ color: isPassed ? "#059669" : "#DC2626" }}>
               {toBangla(percentage)}%
             </p>
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-[#94A3B8]">
               {toBangla(score)}/{toBangla(total)}
             </p>
           </div>
           <span
-            className="text-xs px-3 py-1 rounded-full font-medium"
+            className="text-xs px-3 py-1 rounded-full font-semibold border"
             style={{
-              backgroundColor: isPassed ? "rgba(0,212,170,0.15)" : "rgba(255,107,107,0.15)",
-              color: isPassed ? "#00D4AA" : "#FF6B6B",
+              backgroundColor: isPassed ? "#D1FAE5" : "#FEE2E2",
+              color: isPassed ? "#059669" : "#DC2626",
+              borderColor: isPassed ? "#A7F3D0" : "#FECACA",
             }}
           >
             {isPassed ? "✓ পাস" : "✗ ফেল"}
           </span>
         </div>
 
-        <FaArrowRight className="hidden sm:block shrink-0 text-white/20 transition-all group-hover:translate-x-1 group-hover:text-white/50" />
+        <FaArrowRight className="hidden sm:block shrink-0 text-[#CBD5E1] transition-all group-hover:translate-x-1 group-hover:text-primary" />
       </div>
     </Link>
   );
@@ -214,16 +224,13 @@ export default function HistoryClient({ attempts, summary }) {
     return result;
   }, [attempts, search, filter, sortBy]);
 
-  // ── Pagination (No useEffect — Auto-Safe) ──
+  // ── Pagination ──
   const totalPages = Math.max(1, Math.ceil(filteredAttempts.length / ITEMS_PER_PAGE));
-
-  // currentPage যদি totalPages থেকে বড় হয়, safePage দিয়ে adjust
   const safePage = Math.min(currentPage, totalPages);
-
   const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
   const paginatedAttempts = filteredAttempts.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
-  // ── Filter Reset Handler (Page 1 এ যাও) ──
+  // ── Handlers ──
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
     setCurrentPage(1);
@@ -240,11 +247,11 @@ export default function HistoryClient({ attempts, summary }) {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0A0A1A] pb-20 pt-8">
+    <div className="relative min-h-screen overflow-hidden bg-white pb-20 pt-8">
+      {/* Soft Background Orb */}
       <div
         ref={orb1Ref}
-        className="pointer-events-none fixed left-1/4 top-1/4 h-96 w-96 rounded-full opacity-10 blur-3xl"
-        style={{ backgroundColor: "#6C63FF" }}
+        className="pointer-events-none fixed left-1/4 top-1/4 h-96 w-96 rounded-full bg-primary opacity-5 blur-3xl"
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -253,16 +260,16 @@ export default function HistoryClient({ attempts, summary }) {
           <div>
             <Link
               href="/dashboard"
-              className="mb-3 inline-flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
+              className="mb-3 inline-flex items-center gap-2 text-sm text-[#64748B] hover:text-primary transition-colors font-medium"
             >
               <FaArrowLeft className="text-xs" />
               Dashboard এ ফিরে যান
             </Link>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#1F2937] flex items-center gap-3">
               <FaClipboardList className="text-primary" />
               পরীক্ষার ইতিহাস
             </h1>
-            <p className="mt-1 text-sm text-white/60">আপনার সব পরীক্ষার ফলাফল এক জায়গায়</p>
+            <p className="mt-1 text-sm text-[#64748B]">আপনার সব পরীক্ষার ফলাফল এক জায়গায়</p>
           </div>
         </div>
 
@@ -272,81 +279,81 @@ export default function HistoryClient({ attempts, summary }) {
             icon={FaClipboardList}
             label="মোট পরীক্ষা"
             value={summary.total}
-            color="#6C63FF"
+            color="#1E9CD7"
+            bgColor="bg-primary"
           />
-          <SummaryCard icon={FaCheckCircle} label="পাস" value={summary.passed} color="#00D4AA" />
-          <SummaryCard icon={FaTimesCircle} label="ফেল" value={summary.failed} color="#FF6B6B" />
+          <SummaryCard
+            icon={FaCheckCircle}
+            label="পাস"
+            value={summary.passed}
+            color="#059669"
+            bgColor="bg-green-500"
+          />
+          <SummaryCard
+            icon={FaTimesCircle}
+            label="ফেল"
+            value={summary.failed}
+            color="#DC2626"
+            bgColor="bg-red-500"
+          />
           <SummaryCard
             icon={FaChartLine}
             label="গড় স্কোর"
             value={summary.avgScore}
             suffix="%"
-            color="#FFB800"
+            color="#D97706"
+            bgColor="bg-amber-500"
           />
         </div>
 
         {/* FILTER BAR */}
         {attempts.length > 0 && (
-          <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+          <div className="mb-6 rounded-2xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
             <div className="flex flex-col sm:flex-row gap-3">
               {/* Search */}
               <div className="relative flex-1">
-                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-sm" />
+                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8] text-sm" />
                 <input
                   type="text"
                   placeholder="পরীক্ষার নাম খুঁজুন..."
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 py-2.5 pl-10 pr-4 text-sm text-white placeholder-white/40 outline-none transition-all focus:border-primary/50 focus:bg-white/8"
+                  className="w-full rounded-xl border border-[#E2E8F0] bg-white py-2.5 pl-10 pr-4 text-sm text-[#1F2937] placeholder-[#94A3B8] outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               {/* Filter */}
               <div className="relative">
-                <FaFilter className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-xs" />
+                <FaFilter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8] text-xs z-10" />
                 <select
                   value={filter}
                   onChange={(e) => handleFilterChange(e.target.value)}
-                  className="w-full sm:w-auto rounded-xl border border-white/10 bg-white/5 py-2.5 pl-9 pr-8 text-sm text-white outline-none transition-all focus:border-primary/50 cursor-pointer appearance-none"
+                  className="w-full sm:w-auto rounded-xl border border-[#E2E8F0] bg-white py-2.5 pl-9 pr-8 text-sm text-[#1F2937] outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer appearance-none font-medium"
                 >
-                  <option value="all" className="bg-[#0A0A1A]">
-                    সব দেখুন
-                  </option>
-                  <option value="passed" className="bg-[#0A0A1A]">
-                    শুধু পাস
-                  </option>
-                  <option value="failed" className="bg-[#0A0A1A]">
-                    শুধু ফেল
-                  </option>
+                  <option value="all">সব দেখুন</option>
+                  <option value="passed">শুধু পাস</option>
+                  <option value="failed">শুধু ফেল</option>
                 </select>
               </div>
 
               {/* Sort */}
               <div className="relative">
-                <FaSort className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-xs" />
+                <FaSort className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8] text-xs z-10" />
                 <select
                   value={sortBy}
                   onChange={(e) => handleSortChange(e.target.value)}
-                  className="w-full sm:w-auto rounded-xl border border-white/10 bg-white/5 py-2.5 pl-9 pr-8 text-sm text-white outline-none transition-all focus:border-primary/50 cursor-pointer appearance-none"
+                  className="w-full sm:w-auto rounded-xl border border-[#E2E8F0] bg-white py-2.5 pl-9 pr-8 text-sm text-[#1F2937] outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer appearance-none font-medium"
                 >
-                  <option value="newest" className="bg-[#0A0A1A]">
-                    নতুন আগে
-                  </option>
-                  <option value="oldest" className="bg-[#0A0A1A]">
-                    পুরাতন আগে
-                  </option>
-                  <option value="highest" className="bg-[#0A0A1A]">
-                    বেশি স্কোর আগে
-                  </option>
-                  <option value="lowest" className="bg-[#0A0A1A]">
-                    কম স্কোর আগে
-                  </option>
+                  <option value="newest">নতুন আগে</option>
+                  <option value="oldest">পুরাতন আগে</option>
+                  <option value="highest">বেশি স্কোর আগে</option>
+                  <option value="lowest">কম স্কোর আগে</option>
                 </select>
               </div>
             </div>
 
             {(search || filter !== "all") && (
-              <div className="mt-3 text-xs text-white/50">
+              <div className="mt-3 text-xs text-[#64748B] font-medium">
                 {toBangla(filteredAttempts.length)} টি পরীক্ষা পাওয়া গেছে
               </div>
             )}
@@ -361,21 +368,18 @@ export default function HistoryClient({ attempts, summary }) {
             ))}
           </div>
         ) : attempts.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-12 backdrop-blur-sm">
+          <div className="rounded-2xl border border-[#E2E8F0] bg-white p-12 shadow-sm">
             <div className="flex flex-col items-center text-center">
-              <div
-                className="mb-4 flex h-20 w-20 items-center justify-center rounded-full"
-                style={{ backgroundColor: "rgba(108,99,255,0.1)" }}
-              >
-                <FaClipboardList className="text-4xl" style={{ color: "#6C63FF" }} />
+              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 border border-primary/30 shadow-sm shadow-primary/10">
+                <FaClipboardList className="text-4xl text-primary" />
               </div>
-              <h3 className="mb-2 text-xl font-bold text-white">এখনো কোনো পরীক্ষা দেননি!</h3>
-              <p className="mb-6 text-sm text-white/50">
+              <h3 className="mb-2 text-xl font-bold text-[#1F2937]">এখনো কোনো পরীক্ষা দেননি!</h3>
+              <p className="mb-6 text-sm text-[#64748B]">
                 প্রথম পরীক্ষা দিয়ে আপনার যাত্রা শুরু করুন 🎯
               </p>
               <Link
                 href="/exams"
-                className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-primary/80 hover:-translate-y-0.5"
+                className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary-dark hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5"
               >
                 <FaClipboardList />
                 পরীক্ষা দিন
@@ -383,11 +387,11 @@ export default function HistoryClient({ attempts, summary }) {
             </div>
           </div>
         ) : (
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-12 backdrop-blur-sm">
+          <div className="rounded-2xl border border-[#E2E8F0] bg-white p-12 shadow-sm">
             <div className="flex flex-col items-center text-center">
-              <FaSearch className="text-4xl text-white/30 mb-3" />
-              <h3 className="mb-2 text-lg font-bold text-white">কোনো ফলাফল পাওয়া যায়নি</h3>
-              <p className="text-sm text-white/50">অন্য Search Term বা Filter দিয়ে চেষ্টা করুন</p>
+              <FaSearch className="text-4xl text-[#CBD5E1] mb-3" />
+              <h3 className="mb-2 text-lg font-bold text-[#1F2937]">কোনো ফলাফল পাওয়া যায়নি</h3>
+              <p className="text-sm text-[#64748B]">অন্য Search Term বা Filter দিয়ে চেষ্টা করুন</p>
             </div>
           </div>
         )}
@@ -398,7 +402,7 @@ export default function HistoryClient({ attempts, summary }) {
             <button
               onClick={() => setCurrentPage(Math.max(1, safePage - 1))}
               disabled={safePage === 1}
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition-all hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-4 py-2 text-sm text-[#475569] font-medium shadow-sm transition-all hover:bg-[#F1F5F9] hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <FaArrowLeft className="text-xs" />
               <span className="hidden sm:inline">পূর্ববর্তী</span>
@@ -413,13 +417,13 @@ export default function HistoryClient({ attempts, summary }) {
 
                   return (
                     <div key={page} className="flex items-center gap-1">
-                      {showEllipsis && <span className="text-white/30 px-1">...</span>}
+                      {showEllipsis && <span className="text-[#94A3B8] px-1">...</span>}
                       <button
                         onClick={() => setCurrentPage(page)}
-                        className={`min-w-10 h-10 rounded-xl text-sm font-medium transition-all ${
+                        className={`min-w-10 h-10 rounded-xl text-sm font-semibold transition-all ${
                           safePage === page
-                            ? "bg-primary text-white"
-                            : "border border-white/10 bg-white/5 text-white hover:bg-white/10"
+                            ? "bg-primary text-white shadow-lg shadow-primary/25"
+                            : "border border-[#E2E8F0] bg-white text-[#475569] hover:bg-[#F1F5F9] hover:border-primary/30"
                         }`}
                       >
                         {toBangla(page)}
@@ -432,7 +436,7 @@ export default function HistoryClient({ attempts, summary }) {
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, safePage + 1))}
               disabled={safePage === totalPages}
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition-all hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-4 py-2 text-sm text-[#475569] font-medium shadow-sm transition-all hover:bg-[#F1F5F9] hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <span className="hidden sm:inline">পরবর্তী</span>
               <FaArrowRight className="text-xs" />

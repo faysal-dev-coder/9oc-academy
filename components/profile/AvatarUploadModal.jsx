@@ -18,18 +18,15 @@ const BUCKET_NAME = "user-avatars";
 const MAX_FILE_SIZE = 1024 * 1024;
 
 const ALLOWED_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
-
 const ALLOWED_EXTENSIONS = new Set(["jpg", "jpeg", "png", "webp"]);
 
 const formatFileSize = (bytes) => {
   if (bytes < 1024) {
     return `${bytes} B`;
   }
-
   if (bytes < 1024 * 1024) {
     return `${(bytes / 1024).toFixed(1)} KB`;
   }
-
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 };
 
@@ -38,7 +35,6 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
   const fileInputRef = useRef(null);
   const previewUrlRef = useRef("");
 
-  // ✅ SSR-safe mount check (no setState in effect)
   const [mounted] = useState(() => typeof window !== "undefined");
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -64,7 +60,6 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
     };
   }, [cleanupObjectUrl]);
 
-  // Prevent body scroll when modal open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -94,7 +89,6 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
     if (isBusy) {
       return;
     }
-
     resetLocalState();
     onClose?.();
   }, [isBusy, onClose, resetLocalState]);
@@ -103,25 +97,21 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
     if (!file) {
       return "একটি ছবি সিলেক্ট করুন।";
     }
-
     const extension = file.name.split(".").pop()?.toLowerCase() || "";
     const isValidType = ALLOWED_MIME_TYPES.has(file.type) || ALLOWED_EXTENSIONS.has(extension);
 
     if (!isValidType) {
       return "শুধু JPG, PNG অথবা WEBP ছবি আপলোড করা যাবে।";
     }
-
     if (file.size > MAX_FILE_SIZE) {
       return "ফাইল সাইজ সর্বোচ্চ ১ MB হতে হবে।";
     }
-
     return "";
   }, []);
 
   const setFilePreview = useCallback(
     (file) => {
       cleanupObjectUrl();
-
       const localUrl = URL.createObjectURL(file);
       previewUrlRef.current = localUrl;
       setPreviewUrl(localUrl);
@@ -132,7 +122,6 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
   const applySelectedFile = useCallback(
     (file) => {
       const validationMessage = validateFile(file);
-
       setError("");
       setSuccess("");
 
@@ -151,11 +140,9 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
   const handleFileInputChange = useCallback(
     (event) => {
       const file = event.target.files?.[0];
-
       if (!file) {
         return;
       }
-
       applySelectedFile(file);
       event.target.value = "";
     },
@@ -166,18 +153,15 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
     if (isBusy) {
       return;
     }
-
     fileInputRef.current?.click();
   }, [isBusy]);
 
   const handleDragOver = useCallback(
     (event) => {
       event.preventDefault();
-
       if (isBusy) {
         return;
       }
-
       setIsDragging(true);
     },
     [isBusy]
@@ -192,17 +176,13 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
     (event) => {
       event.preventDefault();
       setIsDragging(false);
-
       if (isBusy) {
         return;
       }
-
       const file = event.dataTransfer.files?.[0];
-
       if (!file) {
         return;
       }
-
       applySelectedFile(file);
     },
     [applySelectedFile, isBusy]
@@ -254,7 +234,6 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
     }
 
     const validationMessage = validateFile(selectedFile);
-
     if (validationMessage) {
       setError(validationMessage);
       return;
@@ -282,7 +261,6 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
       await cleanupFolderFiles("avatar.jpg");
 
       const { data: publicUrlData } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath);
-
       const nextAvatarUrl = `${publicUrlData.publicUrl}?t=${Date.now()}`;
 
       const { error: profileError } = await supabase
@@ -371,23 +349,25 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
 
   const modalContent = (
     <div
-      className="fixed inset-0 flex items-start justify-center overflow-y-auto bg-black/80 px-4 py-8 backdrop-blur-md sm:items-center sm:py-12"
+      className="fixed inset-0 flex items-start justify-center overflow-y-auto bg-slate-900/60 px-4 py-8 backdrop-blur-md sm:items-center sm:py-12"
       style={{ zIndex: 99999 }}
       onClick={handleClose}
     >
       <div
-        className="relative w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-slate-900 via-slate-950 to-slate-900 shadow-2xl"
+        className="relative w-full max-w-md overflow-hidden rounded-3xl border border-[#E2E8F0] bg-white shadow-2xl shadow-slate-900/20"
         onClick={(event) => event.stopPropagation()}
       >
-        {/* Decorative gradient blobs */}
-        <div className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-purple-500/30 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-pink-500/30 blur-3xl" />
+        {/* Decorative soft brand blobs */}
+        <div className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-secondary/20 blur-3xl" />
 
         {/* ═══════════ Header ═══════════ */}
-        <div className="relative flex items-center justify-between border-b border-white/10 px-6 py-4">
+        <div className="relative flex items-center justify-between border-b border-[#E2E8F0] px-6 py-4 bg-linear-to-r from-primary/5 to-secondary/5">
           <div>
-            <h2 className="text-lg font-bold text-white">অ্যাভাটার আপলোড</h2>
-            <p className="mt-0.5 text-xs text-slate-400">JPG, PNG, WEBP • সর্বোচ্চ ১ MB</p>
+            <h2 className="text-lg font-bold text-[#1F2937]">অ্যাভাটার আপলোড</h2>
+            <p className="mt-0.5 text-xs text-[#64748B] font-medium">
+              JPG, PNG, WEBP • সর্বোচ্চ ১ MB
+            </p>
           </div>
 
           <button
@@ -395,7 +375,7 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
             onClick={handleClose}
             disabled={isBusy}
             aria-label="Close modal"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#E2E8F0] bg-white text-[#64748B] transition hover:bg-[#F1F5F9] hover:text-[#1F2937] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <FaTimes className="text-sm" />
           </button>
@@ -406,13 +386,13 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
           {/* ─── Circular Avatar Preview ─── */}
           <div className="mb-6 flex flex-col items-center">
             <div className="relative">
-              {/* Gradient ring */}
-              <div className="absolute inset-0 rounded-full bg-linear-to-tr from-purple-500 via-pink-500 to-orange-400 p-1">
-                <div className="h-full w-full rounded-full bg-slate-950" />
+              {/* Gradient ring with brand colors */}
+              <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary via-secondary to-accent p-1 shadow-lg shadow-primary/20">
+                <div className="h-full w-full rounded-full bg-white" />
               </div>
 
               {/* Avatar circle */}
-              <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-slate-950">
+              <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-white">
                 {previewSource ? (
                   <Image
                     src={previewSource}
@@ -423,16 +403,16 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
                     sizes="128px"
                   />
                 ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-1 bg-linear-to-br from-slate-800 to-slate-900 text-slate-500">
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-1 bg-linear-to-br from-[#F1F5F9] to-[#E2E8F0] text-[#94A3B8]">
                     <FaImage className="text-2xl" />
-                    <span className="text-[10px]">No image</span>
+                    <span className="text-[10px] font-medium">No image</span>
                   </div>
                 )}
               </div>
 
               {/* Status badge */}
               {hasSelection && (
-                <div className="absolute -top-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-slate-950 bg-emerald-500 shadow-lg">
+                <div className="absolute -top-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-green-500 shadow-lg shadow-green-500/40">
                   <FaCheckCircle className="text-xs text-white" />
                 </div>
               )}
@@ -441,17 +421,18 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
             {/* Status text */}
             <div className="mt-3 text-center">
               {hasSelection ? (
-                <p className="text-xs text-slate-300">
-                  <span className="font-semibold text-emerald-400">নতুন:</span> {selectedFile.name}
+                <p className="text-xs text-[#475569]">
+                  <span className="font-semibold text-green-600">নতুন:</span>{" "}
+                  <span className="font-medium">{selectedFile.name}</span>
                 </p>
               ) : currentAvatarUrl ? (
-                <p className="text-xs text-slate-400">বর্তমান অ্যাভাটার</p>
+                <p className="text-xs text-[#64748B] font-medium">বর্তমান অ্যাভাটার</p>
               ) : (
-                <p className="text-xs text-slate-400">নতুন ছবি নির্বাচন করুন</p>
+                <p className="text-xs text-[#64748B] font-medium">নতুন ছবি নির্বাচন করুন</p>
               )}
 
               {hasSelection && (
-                <p className="mt-0.5 text-[10px] text-slate-500">
+                <p className="mt-0.5 text-[10px] text-[#94A3B8] font-medium">
                   {formatFileSize(selectedFile.size)}
                 </p>
               )}
@@ -476,28 +457,30 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
             disabled={isBusy}
             className={`flex w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed px-4 py-5 text-center transition-all ${
               isDragging
-                ? "scale-[1.02] border-purple-400 bg-purple-500/20"
-                : "border-white/15 bg-white/5 hover:border-purple-400/50 hover:bg-white/10"
+                ? "scale-[1.02] border-primary bg-primary/10"
+                : "border-[#CBD5E1] bg-[#F8FAFC] hover:border-primary/50 hover:bg-primary/5"
             } disabled:cursor-not-allowed disabled:opacity-60`}
           >
-            <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-purple-500 to-pink-500 shadow-lg">
+            <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-primary to-secondary shadow-lg shadow-primary/30">
               <FaCloudUploadAlt className="text-xl text-white" />
             </div>
 
-            <p className="text-sm font-semibold text-white">ছবি drag & drop করুন</p>
-            <p className="mt-0.5 text-xs text-slate-400">অথবা ক্লিক করে file বাছাই করুন</p>
+            <p className="text-sm font-semibold text-[#1F2937]">ছবি drag & drop করুন</p>
+            <p className="mt-0.5 text-xs text-[#64748B] font-medium">
+              অথবা ক্লিক করে file বাছাই করুন
+            </p>
           </button>
 
           {/* ─── Status Messages ─── */}
           {error && (
-            <div className="mt-4 flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-xs text-red-200">
+            <div className="mt-4 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-xs text-red-700 font-medium">
               <FaExclamationCircle className="mt-0.5 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           {success && (
-            <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5 text-xs text-emerald-200">
+            <div className="mt-4 flex items-start gap-2 rounded-xl border border-green-200 bg-green-50 px-3 py-2.5 text-xs text-green-700 font-medium">
               <FaCheckCircle className="mt-0.5 shrink-0" />
               <span>{success}</span>
             </div>
@@ -510,7 +493,7 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
                 type="button"
                 onClick={handleClearSelectedFile}
                 disabled={isBusy}
-                className="rounded-full border border-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-full border border-[#E2E8F0] bg-white px-3 py-1.5 text-xs font-semibold text-[#475569] transition hover:bg-[#F1F5F9] hover:border-[#CBD5E1] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 বাতিল করুন
               </button>
@@ -521,7 +504,7 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
                 type="button"
                 onClick={handleRemoveAvatar}
                 disabled={isBusy}
-                className="inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-300 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-100 hover:border-red-300 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <FaTrash className="text-[10px]" />
                 {isRemoving ? "মুছে ফেলা হচ্ছে..." : "অ্যাভাটার মুছুন"}
@@ -530,21 +513,21 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
           </div>
 
           {/* ─── Info Note ─── */}
-          <div className="mt-4 flex items-start gap-2 rounded-xl border border-blue-500/20 bg-blue-500/5 px-3 py-2.5">
-            <FaInfoCircle className="mt-0.5 shrink-0 text-xs text-blue-400" />
-            <p className="text-[11px] leading-relaxed text-slate-400">
+          <div className="mt-4 flex items-start gap-2 rounded-xl border border-primary/20 bg-primary/5 px-3 py-2.5">
+            <FaInfoCircle className="mt-0.5 shrink-0 text-xs text-primary" />
+            <p className="text-[11px] leading-relaxed text-[#475569] font-medium">
               নতুন ছবি আপলোড করলে আগের অ্যাভাটার automatic replace হয়ে যাবে।
             </p>
           </div>
         </div>
 
         {/* ═══════════ Footer ═══════════ */}
-        <div className="relative flex gap-3 border-t border-white/10 bg-slate-950/50 px-6 py-4">
+        <div className="relative flex gap-3 border-t border-[#E2E8F0] bg-[#F8FAFC] px-6 py-4">
           <button
             type="button"
             onClick={handleClose}
             disabled={isBusy}
-            className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex-1 rounded-xl border border-[#E2E8F0] bg-white px-4 py-2.5 text-sm font-semibold text-[#475569] transition hover:bg-[#F1F5F9] hover:border-[#CBD5E1] disabled:cursor-not-allowed disabled:opacity-50"
           >
             Cancel
           </button>
@@ -553,7 +536,7 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
             type="button"
             onClick={handleUpload}
             disabled={!hasSelection || isBusy}
-            className="flex-1 rounded-xl bg-linear-to-r from-purple-600 to-pink-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-purple-500 hover:to-pink-500 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex-1 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary-dark hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:shadow-lg"
           >
             {isUploading ? (
               <span className="flex items-center justify-center gap-2">
@@ -569,7 +552,6 @@ const AvatarUploadModal = ({ isOpen, onClose, userId, currentAvatarUrl, onAvatar
     </div>
   );
 
-  // ✅ Portal rendering — Modal কে <body> এর সরাসরি child বানাচ্ছি
   return createPortal(modalContent, document.body);
 };
 
