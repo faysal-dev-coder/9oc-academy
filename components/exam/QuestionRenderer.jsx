@@ -19,17 +19,9 @@ const toBanglaNumber = (num) => {
 
 // ─────────────────────────────────────────────────────────
 // Props:
-//   question       → current question object
-//   questionIndex  → 0-based index
-//   totalQuestions → total count
-//   selectedAnswer → currently selected option id (or null)
-//   isMarked       → boolean (marked for review?)
-//   onAnswerSelect → fn(questionId, optionId)
-//   onMarkToggle   → fn(questionId)
-//   onPrevious     → fn()
-//   onNext         → fn()
-//   isFirst        → boolean
-//   isLast         → boolean
+//   question, questionIndex, totalQuestions, selectedAnswer,
+//   isMarked, onAnswerSelect, onMarkToggle,
+//   onPrevious, onNext, isFirst, isLast
 // ─────────────────────────────────────────────────────────
 
 export default function QuestionRenderer({
@@ -45,11 +37,11 @@ export default function QuestionRenderer({
   isFirst,
   isLast,
 }) {
-  // Question বা Options না থাকলে
+  // Question না থাকলে
   if (!question) {
     return (
       <div className="flex items-center justify-center min-h-75">
-        <p className="text-gray-400 text-lg">প্রশ্ন লোড হচ্ছে...</p>
+        <p className="text-[#94A3B8] text-lg">প্রশ্ন লোড হচ্ছে...</p>
       </div>
     );
   }
@@ -59,11 +51,11 @@ export default function QuestionRenderer({
   return (
     <div className="flex flex-col gap-0">
       {/* ── Question Header ─────────────────────────────── */}
-      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
+      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-[#E2E8F0]">
         {/* প্রশ্ন নম্বর */}
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-500">প্রশ্ন</span>
-          <span className="text-base font-bold text-gray-800">
+          <span className="text-sm font-medium text-[#64748B]">প্রশ্ন</span>
+          <span className="text-base font-bold text-[#1F2937]">
             {toBanglaNumber(questionIndex + 1)}/{toBanglaNumber(totalQuestions)}
           </span>
         </div>
@@ -73,16 +65,16 @@ export default function QuestionRenderer({
           onClick={() => onMarkToggle(question.id)}
           className={`
             flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium
-            transition-all duration-200
+            transition-all duration-200 cursor-pointer
             ${
               isMarked
-                ? "bg-yellow-100 text-yellow-700 border border-yellow-300"
-                : "bg-gray-100 text-gray-500 border border-gray-200 hover:bg-yellow-50 hover:text-yellow-600"
+                ? "bg-amber-50 text-amber-700 border border-amber-200 shadow-sm"
+                : "bg-[#F1F5F9] text-[#64748B] border border-[#E2E8F0] hover:bg-amber-50 hover:text-amber-600 hover:border-amber-200"
             }
           `}
         >
           {isMarked ? (
-            <FaStar className="text-yellow-500 text-xs" />
+            <FaStar className="text-amber-500 text-xs" />
           ) : (
             <FaRegStar className="text-xs" />
           )}
@@ -94,7 +86,7 @@ export default function QuestionRenderer({
       <div className="px-4 py-5 bg-white">
         {/* Question Image (যদি থাকে) */}
         {question.image_url && (
-          <div className="mb-4 rounded-xl overflow-hidden border border-gray-200 relative w-full h-64 bg-gray-50">
+          <div className="mb-4 rounded-xl overflow-hidden border border-[#E2E8F0] relative w-full h-64 bg-[#F8FAFC]">
             <Image
               src={question.image_url}
               alt="প্রশ্নের ছবি"
@@ -107,7 +99,7 @@ export default function QuestionRenderer({
         )}
 
         {/* Question Text */}
-        <p className="text-gray-900 text-base md:text-lg leading-relaxed font-medium mb-6">
+        <p className="text-[#1F2937] text-base md:text-lg leading-relaxed font-medium mb-6">
           {question.question_text}
         </p>
 
@@ -127,8 +119,8 @@ export default function QuestionRenderer({
                   active:scale-[0.99] cursor-pointer
                   ${
                     isSelected
-                      ? "border-blue-500 bg-blue-50 shadow-sm shadow-blue-100"
-                      : "border-gray-200 bg-white hover:border-blue-200 hover:bg-blue-50/30"
+                      ? "border-primary bg-primary/5 shadow-md shadow-primary/10"
+                      : "border-[#E2E8F0] bg-white hover:border-primary/40 hover:bg-primary/5"
                   }
                 `}
               >
@@ -136,8 +128,12 @@ export default function QuestionRenderer({
                 <span
                   className={`
                     shrink-0 w-8 h-8 rounded-full flex items-center justify-center
-                    text-sm font-bold transition-colors duration-200
-                    ${isSelected ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-600"}
+                    text-sm font-bold transition-all duration-200
+                    ${
+                      isSelected
+                        ? "bg-primary text-white shadow-sm shadow-primary/30"
+                        : "bg-[#F1F5F9] text-[#475569]"
+                    }
                   `}
                 >
                   {letter}
@@ -147,7 +143,7 @@ export default function QuestionRenderer({
                 <span
                   className={`
                     flex-1 pt-0.5 text-base leading-relaxed
-                    ${isSelected ? "text-blue-800 font-medium" : "text-gray-700"}
+                    ${isSelected ? "text-primary-dark font-semibold" : "text-[#475569]"}
                   `}
                 >
                   {option.option_text}
@@ -156,7 +152,7 @@ export default function QuestionRenderer({
                 {/* Selected Indicator */}
                 {isSelected && (
                   <span className="shrink-0 pt-0.5">
-                    <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                    <span className="w-5 h-5 rounded-full bg-primary flex items-center justify-center shadow-sm shadow-primary/30">
                       <span className="text-white text-xs">✓</span>
                     </span>
                   </span>
@@ -168,20 +164,17 @@ export default function QuestionRenderer({
 
         {/* Marks Info */}
         {question.marks && (
-          <div className="mt-4 flex gap-4 text-xs text-gray-400">
+          <div className="mt-4 flex gap-4 text-xs text-[#94A3B8] font-medium">
             <span>মার্ক: {toBanglaNumber(question.marks)}</span>
             {question.negative_marks > 0 && (
-              <span className="text-red-400">নেগেটিভ: -{question.negative_marks}</span>
+              <span className="text-red-500">নেগেটিভ: -{question.negative_marks}</span>
             )}
           </div>
         )}
       </div>
 
       {/* ── Navigation Buttons ───────────────────────────── */}
-      <div
-        className="sticky bottom-0 px-4 py-3 bg-white border-t border-gray-100
-                      flex gap-3"
-      >
+      <div className="sticky bottom-0 px-4 py-3 bg-white border-t border-[#E2E8F0] flex gap-3">
         {/* Previous Button */}
         <button
           onClick={onPrevious}
@@ -191,8 +184,8 @@ export default function QuestionRenderer({
             rounded-xl font-medium text-base transition-all duration-200
             ${
               isFirst
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-[0.98]"
+                ? "bg-[#F1F5F9] text-[#94A3B8] cursor-not-allowed"
+                : "bg-[#F1F5F9] text-[#475569] hover:bg-[#E2E8F0] active:scale-[0.98] cursor-pointer"
             }
           `}
         >
@@ -206,11 +199,11 @@ export default function QuestionRenderer({
           className={`
             flex-1 flex items-center justify-center gap-2 py-3 px-4
             rounded-xl font-medium text-base transition-all duration-200
-            active:scale-[0.98]
+            active:scale-[0.98] cursor-pointer shadow-md
             ${
               isLast
-                ? "bg-green-500 text-white hover:bg-green-600"
-                : "bg-blue-500 text-white hover:bg-blue-600"
+                ? "bg-green-600 text-white hover:bg-green-700 shadow-green-600/25 hover:shadow-lg hover:shadow-green-600/30"
+                : "bg-primary text-white hover:bg-primary-dark shadow-primary/25 hover:shadow-lg hover:shadow-primary/30"
             }
           `}
         >

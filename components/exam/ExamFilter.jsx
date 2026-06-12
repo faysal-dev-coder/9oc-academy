@@ -30,30 +30,33 @@ export default function ExamFilter({ categories, onFilter }) {
     <div className="mb-8 space-y-4">
       {/* Category Filter */}
       <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-sm text-white/40 flex items-center gap-1.5 mr-2">
+        {/* Label */}
+        <span className="text-sm text-[#64748B] font-medium flex items-center gap-1.5 mr-2">
           <FaFilter size={11} />
           বিষয়:
         </span>
 
+        {/* All Button */}
         <button
           onClick={() => handleCategoryChange("all")}
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border cursor-pointer ${
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border cursor-pointer ${
             activeCategory === "all"
-              ? "bg-primary border-primary text-white"
-              : "bg-white/5 border-white/10 text-white/60 hover:border-primary/50 hover:text-white"
+              ? "bg-primary border-primary text-white shadow-sm shadow-primary/20"
+              : "bg-[#F1F5F9] border-[#E2E8F0] text-[#475569] hover:border-primary/40 hover:text-primary hover:bg-primary/5"
           }`}
         >
           সব
         </button>
 
+        {/* Category Buttons */}
         {categories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => handleCategoryChange(cat.id)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border cursor-pointer ${
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border cursor-pointer ${
               activeCategory === cat.id
-                ? "bg-primary border-primary text-white"
-                : "bg-white/5 border-white/10 text-white/60 hover:border-primary/50 hover:text-white"
+                ? "bg-primary border-primary text-white shadow-sm shadow-primary/20"
+                : "bg-[#F1F5F9] border-[#E2E8F0] text-[#475569] hover:border-primary/40 hover:text-primary hover:bg-primary/5"
             }`}
           >
             {cat.name}
@@ -63,8 +66,10 @@ export default function ExamFilter({ categories, onFilter }) {
 
       {/* Type Filter */}
       <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-sm text-white/40 mr-2">ধরন:</span>
+        {/* Label */}
+        <span className="text-sm text-[#64748B] font-medium mr-2">ধরন:</span>
 
+        {/* Type Buttons */}
         {[
           { value: "all", label: "সব ধরন" },
           { value: "free", label: "বিনামূল্যে" },
@@ -73,20 +78,21 @@ export default function ExamFilter({ categories, onFilter }) {
           <button
             key={type.value}
             onClick={() => handleTypeChange(type.value)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border cursor-pointer ${
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border cursor-pointer ${
               activeType === type.value
-                ? "bg-secondary border-secondary text-white"
-                : "bg-white/5 border-white/10 text-white/60 hover:border-secondary/50 hover:text-white"
+                ? "bg-secondary border-secondary text-white shadow-sm shadow-secondary/20"
+                : "bg-[#F1F5F9] border-[#E2E8F0] text-[#475569] hover:border-secondary/40 hover:text-secondary hover:bg-secondary/5"
             }`}
           >
             {type.label}
           </button>
         ))}
 
+        {/* Clear Filter Button */}
         {hasActiveFilter && (
           <button
             onClick={clearFilters}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm text-red-400 border border-red-500/30 hover:bg-red-500/10 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium text-red-600 border border-red-200 bg-red-50 hover:bg-red-100 hover:border-red-300 transition-all duration-200 cursor-pointer"
           >
             <FaTimes size={11} />
             ফিল্টার সরাও

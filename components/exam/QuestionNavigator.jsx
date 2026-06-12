@@ -55,61 +55,65 @@ export default function QuestionNavigator({
     return "not-visited";
   };
 
-  // ─── Status to Styles ───
+  // ─── Status to Styles (Light Theme) ───
   const getStyles = (status) => {
     switch (status) {
       case "current":
-        return "bg-primary text-white border-primary ring-2 ring-primary/50 scale-110";
+        return "bg-primary text-white border-primary ring-2 ring-primary/30 scale-110 shadow-md shadow-primary/30";
       case "answered":
-        return "bg-green-500/20 text-green-300 border-green-500/50 hover:bg-green-500/30";
+        return "bg-green-50 text-green-700 border-green-300 hover:bg-green-100 hover:border-green-400";
       case "marked":
-        return "bg-yellow-500/20 text-yellow-300 border-yellow-500/50 hover:bg-yellow-500/30";
+        return "bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 hover:border-amber-400";
       case "marked-answered":
-        return "bg-purple-500/20 text-purple-300 border-purple-500/50 hover:bg-purple-500/30";
+        return "bg-purple-50 text-purple-700 border-purple-300 hover:bg-purple-100 hover:border-purple-400";
       default:
-        return "bg-white/5 text-white/60 border-white/10 hover:bg-white/10";
+        return "bg-[#F1F5F9] text-[#64748B] border-[#E2E8F0] hover:bg-[#E2E8F0] hover:border-[#CBD5E1]";
     }
   };
 
   return (
-    <div className="bg-dark/95 backdrop-blur-md border-b border-white/10 sticky top-0 z-30">
+    <div className="bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] sticky top-0 z-30 shadow-sm">
       <div className="max-w-5xl mx-auto px-4 py-3">
         {/* Top Stats Bar */}
         <div className="flex items-center justify-between mb-2 text-xs">
-          <div className="flex items-center gap-3">
-            <span className="text-white/50">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-[#64748B]">
               প্রশ্ন:{" "}
-              <span className="text-white font-semibold">{toBanglaNumber(questions.length)}</span>
+              <span className="text-[#1F2937] font-semibold">
+                {toBanglaNumber(questions.length)}
+              </span>
             </span>
-            <span className="text-green-400">
+            <span className="text-green-600 font-medium">
               ● উত্তর দেওয়া: <span className="font-semibold">{toBanglaNumber(answeredCount)}</span>
             </span>
             {markedCount > 0 && (
-              <span className="text-yellow-400">
+              <span className="text-amber-600 font-medium">
                 ⚐ চিহ্নিত: <span className="font-semibold">{toBanglaNumber(markedCount)}</span>
               </span>
             )}
           </div>
-          <div className="text-white/40 hidden sm:block">
+          <div className="text-[#94A3B8] hidden sm:block font-medium">
             {toBanglaNumber(Math.round((answeredCount / questions.length) * 100))}% সম্পন্ন
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="h-1 bg-white/5 rounded-full overflow-hidden mb-3">
+        <div className="h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden mb-3">
           <div
-            className="h-full bg-linear-to-r from-primary to-green-500 transition-all duration-500"
-            style={{ width: `${(answeredCount / questions.length) * 100}%` }}
+            className="h-full bg-linear-to-r from-primary to-green-500 transition-all duration-500 rounded-full"
+            style={{
+              width: `${(answeredCount / questions.length) * 100}%`,
+            }}
           />
         </div>
 
         {/* Question Number Grid — Horizontal Scroll */}
         <div
           ref={scrollRef}
-          className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
+          className="flex gap-2 overflow-x-auto pb-1"
           style={{
             scrollbarWidth: "thin",
-            scrollbarColor: "rgba(255,255,255,0.1) transparent",
+            scrollbarColor: "#CBD5E1 transparent",
           }}
         >
           {questions.map((q, idx) => {
@@ -121,7 +125,7 @@ export default function QuestionNavigator({
                 key={q.id}
                 ref={(el) => (buttonRefs.current[idx] = el)}
                 onClick={() => onQuestionClick(idx)}
-                className={`shrink-0 w-10 h-10 rounded-lg border font-semibold text-sm transition-all cursor-pointer ${styles}`}
+                className={`shrink-0 w-10 h-10 rounded-lg border font-semibold text-sm transition-all duration-200 cursor-pointer ${styles}`}
                 title={`প্রশ্ন ${idx + 1}`}
               >
                 {toBanglaNumber(idx + 1)}

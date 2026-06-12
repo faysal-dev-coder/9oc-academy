@@ -5,7 +5,7 @@ import { HiOutlineCheck, HiOutlineXMark, HiOutlineSparkles } from "react-icons/h
 import { PRICING_PLANS } from "@/constants";
 
 // ═══════════════════════════════════════════
-// 💎 PricingSection — 3 Plans Side by Side
+// 💎 PricingSection — Light Theme Premium
 // ═══════════════════════════════════════════
 
 const toBangla = (num) => {
@@ -26,10 +26,10 @@ function PricingCard({ plan, index }) {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.15 }}
       whileHover={{ y: -8 }}
-      className={`group relative flex flex-col rounded-2xl border p-8 backdrop-blur-sm transition-all duration-300 ${
+      className={`group relative flex flex-col rounded-2xl border-2 p-8 transition-all duration-300 ${
         plan.isPopular
-          ? "border-primary/50 bg-linear-to-b from-primary/20 to-primary/5 shadow-2xl shadow-primary/20 md:scale-105"
-          : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
+          ? "border-primary bg-white shadow-2xl shadow-primary/30 md:scale-105 ring-4 ring-primary/10"
+          : "border-[#E2E8F0] bg-white shadow-md hover:border-primary/30 hover:shadow-xl"
       }`}
     >
       {/* ─── Popular Badge ────────────────── */}
@@ -44,17 +44,19 @@ function PricingCard({ plan, index }) {
 
       {/* ─── Plan Name ───────────────────── */}
       <div className="mb-6">
-        <h3 className="mb-2 text-2xl font-bold text-white">{plan.name}</h3>
-        <p className="text-sm text-white/60">{plan.description}</p>
+        <h3 className="mb-2 text-2xl font-bold text-[#1F2937]">{plan.name}</h3>
+        <p className="text-sm text-[#64748B]">{plan.description}</p>
       </div>
 
       {/* ─── Price ───────────────────────── */}
-      <div className="mb-6 border-b border-white/10 pb-6">
+      <div className="mb-6 border-b border-[#E2E8F0] pb-6">
         <div className="flex items-baseline gap-2">
-          <span className="text-5xl font-bold text-white">৳{toBangla(plan.price)}</span>
-          {plan.price > 0 && <span className="text-sm text-white/60">/{plan.period}</span>}
+          <span className="text-5xl font-bold text-[#1F2937]">৳{toBangla(plan.price)}</span>
+          {plan.price > 0 && <span className="text-sm text-[#64748B]">/{plan.period}</span>}
         </div>
-        {plan.price === 0 && <p className="mt-2 text-sm text-secondary">চিরকাল ফ্রি ✨</p>}
+        {plan.price === 0 && (
+          <p className="mt-2 text-sm font-semibold text-secondary">চিরকাল ফ্রি ✨</p>
+        )}
       </div>
 
       {/* ─── Features List ───────────────── */}
@@ -63,19 +65,19 @@ function PricingCard({ plan, index }) {
           <li key={idx} className="flex items-start gap-3">
             {feature.included ? (
               <span
-                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
-                style={{ background: `${plan.color}30` }}
+                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full shadow-sm"
+                style={{ background: `${plan.color}25` }}
               >
                 <HiOutlineCheck className="h-3.5 w-3.5" style={{ color: plan.color }} />
               </span>
             ) : (
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/5">
-                <HiOutlineXMark className="h-3.5 w-3.5 text-white/30" />
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F1F5F9]">
+                <HiOutlineXMark className="h-3.5 w-3.5 text-[#94A3B8]" />
               </span>
             )}
             <span
               className={`text-sm ${
-                feature.included ? "text-white/90" : "text-white/40 line-through"
+                feature.included ? "text-[#475569]" : "text-[#94A3B8] line-through"
               }`}
             >
               {feature.text}
@@ -89,8 +91,8 @@ function PricingCard({ plan, index }) {
         type="button"
         className={`w-full rounded-xl px-6 py-3.5 text-sm font-bold transition-all duration-300 cursor-pointer ${
           plan.isPopular
-            ? "bg-linear-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/50"
-            : "border border-white/20 bg-white/5 text-white hover:border-white/40 hover:bg-white/10"
+            ? "bg-linear-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/50 hover:-translate-y-0.5"
+            : "border-2 border-primary/30 bg-white text-primary hover:bg-primary hover:text-white hover:border-primary hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5"
         }`}
       >
         {plan.price === 0 ? "ফ্রি শুরু করুন" : "এখনই শুরু করুন"}
@@ -105,11 +107,11 @@ function PricingCard({ plan, index }) {
 
 export default function PricingSection() {
   return (
-    <section className="relative overflow-hidden border-t border-white/10 bg-dark py-20">
+    <section className="relative overflow-hidden border-t border-[#E2E8F0] bg-[#FAFBFC] py-20">
       {/* ─── Background Decoration ───────── */}
-      <div className="pointer-events-none absolute inset-0 opacity-20">
-        <div className="absolute left-1/4 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute right-1/4 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-accent/20 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        <div className="absolute left-1/4 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-primary/15 blur-3xl" />
+        <div className="absolute right-1/4 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-accent/15 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -122,15 +124,15 @@ export default function PricingSection() {
           className="mb-16 text-center"
         >
           {/* Badge */}
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 backdrop-blur-sm">
-            <HiOutlineSparkles className="h-4 w-4 text-accent" />
-            <span className="text-sm font-semibold text-accent">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-4 py-2 shadow-sm shadow-amber-200/30">
+            <HiOutlineSparkles className="h-4 w-4 text-amber-500" />
+            <span className="bg-linear-to-r from-amber-600 to-orange-600 bg-clip-text text-sm font-bold text-transparent">
               সাশ্রয়ী মূল্যে প্রিমিয়াম শিক্ষা
             </span>
           </div>
 
           {/* Title */}
-          <h2 className="mb-4 text-4xl font-bold text-white md:text-5xl">
+          <h2 className="mb-4 text-4xl font-bold text-[#1F2937] md:text-5xl">
             আপনার{" "}
             <span className="bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               প্ল্যান বেছে নিন
@@ -138,7 +140,7 @@ export default function PricingSection() {
           </h2>
 
           {/* Subtitle */}
-          <p className="mx-auto max-w-2xl text-base text-white/70 md:text-lg">
+          <p className="mx-auto max-w-2xl text-base text-[#475569] leading-relaxed md:text-lg">
             যেকোনো প্ল্যান, যেকোনো সময় বাতিল করুন। কোনো লুকানো চার্জ নেই। সব প্ল্যানে ৭ দিনের মানি
             ব্যাক গ্যারান্টি।
           </p>
@@ -157,12 +159,14 @@ export default function PricingSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-white/60"
+          className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-[#64748B] font-medium"
         >
           {["৭ দিনের মানি ব্যাক গ্যারান্টি", "যেকোনো সময় বাতিল করুন", "২৪/৭ সাপোর্ট"].map(
             (text, i) => (
               <div key={i} className="flex items-center gap-2">
-                <HiOutlineCheck className="h-5 w-5 text-secondary" />
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-secondary/10 shadow-sm">
+                  <HiOutlineCheck className="h-4 w-4 text-secondary" />
+                </span>
                 <span>{text}</span>
               </div>
             )

@@ -16,7 +16,6 @@ const INITIAL_FILTERS = {
   search: "",
   category: "all",
   price: "all",
-  level: "all",
 };
 
 export default function CoursesPage() {
@@ -49,11 +48,6 @@ export default function CoursesPage() {
       result = result.filter((course) => course.isFree);
     } else if (filters.price === "paid") {
       result = result.filter((course) => !course.isFree);
-    }
-
-    // 📊 Level Filter
-    if (filters.level !== "all") {
-      result = result.filter((course) => course.level === filters.level);
     }
 
     // 🔄 Sort
@@ -94,7 +88,7 @@ export default function CoursesPage() {
   };
 
   return (
-    <main className="min-h-screen bg-dark">
+    <main className="min-h-screen bg-white">
       {/* ─── Hero Banner ─────────────────── */}
       <CourseBanner totalCourses={COURSES.length} />
 

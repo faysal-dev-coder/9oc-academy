@@ -79,24 +79,28 @@ export default function TimerDisplay({ durationMinutes, onTimeEnd, startedAt }) 
   // Color based on time left
   const percentLeft = durationSeconds > 0 ? (remainingSeconds / durationSeconds) * 100 : 0;
 
-  let colorClasses = "bg-green-500/10 border-green-500/30 text-green-600";
-  let iconColor = "text-green-500";
+  // 🟢 Safe — 50%+ বাকি
+  let colorClasses = "bg-green-50 border-green-200 text-green-700";
+  let iconColor = "text-green-600";
 
+  // 🔴 Danger — 25% বা কম বাকি
   if (percentLeft <= 25) {
-    colorClasses = "bg-red-500/10 border-red-500/30 text-red-600 animate-pulse";
-    iconColor = "text-red-500";
-  } else if (percentLeft <= 50) {
-    colorClasses = "bg-yellow-500/10 border-yellow-500/30 text-yellow-600";
-    iconColor = "text-yellow-600";
+    colorClasses = "bg-red-50 border-red-200 text-red-700 animate-pulse";
+    iconColor = "text-red-600";
+  }
+  // 🟡 Warning — 25–50% বাকি
+  else if (percentLeft <= 50) {
+    colorClasses = "bg-amber-50 border-amber-200 text-amber-700";
+    iconColor = "text-amber-600";
   }
 
   return (
     <div
-      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all ${colorClasses}`}
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all duration-300 ${colorClasses}`}
     >
-      <FaClock size={16} className={iconColor} />
+      <FaClock size={16} className={`${iconColor} shrink-0`} />
       <div className="flex flex-col">
-        <span className="text-[10px] opacity-70 leading-none mb-0.5">বাকি সময়</span>
+        <span className="text-[10px] opacity-60 leading-none mb-0.5 font-medium">বাকি সময়</span>
         <span className="text-base font-bold tabular-nums leading-none">
           {formatTime(remainingSeconds)}
         </span>

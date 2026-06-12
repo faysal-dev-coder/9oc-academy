@@ -10,25 +10,25 @@ import { SORT_OPTIONS } from "@/constants";
 // 📦 CourseGrid — Grid + Sort + Empty State
 // ═══════════════════════════════════════════
 
-// ─── Empty State ──────────────────────────
+// ─── Empty State (Light) ───────────────────
 function EmptyState({ onReset }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
-      className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-20 text-center backdrop-blur-sm"
+      className="flex flex-col items-center justify-center rounded-2xl border border-[#E2E8F0] bg-white px-6 py-20 text-center shadow-sm"
     >
       {/* Icon */}
-      <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-5xl">
+      <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-5xl shadow-sm shadow-primary/10">
         🔍
       </div>
 
       {/* Title */}
-      <h3 className="mb-2 text-2xl font-bold text-white">কোনো কোর্স পাওয়া যায়নি!</h3>
+      <h3 className="mb-2 text-2xl font-bold text-[#1F2937]">কোনো কোর্স পাওয়া যায়নি!</h3>
 
       {/* Description */}
-      <p className="mb-6 max-w-md text-sm text-white/60">
+      <p className="mb-6 max-w-md text-sm text-[#64748B] leading-relaxed">
         আপনার ফিল্টার অনুযায়ী কোনো কোর্স খুঁজে পাওয়া যায়নি। ফিল্টার পরিবর্তন করে আবার চেষ্টা
         করুন।
       </p>
@@ -37,7 +37,7 @@ function EmptyState({ onReset }) {
       <button
         type="button"
         onClick={onReset}
-        className="flex items-center gap-2 rounded-full bg-linear-to-r from-primary to-primary/80 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/50 cursor-pointer"
+        className="flex items-center gap-2 rounded-full bg-linear-to-r from-primary to-primary/80 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 cursor-pointer"
       >
         <HiOutlineArrowPath className="h-4 w-4" />
         ফিল্টার রিসেট করুন
@@ -58,23 +58,24 @@ export default function CourseGrid({ courses = [], sortBy, onSortChange, onReset
       {/* ─── Top Bar: Results + Sort ──────── */}
       <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         {/* Result Count */}
-        <p className="text-sm text-white/70">
-          মোট <span className="font-bold text-white">{courseList.length}টা</span> কোর্স পাওয়া গেছে
+        <p className="text-sm text-[#64748B]">
+          মোট <span className="font-bold text-primary">{courseList.length}টা</span> কোর্স পাওয়া
+          গেছে
         </p>
 
         {/* Sort Dropdown */}
         <div className="flex items-center gap-2">
-          <label htmlFor="course-sort" className="text-sm font-semibold text-white/70">
+          <label htmlFor="course-sort" className="text-sm font-semibold text-[#64748B]">
             সাজান:
           </label>
           <select
             id="course-sort"
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value)}
-            className="cursor-pointer rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm outline-none transition-all duration-300 hover:bg-white/10 focus:border-primary/50"
+            className="cursor-pointer rounded-xl border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-semibold text-[#1F2937] shadow-sm outline-none transition-all duration-300 hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/20"
           >
             {SORT_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value} className="bg-[#1A1A3E] text-white">
+              <option key={option.value} value={option.value} className="bg-white text-[#1F2937]">
                 {option.label}
               </option>
             ))}

@@ -7,7 +7,6 @@ import { getAttemptResult } from "@/lib/supabase/exam";
 import {
   FaCheckCircle,
   FaTimesCircle,
-  FaMinus,
   FaRedo,
   FaList,
   FaLightbulb,
@@ -59,14 +58,14 @@ function ScoreCircle({ score, totalMarks, isPassed }) {
     <div
       className={`
         w-36 h-36 rounded-full flex flex-col items-center justify-center
-        border-4 mx-auto bg-white shadow-lg
+        border-4 mx-auto bg-white shadow-xl
         ${isPassed ? "border-green-400" : "border-red-400"}
       `}
     >
       <span className={`text-3xl font-bold ${isPassed ? "text-green-600" : "text-red-600"}`}>
         {toBanglaNumber(safeScore)}
       </span>
-      <span className="text-sm text-gray-500">/ {toBanglaNumber(safeTotal)}</span>
+      <span className="text-sm text-[#64748B]">/ {toBanglaNumber(safeTotal)}</span>
       <span className={`text-lg font-bold mt-1 ${isPassed ? "text-green-600" : "text-red-600"}`}>
         {toBanglaNumber(percentage)}%
       </span>
@@ -84,53 +83,79 @@ function QuestionReviewItem({ question, answer, index }) {
   const isCorrect = answer?.is_correct;
   const isSkipped = !selectedOptionId;
 
-  let borderColor = "border-gray-200";
+  // 🎨 Card Border & Background — 3 STATES
+  let borderColor = "border-[#E2E8F0]";
   let bgColor = "bg-white";
 
   if (isCorrect) {
-    borderColor = "border-green-200";
+    // ✅ Correct Answer
+    borderColor = "border-green-300";
     bgColor = "bg-green-50/30";
   } else if (isSkipped) {
-    borderColor = "border-gray-200";
-    bgColor = "bg-gray-50/30";
+    // ⚠️ Skipped — AMBER WARNING!
+    borderColor = "border-amber-300";
+    bgColor = "bg-amber-50/40";
   } else {
-    borderColor = "border-red-200";
+    // ❌ Wrong Answer
+    borderColor = "border-red-300";
     bgColor = "bg-red-50/30";
   }
 
   return (
-    <div className={`rounded-2xl border-2 overflow-hidden ${borderColor} ${bgColor}`}>
+    <div className={`rounded-2xl border-2 overflow-hidden shadow-sm ${borderColor} ${bgColor}`}>
+      {/* ── Header ─────────────────────────────────────── */}
       <div className="px-4 py-3 flex items-start gap-3">
         <div className="shrink-0 mt-0.5">
           {isCorrect ? (
             <FaCheckCircle className="text-green-500 text-lg" />
           ) : isSkipped ? (
-            <FaMinus className="text-gray-400 text-lg" />
+            // ⚠️ Warning icon for skipped
+            <div className="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center shadow-sm shadow-amber-500/30">
+              <span className="text-white text-xs font-bold">!</span>
+            </div>
           ) : (
             <FaTimesCircle className="text-red-500 text-lg" />
           )}
         </div>
 
         <div className="flex-1 min-w-0">
-          <span className="text-xs font-medium text-gray-500 mb-1 block">
-            প্রশ্ন {toBanglaNumber(index + 1)}
-          </span>
-          <p className="text-gray-800 font-medium text-sm leading-relaxed">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <span className="text-xs font-medium text-[#64748B]">
+              প্রশ্ন {toBanglaNumber(index + 1)}
+            </span>
+            {/* 🟡 Skip Badge */}
+            {isSkipped && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-semibold border border-amber-200">
+                উত্তর দেওয়া হয়নি
+              </span>
+            )}
+          </div>
+          <p className="text-[#1F2937] font-medium text-sm leading-relaxed">
             {question.question_text}
           </p>
         </div>
       </div>
 
+      {/* ── Options ─────────────────────────────────────── */}
       <div className="px-4 pb-3 flex flex-col gap-1.5">
         {question.options?.map((opt, idx) => {
           const letter = BANGLA_LETTERS[idx] || String(idx + 1);
           const isSelected = opt.id === selectedOptionId;
           const isCorrectOpt = opt.is_correct;
 
-          let optStyle = "border-gray-200 bg-white text-gray-700";
-          if (isCorrectOpt) {
+          // 🎨 Option Styling — Default
+          let optStyle = "border-[#E2E8F0] bg-white text-[#475569]";
+
+          // ⚠️ SKIPPED + Correct Option → AMBER WARNING!
+          if (isSkipped && isCorrectOpt) {
+            optStyle =
+              "border-amber-400 bg-amber-100 text-amber-900 shadow-sm shadow-amber-500/20 font-semibold";
+          }
+          // ✅ Correct Option (when answered)
+          else if (isCorrectOpt && !isSkipped) {
             optStyle = "border-green-400 bg-green-50 text-green-800";
           }
+          // ❌ Wrong Selected Option
           if (isSelected && !isCorrectOpt) {
             optStyle = "border-red-400 bg-red-50 text-red-800";
           }
@@ -138,11 +163,29 @@ function QuestionReviewItem({ question, answer, index }) {
           return (
             <div
               key={opt.id}
-              className={`flex items-start gap-2 px-3 py-2 rounded-xl border ${optStyle} text-sm`}
+              className={`flex items-start gap-2 px-3 py-2 rounded-xl border-2 transition-all ${optStyle} text-sm`}
             >
               <span className="font-bold shrink-0">{letter}.</span>
               <span className="flex-1">{opt.option_text}</span>
-              {isCorrectOpt && <FaCheckCircle className="text-green-500 shrink-0 mt-0.5" />}
+
+              {/* ⚠️ Skipped + Correct → Warning label */}
+              {isSkipped && isCorrectOpt && (
+                <div className="shrink-0 mt-0.5 flex items-center gap-1.5">
+                  <span className="text-amber-700 text-[10px] font-bold uppercase tracking-wide">
+                    সঠিক উত্তর
+                  </span>
+                  <div className="w-4 h-4 rounded-full bg-amber-500 flex items-center justify-center">
+                    <span className="text-white text-[10px] font-bold">!</span>
+                  </div>
+                </div>
+              )}
+
+              {/* ✅ Answered + Correct → Green check */}
+              {isCorrectOpt && !isSkipped && (
+                <FaCheckCircle className="text-green-500 shrink-0 mt-0.5" />
+              )}
+
+              {/* ❌ Wrong Selected → Red cross */}
               {isSelected && !isCorrectOpt && (
                 <FaTimesCircle className="text-red-500 shrink-0 mt-0.5" />
               )}
@@ -150,18 +193,29 @@ function QuestionReviewItem({ question, answer, index }) {
           );
         })}
 
-        {isSkipped && <p className="text-xs text-gray-500 px-1 mt-1">⚪ এই প্রশ্নের উত্তর দেননি</p>}
+        {/* 🟡 Skipped Warning Banner */}
+        {isSkipped && (
+          <div className="mt-2 flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl">
+            <div className="shrink-0 w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center">
+              <span className="text-white text-xs font-bold">!</span>
+            </div>
+            <p className="text-xs text-amber-800 font-medium">
+              এই প্রশ্নের উত্তর দেননি — উপরে হলুদ চিহ্নিত সঠিক উত্তর দেখুন
+            </p>
+          </div>
+        )}
       </div>
 
+      {/* ── Explanation Toggle ──────────────────────────── */}
       {question.explanation && (
-        <div className="border-t border-gray-200">
+        <div className="border-t border-[#E2E8F0]">
           <button
             onClick={() => setShowExplanation(!showExplanation)}
             className="w-full px-4 py-2.5 flex items-center justify-between
-                       text-sm text-blue-600 hover:bg-blue-50/50 transition-colors"
+                       text-sm text-primary hover:bg-primary/5 transition-colors cursor-pointer"
           >
-            <span className="flex items-center gap-1.5">
-              <FaLightbulb className="text-yellow-500" />
+            <span className="flex items-center gap-1.5 font-medium">
+              <FaLightbulb className="text-amber-500" />
               <span>ব্যাখ্যা দেখুন</span>
             </span>
             {showExplanation ? (
@@ -173,10 +227,7 @@ function QuestionReviewItem({ question, answer, index }) {
 
           {showExplanation && (
             <div className="px-4 pb-4">
-              <div
-                className="bg-blue-50 rounded-xl p-3 text-sm text-blue-800
-                              leading-relaxed border border-blue-100"
-              >
+              <div className="bg-primary/5 rounded-xl p-3 text-sm text-[#1F2937] leading-relaxed border border-primary/20">
                 {question.explanation}
               </div>
             </div>
@@ -192,13 +243,10 @@ function QuestionReviewItem({ question, answer, index }) {
 // ═══════════════════════════════════════════════════════════
 function LoadingScreen() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
       <div className="text-center">
-        <div
-          className="w-12 h-12 border-4 border-blue-500/30 border-t-blue-500
-                        rounded-full animate-spin mx-auto mb-4"
-        />
-        <p className="text-gray-600">ফলাফল লোড হচ্ছে...</p>
+        <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-[#64748B] font-medium">ফলাফল লোড হচ্ছে...</p>
       </div>
     </div>
   );
@@ -209,14 +257,16 @@ function LoadingScreen() {
 // ═══════════════════════════════════════════════════════════
 function ErrorScreen({ message, onBack }) {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl p-8 text-center max-w-md w-full shadow-sm">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl p-8 text-center max-w-md w-full shadow-md border border-[#E2E8F0]">
         <div className="text-5xl mb-4">😕</div>
-        <p className="text-gray-700 mb-4">{message}</p>
+        <p className="text-[#475569] mb-4">{message}</p>
         <button
           onClick={onBack}
-          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white
-                     rounded-xl font-medium transition-colors"
+          className="px-6 py-3 bg-primary hover:bg-primary-dark text-white
+                     rounded-xl font-medium transition-all duration-200
+                     shadow-md shadow-primary/25 hover:shadow-lg hover:shadow-primary/30
+                     hover:-translate-y-0.5 cursor-pointer"
         >
           ফিরে যান
         </button>
@@ -303,7 +353,7 @@ export default function ResultPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-10">
+    <div className="min-h-screen bg-[#F8FAFC] pb-10">
       {/* HEADER SECTION */}
       <div
         className={`
@@ -321,7 +371,7 @@ export default function ResultPage() {
           <h1 className="text-2xl font-bold mb-1">
             {isPassed ? "অভিনন্দন!" : "চেষ্টা চালিয়ে যান!"}
           </h1>
-          <p className="text-white/80 text-sm mb-6">
+          <p className="text-white/90 text-sm mb-6">
             {isPassed ? "আপনি পরীক্ষায় উত্তীর্ণ হয়েছেন।" : "আরো পড়াশোনা করুন, পরের বার পারবেন।"}
           </p>
 
@@ -334,7 +384,7 @@ export default function ResultPage() {
           <div
             className={`
               inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full
-              text-sm font-bold
+              text-sm font-bold shadow-md
               ${isPassed ? "bg-white text-green-600" : "bg-white text-red-600"}
             `}
           >
@@ -346,37 +396,41 @@ export default function ResultPage() {
 
       {/* STATS CARDS */}
       <div className="max-w-lg mx-auto px-4 -mt-4">
-        <div className="bg-white rounded-2xl shadow-md p-4 grid grid-cols-3 gap-3">
+        <div className="bg-white rounded-2xl shadow-md border border-[#E2E8F0] p-4 grid grid-cols-3 gap-3">
+          {/* Correct */}
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600">
               {toBanglaNumber(attempt?.correct_count)}
             </div>
-            <div className="text-xs text-gray-500 mt-0.5">সঠিক</div>
+            <div className="text-xs text-[#64748B] mt-0.5 font-medium">সঠিক</div>
           </div>
 
-          <div className="text-center border-x border-gray-100">
+          {/* Wrong */}
+          <div className="text-center border-x border-[#E2E8F0]">
             <div className="text-2xl font-bold text-red-500">
               {toBanglaNumber(attempt?.wrong_count)}
             </div>
-            <div className="text-xs text-gray-500 mt-0.5">ভুল</div>
+            <div className="text-xs text-[#64748B] mt-0.5 font-medium">ভুল</div>
           </div>
 
+          {/* Skipped — Amber color now! */}
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-400">
+            <div className="text-2xl font-bold text-amber-500">
               {toBanglaNumber(attempt?.skipped_count)}
             </div>
-            <div className="text-xs text-gray-500 mt-0.5">বাদ</div>
+            <div className="text-xs text-[#64748B] mt-0.5 font-medium">বাদ</div>
           </div>
         </div>
 
-        <div className="mt-3 bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-2 text-sm">
+        {/* Details Card */}
+        <div className="mt-3 bg-white rounded-2xl shadow-sm border border-[#E2E8F0] p-4 flex flex-col gap-2 text-sm">
           <div className="flex items-center justify-between">
-            <span className="text-gray-500">পাস মার্ক:</span>
-            <span className="font-semibold text-gray-800">{toBanglaNumber(exam?.pass_marks)}</span>
+            <span className="text-[#64748B]">পাস মার্ক:</span>
+            <span className="font-semibold text-[#1F2937]">{toBanglaNumber(exam?.pass_marks)}</span>
           </div>
           {exam?.has_negative_marking && (
             <div className="flex items-center justify-between">
-              <span className="text-gray-500">নেগেটিভ মার্কিং:</span>
+              <span className="text-[#64748B]">নেগেটিভ মার্কিং:</span>
               <span className="font-semibold text-red-500">
                 -{toBanglaNumber(exam?.negative_mark_value)}
               </span>
@@ -384,11 +438,11 @@ export default function ResultPage() {
           )}
           {attempt?.time_taken_seconds && (
             <div className="flex items-center justify-between">
-              <span className="text-gray-500 flex items-center gap-1.5">
+              <span className="text-[#64748B] flex items-center gap-1.5">
                 <FaClock className="text-xs" />
                 সময় নিয়েছেন:
               </span>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-[#1F2937]">
                 {formatTime(attempt.time_taken_seconds)}
               </span>
             </div>
@@ -400,9 +454,10 @@ export default function ResultPage() {
       <div className="max-w-lg mx-auto px-4 mt-4 flex gap-3">
         <button
           onClick={() => router.push("/exams")}
-          className="flex-1 py-3 border-2 border-gray-200 rounded-xl
-                     text-gray-700 font-medium flex items-center justify-center gap-2
-                     hover:bg-gray-50 transition-colors"
+          className="flex-1 py-3 border-2 border-[#E2E8F0] bg-white rounded-xl
+                     text-[#475569] font-medium flex items-center justify-center gap-2
+                     hover:bg-[#F1F5F9] hover:border-[#CBD5E1] transition-all duration-200
+                     cursor-pointer"
         >
           <FaList className="text-sm" />
           <span>সব পরীক্ষা</span>
@@ -410,9 +465,10 @@ export default function ResultPage() {
 
         <button
           onClick={() => router.push(`/exams/${examId}`)}
-          className="flex-1 py-3 bg-blue-500 hover:bg-blue-600 text-white
+          className="flex-1 py-3 bg-primary hover:bg-primary-dark text-white
                      rounded-xl font-medium flex items-center justify-center gap-2
-                     transition-colors"
+                     shadow-md shadow-primary/25 hover:shadow-lg hover:shadow-primary/30
+                     hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
         >
           <FaRedo className="text-sm" />
           <span>আবার দিন</span>
@@ -421,8 +477,8 @@ export default function ResultPage() {
 
       {/* QUESTION REVIEW */}
       <div className="max-w-lg mx-auto px-4 mt-6">
-        <h2 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
-          <FaList className="text-blue-500" />
+        <h2 className="text-lg font-bold text-[#1F2937] mb-3 flex items-center gap-2">
+          <FaList className="text-primary" />
           <span>প্রশ্নের বিশ্লেষণ</span>
         </h2>
 

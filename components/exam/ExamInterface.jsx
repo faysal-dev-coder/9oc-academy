@@ -110,14 +110,11 @@ export default function ExamInterface({ exam, questions = [], attemptId, started
 
   // ══ RENDER ══════════════════════════════════════════════
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col">
       {/* TOP BAR */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-        <div
-          className="max-w-3xl mx-auto px-4 py-2.5
-                        flex items-center justify-between gap-3"
-        >
-          <h1 className="text-sm font-semibold text-gray-800 truncate flex-1 min-w-0">
+      <div className="sticky top-0 z-40 bg-white border-b border-[#E2E8F0] shadow-sm">
+        <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+          <h1 className="text-sm font-semibold text-[#1F2937] truncate flex-1 min-w-0">
             {exam?.title || "পরীক্ষা"}
           </h1>
 
@@ -133,9 +130,11 @@ export default function ExamInterface({ exam, questions = [], attemptId, started
             onClick={handleSubmitClick}
             disabled={isSubmitting}
             className="shrink-0 flex items-center gap-1.5 px-3 py-2
-                       bg-blue-500 hover:bg-blue-600 text-white text-sm
-                       font-medium rounded-lg transition-colors
-                       active:scale-[0.97] disabled:opacity-70"
+                       bg-primary hover:bg-primary-dark text-white text-sm
+                       font-medium rounded-lg transition-all duration-200
+                       shadow-md shadow-primary/25 hover:shadow-lg hover:shadow-primary/30
+                       active:scale-[0.97] disabled:opacity-70 disabled:cursor-not-allowed
+                       cursor-pointer"
           >
             <FaPaperPlane className="text-xs" />
             <span className="hidden sm:inline">জমা দিন</span>
@@ -149,15 +148,12 @@ export default function ExamInterface({ exam, questions = [], attemptId, started
         currentIndex={currentIndex}
         selectedAnswers={selectedAnswers}
         markedForReview={markedForReview}
-        onQuestionSelect={goToQuestion}
+        onQuestionClick={goToQuestion}
       />
 
       {/* MAIN CONTENT */}
       <div className="flex-1 max-w-3xl mx-auto w-full">
-        <div
-          className="bg-white my-2 mx-3 sm:mx-4 rounded-2xl
-                        shadow-sm overflow-hidden"
-        >
+        <div className="bg-white my-2 mx-3 sm:mx-4 rounded-2xl shadow-sm border border-[#E2E8F0] overflow-hidden">
           <QuestionRenderer
             question={currentQuestion}
             questionIndex={currentIndex}
