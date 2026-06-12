@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
+import { HiArrowLeft } from "react-icons/hi2";
 import Logo from "@/components/shared/Logo";
 
 export default function AuthLayout({ children, title, subtitle }) {
@@ -48,32 +49,32 @@ export default function AuthLayout({ children, title, subtitle }) {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-[#0A0A1A] flex items-center justify-center p-4 relative overflow-hidden"
+      className="min-h-screen bg-linear-to-br from-[#F8FAFC] via-white to-[#EFF6FF] flex items-center justify-center p-4 relative overflow-hidden"
     >
-      {/* Background Orbs */}
+      {/* Background Orbs — Soft & Light */}
       <div
         ref={orb1Ref}
-        className="absolute top-20 left-20 w-72 h-72 rounded-full bg-primary/20 blur-3xl pointer-events-none"
+        className="absolute top-20 left-20 w-72 h-72 rounded-full bg-primary/15 blur-3xl pointer-events-none"
       />
       <div
         ref={orb2Ref}
-        className="absolute bottom-20 right-20 w-96 h-96 rounded-full bg-secondary/15 blur-3xl pointer-events-none"
+        className="absolute bottom-20 right-20 w-96 h-96 rounded-full bg-secondary/12 blur-3xl pointer-events-none"
       />
 
-      {/* Grid Pattern */}
+      {/* Grid Pattern — Subtle */}
       <div
-        className="absolute inset-0 opacity-5 pointer-events-none"
+        className="absolute inset-0 opacity-40 pointer-events-none"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(108,99,255,0.3) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(108,99,255,0.3) 1px, transparent 1px)
+            linear-gradient(rgba(108,99,255,0.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(108,99,255,0.06) 1px, transparent 1px)
           `,
           backgroundSize: "50px 50px",
         }}
       />
 
       <div className="w-full max-w-md relative z-10">
-        {/* Logo — সরাসরি ব্যবহার (Logo নিজেই Link) */}
+        {/* Logo */}
         <div className="flex justify-center mb-8">
           <Logo />
         </div>
@@ -81,22 +82,29 @@ export default function AuthLayout({ children, title, subtitle }) {
         {/* Auth Card */}
         <div
           ref={cardRef}
-          className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl"
+          className="relative bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-xl shadow-primary/5 overflow-hidden"
         >
+          {/* Top gradient accent line */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary via-secondary to-accent" />
+
           {/* Title */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">{title}</h1>
-            <p className="text-white/60 text-sm">{subtitle}</p>
+            <h1 className="text-3xl font-bold text-[#1F2937] mb-2">{title}</h1>
+            <p className="text-[#64748B] text-sm">{subtitle}</p>
           </div>
 
           {/* Form Content */}
           {children}
         </div>
 
-        {/* Bottom Links */}
+        {/* Bottom Link */}
         <div className="text-center mt-6">
-          <Link href="/" className="text-white/40 text-sm hover:text-white/70 transition-colors">
-            ← Home এ ফিরে যাও
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-[#64748B] text-sm hover:text-primary transition-colors group"
+          >
+            <HiArrowLeft className="text-base transition-transform duration-300 group-hover:-translate-x-1" />
+            <span>Home এ ফিরে যাও</span>
           </Link>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
-import { HiMail, HiLockClosed } from "react-icons/hi";
+import { HiOutlineEnvelope, HiOutlineLockClosed } from "react-icons/hi2";
 import { useAuth } from "@/hooks/useAuth";
 
 // ─── Zod Validation Schema ───
@@ -39,96 +39,107 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      {/* Success Message */}
+      {/* ─── Success Message ─── */}
       {success && (
-        <div className="bg-secondary/20 border border-secondary/40 rounded-xl p-4 text-secondary text-sm text-center">
+        <div className="bg-secondary/10 border border-secondary/30 rounded-xl p-4 text-secondary text-sm text-center font-medium">
           ✅ {success}
         </div>
       )}
 
-      {/* Error Message */}
+      {/* ─── Error Message ─── */}
       {error && (
-        <div className="bg-red-500/20 border border-red-500/40 rounded-xl p-4 text-red-400 text-sm text-center">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-600 text-sm text-center font-medium">
           ❌ {error}
         </div>
       )}
 
-      {/* Email Field */}
+      {/* ═══════════════════════════════════ */}
+      {/* Email Field                        */}
+      {/* ═══════════════════════════════════ */}
       <div>
-        <label className="block text-white/70 text-sm mb-2 font-medium">Email Address</label>
+        <label className="block text-[#374151] text-sm mb-2 font-semibold">Email Address</label>
         <div className="relative">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">
-            <HiMail size={18} />
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">
+            <HiOutlineEnvelope size={18} />
           </div>
           <input
             {...register("email")}
             type="email"
             placeholder="example@gmail.com"
-            className={`w-full bg-white/5 border rounded-xl px-4 py-3 pl-11 text-white placeholder-white/30 outline-none transition-all focus:bg-white/10 ${
+            className={`w-full bg-white border rounded-xl px-4 py-3 pl-11 text-[#1F2937] placeholder-[#94A3B8] outline-none transition-all focus:ring-2 ${
               errors.email
-                ? "border-red-500/60 focus:border-red-500"
-                : "border-white/10 focus:border-primary/60"
+                ? "border-red-400 focus:border-red-500 focus:ring-red-500/20"
+                : "border-[#E2E8F0] focus:border-primary focus:ring-primary/20"
             }`}
           />
         </div>
         {errors.email && (
-          <p className="text-red-400 text-xs mt-1.5 ml-1">⚠ {errors.email.message}</p>
+          <p className="text-red-500 text-xs mt-1.5 ml-1 font-medium">⚠ {errors.email.message}</p>
         )}
       </div>
 
-      {/* Password Field */}
+      {/* ═══════════════════════════════════ */}
+      {/* Password Field                     */}
+      {/* ═══════════════════════════════════ */}
       <div>
-        <label className="block text-white/70 text-sm mb-2 font-medium">Password</label>
+        <label className="block text-[#374151] text-sm mb-2 font-semibold">Password</label>
         <div className="relative">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">
-            <HiLockClosed size={18} />
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">
+            <HiOutlineLockClosed size={18} />
           </div>
           <input
             {...register("password")}
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
-            className={`w-full bg-white/5 border rounded-xl px-4 py-3 pl-11 pr-12 text-white placeholder-white/30 outline-none transition-all focus:bg-white/10 ${
+            className={`w-full bg-white border rounded-xl px-4 py-3 pl-11 pr-12 text-[#1F2937] placeholder-[#94A3B8] outline-none transition-all focus:ring-2 ${
               errors.password
-                ? "border-red-500/60 focus:border-red-500"
-                : "border-white/10 focus:border-primary/60"
+                ? "border-red-400 focus:border-red-500 focus:ring-red-500/20"
+                : "border-[#E2E8F0] focus:border-primary focus:ring-primary/20"
             }`}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#475569] transition-colors cursor-pointer"
+            aria-label={showPassword ? "Password লুকাও" : "Password দেখাও"}
           >
             {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
           </button>
         </div>
         {errors.password && (
-          <p className="text-red-400 text-xs mt-1.5 ml-1">⚠ {errors.password.message}</p>
+          <p className="text-red-500 text-xs mt-1.5 ml-1 font-medium">
+            ⚠ {errors.password.message}
+          </p>
         )}
       </div>
 
-      {/* Remember Me + Forgot Password */}
+      {/* ═══════════════════════════════════ */}
+      {/* Remember Me + Forgot Password      */}
+      {/* ═══════════════════════════════════ */}
       <div className="flex items-center justify-between">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             {...register("rememberMe")}
             type="checkbox"
-            className="w-4 h-4 rounded border-white/20 bg-white/5 accent-primary"
+            className="w-4 h-4 rounded border-[#CBD5E1] bg-white accent-primary cursor-pointer"
           />
-          <span className="text-white/60 text-sm">মনে রাখো</span>
+          <span className="text-[#475569] text-sm">মনে রাখো</span>
         </label>
         <Link
           href="/forgot-password"
-          className="text-primary text-sm hover:text-primary/80 transition-colors"
+          className="text-primary text-sm font-medium hover:text-primary/80 transition-colors"
         >
           Password ভুলে গেছো?
         </Link>
       </div>
 
-      {/* Submit Button */}
+      {/* ═══════════════════════════════════ */}
+      {/* Submit Button                      */}
+      {/* ═══════════════════════════════════ */}
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-linear-to-r from-primary to-secondary text-white font-semibold py-3 rounded-xl transition-all hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center gap-2"
+        className="w-full bg-linear-to-r from-primary to-secondary text-white font-semibold py-3 rounded-xl shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2 cursor-pointer"
       >
         {loading ? (
           <>
@@ -140,20 +151,24 @@ export default function LoginForm() {
         )}
       </button>
 
-      {/* Divider */}
+      {/* ═══════════════════════════════════ */}
+      {/* Divider                            */}
+      {/* ═══════════════════════════════════ */}
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-white/10" />
+          <div className="w-full border-t border-[#E2E8F0]" />
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="bg-[#0A0A1A] px-3 text-white/40">Account নেই?</span>
+          <span className="bg-white px-3 text-[#64748B] font-medium">Account নেই?</span>
         </div>
       </div>
 
-      {/* Register Link */}
+      {/* ═══════════════════════════════════ */}
+      {/* Register Link                      */}
+      {/* ═══════════════════════════════════ */}
       <Link
         href="/register"
-        className="w-full flex items-center justify-center border border-white/10 text-white/70 font-medium py-3 rounded-xl transition-all hover:bg-white/5 hover:border-white/20"
+        className="w-full flex items-center justify-center border border-[#E2E8F0] bg-white text-[#475569] font-semibold py-3 rounded-xl shadow-sm transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
       >
         নতুন Account তৈরি করো
       </Link>
