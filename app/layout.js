@@ -5,11 +5,13 @@
 // শুধু HTML Wrapper + Fonts + Metadata
 // Navbar/Footer Sub-Layout এ Move হয়েছে
 // ⭐ UserProvider Wrap — Global Auth State
+// ⭐ Sonner Toaster — Global Toast Notifications
 // ⭐ LIGHT THEME — Phase 6B
 // ═══════════════════════════════════════════
 
 import { Plus_Jakarta_Sans, Inter, Hind_Siliguri } from "next/font/google";
 import { UserProvider } from "@/contexts/UserContext";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 // ─── Font Setup ─────────────────────────
@@ -98,7 +100,7 @@ export const metadata = {
 
 // ─── Viewport Config ──────────────────
 export const viewport = {
-  themeColor: "#1E9CD7", // ⭐ Brand Blue (updated from purple)
+  themeColor: "#1E9CD7",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -118,6 +120,23 @@ export default function RootLayout({ children }) {
       >
         {/* ⭐ Global User Provider — সব Route এ Auth State Available */}
         <UserProvider>{children}</UserProvider>
+
+        {/* ⭐ Global Toast Notifications — Sonner */}
+        <Toaster
+          position="top-right"
+          richColors
+          closeButton
+          expand={false}
+          duration={4000}
+          toastOptions={{
+            style: {
+              fontFamily: "var(--font-hind), sans-serif",
+              fontSize: "14px",
+              borderRadius: "12px",
+            },
+            className: "shadow-lg",
+          }}
+        />
       </body>
     </html>
   );

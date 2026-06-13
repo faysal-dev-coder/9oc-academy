@@ -1,8 +1,7 @@
 // app/admin/page.js
 // ═══════════════════════════════════════════════════════════════
 // 📊 Admin Dashboard — Real Stats
-// Server Component → Supabase থেকে real data fetch করে
-// ⭐ admin_users_view ব্যবহার করে email + phone দুটোই আনে
+// ⭐ Recent Attempts → RPC function (get_recent_attempts)
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "@/lib/supabase/server";
@@ -14,7 +13,6 @@ export const metadata = {
   description: "9OC Academy Admin Control Panel",
 };
 
-// ⭐ Force fresh data (no cache)
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -53,30 +51,15 @@ async function getDashboardData() {
     // 6. Pending Payments
     supabase.from("payments").select("*", { count: "exact", head: true }).eq("status", "pending"),
 
-    // 7. ⭐ Recent Users from VIEW (email + phone সহ)
+    // 7. Recent Users from VIEW
     supabase
       .from("admin_users_view")
       .select("id, full_name, email, phone, avatar_url, role, created_at")
       .order("created_at", { ascending: false })
       .limit(6),
 
-    //     // 8. Recent Attempts with user info — ⭐ FIXED: manual FK hint
-    supabase
-      .from("attempts")
-      .select(
-        `
-        id,
-        score,
-        status,
-        created_at,
-        user_id,
-        exam_id,
-        profiles:user_id ( full_name, phone ),
-        exams:exam_id ( title )
-      `
-      )
-      .order("created_at", { ascending: false })
-      .limit(6),
+    // 8. ⭐ Recent Attempts via RPC (FIXED!)
+    supabase.rpc("get_recent_attempts", { limit_count: 6 }),
 
     // 9. Pending Payments list
     supabase.from("payments").select("id, status, created_at").eq("status", "pending").limit(5),

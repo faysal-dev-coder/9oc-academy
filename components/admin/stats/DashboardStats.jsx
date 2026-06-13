@@ -1,9 +1,7 @@
 // components/admin/stats/DashboardStats.jsx
 // ═══════════════════════════════════════════════════════════════
 // 📊 Dashboard Stats Section — Admin Panel
-// ⭐ Hybrid Mode:
-//   ├── Real Users → email + phone + green dot
-//   └── Demo Users → "Demo Account" badge + grey
+// ⭐ Recent Attempts → RPC field names (user_name, exam_title)
 // ═══════════════════════════════════════════════════════════════
 
 import Link from "next/link";
@@ -61,7 +59,6 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
     pendingPaymentsCount = 0,
   } = stats || {};
 
-  // ⭐ Real vs Demo user counter
   const realUsersInList = recentUsers?.filter((u) => u.email).length || 0;
   const demoUsersInList = (recentUsers?.length || 0) - realUsersInList;
 
@@ -131,14 +128,12 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* ── Recent Users ── */}
         <div className="rounded-2xl border border-[#E2E8F0] bg-white shadow-sm overflow-hidden">
-          {/* Header with Real/Demo counter */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0] bg-[#FAFBFC]">
             <h3 className="font-bold text-[#1F2937] flex items-center gap-2">
               <HiUserPlus className="text-[#1E9CD7]" />
               Recent Users
             </h3>
             <div className="flex items-center gap-2">
-              {/* Real/Demo Badges */}
               {realUsersInList > 0 && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-xs font-semibold text-green-700">
                   <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
@@ -160,13 +155,10 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
             </div>
           </div>
 
-          {/* Users List */}
           <div className="divide-y divide-[#F1F5F9]">
             {recentUsers && recentUsers.length > 0 ? (
               recentUsers.map((user, idx) => {
-                // ⭐ Real user check (email থাকলে real)
                 const isRealUser = !!user.email;
-
                 return (
                   <div
                     key={user.id || idx}
@@ -174,7 +166,6 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
                       isRealUser ? "hover:bg-[#1E9CD7]/5" : "hover:bg-[#FAFBFC]"
                     }`}
                   >
-                    {/* Avatar */}
                     <div className="relative shrink-0 mt-0.5">
                       {user.avatar_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -196,7 +187,6 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
                           {(user.full_name || user.email || "?")[0].toUpperCase()}
                         </div>
                       )}
-                      {/* Status dot — green for real, grey for demo */}
                       <span
                         className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white ${
                           isRealUser ? "bg-green-500" : "bg-slate-300"
@@ -204,13 +194,11 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
                       />
                     </div>
 
-                    {/* Info Block */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="text-sm font-semibold text-[#1F2937] truncate">
                           {user.full_name || "No Name"}
                         </p>
-                        {/* ⭐ Demo Badge */}
                         {!isRealUser && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 border border-slate-200 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500">
                             <HiBeaker className="text-[10px]" />
@@ -218,8 +206,6 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
                           </span>
                         )}
                       </div>
-
-                      {/* Email — Real হলে show, না হলে dash */}
                       <p className="text-xs text-[#64748B] truncate flex items-center gap-1 mt-0.5">
                         <HiEnvelope className="text-[#94A3B8] shrink-0 text-sm" />
                         {user.email ? (
@@ -228,8 +214,6 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
                           <span className="text-[#CBD5E1] italic">No email</span>
                         )}
                       </p>
-
-                      {/* Phone — থাকলে show, না হলে dash */}
                       <p className="text-xs text-[#64748B] truncate flex items-center gap-1 mt-0.5">
                         <HiPhone className="text-[#94A3B8] shrink-0 text-sm" />
                         {user.phone ? (
@@ -240,7 +224,6 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
                       </p>
                     </div>
 
-                    {/* Role + Time */}
                     <div className="flex flex-col items-end gap-1 shrink-0">
                       <span
                         className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
@@ -267,7 +250,7 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
           </div>
         </div>
 
-        {/* ── Recent Exam Attempts ── */}
+        {/* ── Recent Exam Attempts ── ⭐ UPDATED with RPC fields */}
         <div className="rounded-2xl border border-[#E2E8F0] bg-white shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0] bg-[#FAFBFC]">
             <h3 className="font-bold text-[#1F2937] flex items-center gap-2">
@@ -284,66 +267,73 @@ export default function DashboardStats({ stats, recentUsers, recentAttempts, pen
 
           <div className="divide-y divide-[#F1F5F9]">
             {recentAttempts && recentAttempts.length > 0 ? (
-              recentAttempts.map((attempt, idx) => (
-                <div
-                  key={attempt.id || idx}
-                  className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#FAFBFC] transition-colors"
-                >
-                  {/* Score Circle */}
+              recentAttempts.map((attempt, idx) => {
+                // ⭐ Calculate percentage from score + total_marks
+                const scoreNum = Number(attempt.score) || 0;
+                const totalNum = Number(attempt.total_marks) || 0;
+                const scorePercent = totalNum > 0 ? Math.round((scoreNum / totalNum) * 100) : null;
+
+                return (
                   <div
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold border-2 ${
-                      attempt.score >= 70
-                        ? "bg-green-50 border-green-200 text-green-700"
-                        : attempt.score >= 40
-                          ? "bg-amber-50 border-amber-200 text-amber-700"
-                          : "bg-red-50 border-red-200 text-red-700"
-                    }`}
+                    key={attempt.attempt_id || idx}
+                    className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#FAFBFC] transition-colors"
                   >
-                    {attempt.score !== null && attempt.score !== undefined
-                      ? `${Math.round(attempt.score)}%`
-                      : "—"}
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-[#1F2937] truncate">
-                      {attempt.profiles?.full_name || "Unknown User"}
-                    </p>
-                    <p className="text-xs text-[#94A3B8] truncate">
-                      {attempt.exams?.title || "Unknown Exam"}
-                    </p>
-                  </div>
-
-                  {/* Status + Time */}
-                  <div className="flex flex-col items-end gap-1 shrink-0">
-                    <span
-                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
-                        attempt.status === "completed"
-                          ? "bg-green-50 text-green-700 border border-green-200"
-                          : attempt.status === "in_progress"
-                            ? "bg-amber-50 text-amber-700 border border-amber-200"
-                            : "bg-slate-50 text-slate-500 border border-slate-200"
+                    {/* Score Circle */}
+                    <div
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold border-2 ${
+                        scorePercent === null
+                          ? "bg-slate-50 border-slate-200 text-slate-400"
+                          : scorePercent >= 70
+                            ? "bg-green-50 border-green-200 text-green-700"
+                            : scorePercent >= 40
+                              ? "bg-amber-50 border-amber-200 text-amber-700"
+                              : "bg-red-50 border-red-200 text-red-700"
                       }`}
                     >
-                      {attempt.status === "completed" ? (
-                        <HiCheckCircle className="text-sm" />
-                      ) : attempt.status === "in_progress" ? (
-                        <HiClock className="text-sm" />
-                      ) : (
-                        <HiXCircle className="text-sm" />
-                      )}
-                      {attempt.status === "completed"
-                        ? "Done"
-                        : attempt.status === "in_progress"
-                          ? "Active"
-                          : attempt.status || "—"}
-                    </span>
-                    <span className="text-xs text-[#94A3B8] whitespace-nowrap">
-                      {timeAgo(attempt.created_at)}
-                    </span>
+                      {scorePercent !== null ? `${scorePercent}%` : "—"}
+                    </div>
+
+                    {/* Info — ⭐ NEW FIELD NAMES from RPC */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-[#1F2937] truncate">
+                        {attempt.user_name || "Unknown User"}
+                      </p>
+                      <p className="text-xs text-[#94A3B8] truncate">
+                        {attempt.exam_title || "Unknown Exam"}
+                      </p>
+                    </div>
+
+                    {/* Status + Time */}
+                    <div className="flex flex-col items-end gap-1 shrink-0">
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
+                          attempt.status === "completed"
+                            ? "bg-green-50 text-green-700 border border-green-200"
+                            : attempt.status === "in_progress"
+                              ? "bg-amber-50 text-amber-700 border border-amber-200"
+                              : "bg-slate-50 text-slate-500 border border-slate-200"
+                        }`}
+                      >
+                        {attempt.status === "completed" ? (
+                          <HiCheckCircle className="text-sm" />
+                        ) : attempt.status === "in_progress" ? (
+                          <HiClock className="text-sm" />
+                        ) : (
+                          <HiXCircle className="text-sm" />
+                        )}
+                        {attempt.status === "completed"
+                          ? "Done"
+                          : attempt.status === "in_progress"
+                            ? "Active"
+                            : attempt.status || "—"}
+                      </span>
+                      <span className="text-xs text-[#94A3B8] whitespace-nowrap">
+                        {timeAgo(attempt.started_at)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="flex flex-col items-center justify-center py-10 text-[#94A3B8]">
                 <HiClipboardDocumentList className="text-4xl mb-2 opacity-30" />
