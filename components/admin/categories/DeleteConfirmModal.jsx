@@ -24,10 +24,7 @@ export default function DeleteConfirmModal({ isOpen, onClose, onConfirm, categor
 
   if (!isOpen || !category) return null;
 
-  // ⭐ Dynamic Icon
   const Icon = Hi2Icons[category.icon] || HiQuestionMarkCircle;
-
-  // ⭐ Check if has linked items (for warning)
   const hasLinkedItems = (category.courses_count || 0) > 0 || (category.exams_count || 0) > 0;
 
   return (
@@ -40,7 +37,7 @@ export default function DeleteConfirmModal({ isOpen, onClose, onConfirm, categor
               <HiExclamationTriangle className="w-5 h-5 text-red-600" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-[#1F2937]">Category Delete?</h2>
+              <h2 className="text-lg font-bold text-[#1F2937]">Delete Category</h2>
               <p className="text-xs text-[#64748B] mt-0.5">এই কাজ undo করা যাবে না!</p>
             </div>
           </div>
@@ -56,7 +53,7 @@ export default function DeleteConfirmModal({ isOpen, onClose, onConfirm, categor
 
         {/* ─── Body ─── */}
         <div className="p-6 space-y-4">
-          {/* Category Card */}
+          {/* Category Preview Card */}
           <div className="bg-[#FAFBFC] border border-[#E2E8F0] rounded-xl p-4">
             <div className="flex items-center gap-3">
               <div
@@ -74,7 +71,7 @@ export default function DeleteConfirmModal({ isOpen, onClose, onConfirm, categor
               </div>
             </div>
 
-            {/* Linked Items Info */}
+            {/* Linked Items */}
             <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[#E2E8F0]">
               <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#1E9CD7]/10 text-[#1E9CD7] rounded-md text-xs font-semibold">
                 📚 {category.courses_count || 0} Courses
@@ -91,9 +88,7 @@ export default function DeleteConfirmModal({ isOpen, onClose, onConfirm, categor
               <div className="flex gap-3">
                 <HiExclamationTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-sm font-semibold text-amber-900 mb-1">
-                    ⚠️ Delete করা যাবে না!
-                  </p>
+                  <p className="text-sm font-semibold text-amber-900 mb-1">Delete করা যাবে না!</p>
                   <p className="text-xs text-amber-700 leading-relaxed">
                     এই category তে <strong>{category.courses_count || 0} টি course</strong> এবং{" "}
                     <strong>{category.exams_count || 0} টি exam</strong> আছে। আগে এগুলো অন্য
@@ -132,7 +127,7 @@ export default function DeleteConfirmModal({ isOpen, onClose, onConfirm, categor
             type="button"
             onClick={onConfirm}
             disabled={loading || hasLinkedItems}
-            className="px-6 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-red-600 flex items-center gap-2"
+            className="px-6 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {loading ? (
               <>

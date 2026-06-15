@@ -4,13 +4,20 @@
 // ═══════════════════════════════════════════
 // Server Component → Fetch data → Pass to Client
 // ⭐ Real-time counts from courses + exams
+// ⭐ Matches Exam page pattern exactly (consistency!)
 // ═══════════════════════════════════════════
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import CategoryTable from "@/components/admin/categories/CategoryTable";
+import {
+  HiOutlineFolder,
+  HiOutlineCheckCircle,
+  HiOutlineBookOpen,
+  HiOutlineClipboardDocumentList,
+} from "react-icons/hi2";
 
-// ⭐ Force dynamic — Always fresh data
+// Force dynamic — always fresh data
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -20,7 +27,6 @@ export const revalidate = 0;
 async function getCategoriesWithCounts() {
   const supabase = await createClient();
 
-  // Fetch all categories ordered by display_order
   const { data: categories, error: catError } = await supabase
     .from("categories")
     .select("*")
@@ -31,16 +37,13 @@ async function getCategoriesWithCounts() {
     return [];
   }
 
-  // Get course counts (active only)
   const { data: courses } = await supabase
     .from("courses")
     .select("category_id")
     .neq("status", "archived");
 
-  // Get exam counts
   const { data: exams } = await supabase.from("exams").select("category_id");
 
-  // Merge counts
   const categoriesWithCounts = categories.map((cat) => ({
     ...cat,
     courses_count: courses?.filter((c) => c.category_id === cat.id).length || 0,
@@ -56,71 +59,112 @@ async function getCategoriesWithCounts() {
 export default async function CategoriesPage() {
   const supabase = await createClient();
 
-  // ⭐ Auth Check
+  // ════════════════════════════════════════════════════════════
+  // 1. AUTH CHECK
+  // ════════════════════════════════════════════════════════════
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
-  }
+  if (!user) redirect("/login");
 
-  // ⭐ Admin Check
+  // ════════════════════════════════════════════════════════════
+  // 2. ADMIN CHECK
+  // ════════════════════════════════════════════════════════════
   const { data: isAdmin } = await supabase.rpc("is_admin");
-  if (!isAdmin) {
-    redirect("/");
-  }
+  if (!isAdmin) redirect("/");
 
-  // ⭐ Fetch Data
+  // ════════════════════════════════════════════════════════════
+  // 3. FETCH DATA
+  // ════════════════════════════════════════════════════════════
   const categories = await getCategoriesWithCounts();
 
-  // ⭐ Stats Summary
-  const totalCategories = categories.length;
-  const activeCategories = categories.filter((c) => c.is_active).length;
-  const totalCourses = categories.reduce((sum, c) => sum + c.courses_count, 0);
-  const totalExams = categories.reduce((sum, c) => sum + c.exams_count, 0);
+  // ════════════════════════════════════════════════════════════
+  // 4. CALCULATE STATS
+  // ════════════════════════════════════════════════════════════
+  const stats = {
+    total: categories.length,
+    active: categories.filter((c) => c.is_active).length,
+    courses: categories.reduce((sum, c) => sum + c.courses_count, 0),
+    exams: categories.reduce((sum, c) => sum + c.exams_count, 0),
+  };
 
+  // ════════════════════════════════════════════════════════════
+  // 5. RENDER
+  // ════════════════════════════════════════════════════════════
   return (
-    <div className="space-y-6">
-      {/* ─── Page Header ─────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#1F2937]">🏷️ Category Management</h1>
-          <p className="text-sm text-[#64748B] mt-1">
-            সকল exam category manage করুন (Add, Edit, Delete, Reorder)
+    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
+      <div className="mx-auto max-w-7xl">
+        {/* HEADER */}
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Category Management</h1>
+          <p className="mt-1 text-sm text-slate-600 md:text-base">
+            সকল exam category তৈরি, সম্পাদনা এবং পরিচালনা করুন
           </p>
         </div>
+
+        {/* STATS CARDS */}
+        <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+          {/* Total Categories */}
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-slate-600 md:text-sm">Categories</p>
+                <p className="mt-1 text-2xl font-bold text-slate-900 md:text-3xl">{stats.total}</p>
+              </div>
+              <div className="rounded-lg bg-blue-50 p-2 md:p-3">
+                <HiOutlineFolder className="size-5 text-blue-600 md:size-6" />
+              </div>
+            </div>
+          </div>
+
+          {/* Active */}
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-slate-600 md:text-sm">Active</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-600 md:text-3xl">
+                  {stats.active}
+                </p>
+              </div>
+              <div className="rounded-lg bg-emerald-50 p-2 md:p-3">
+                <HiOutlineCheckCircle className="size-5 text-emerald-600 md:size-6" />
+              </div>
+            </div>
+          </div>
+
+          {/* Courses */}
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-slate-600 md:text-sm">Courses</p>
+                <p className="mt-1 text-2xl font-bold text-amber-600 md:text-3xl">
+                  {stats.courses}
+                </p>
+              </div>
+              <div className="rounded-lg bg-amber-50 p-2 md:p-3">
+                <HiOutlineBookOpen className="size-5 text-amber-600 md:size-6" />
+              </div>
+            </div>
+          </div>
+
+          {/* Exams */}
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-slate-600 md:text-sm">Exams</p>
+                <p className="mt-1 text-2xl font-bold text-purple-600 md:text-3xl">{stats.exams}</p>
+              </div>
+              <div className="rounded-lg bg-purple-50 p-2 md:p-3">
+                <HiOutlineClipboardDocumentList className="size-5 text-purple-600 md:size-6" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CATEGORY TABLE */}
+        <CategoryTable initialCategories={categories} />
       </div>
-
-      {/* ─── Stats Cards ─────────────────── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Total Categories */}
-        <div className="bg-white border border-[#E2E8F0] shadow-sm rounded-2xl p-4 hover:shadow-md transition-all">
-          <p className="text-xs text-[#64748B] mb-1">মোট Category</p>
-          <p className="text-2xl font-bold text-[#1F2937]">{totalCategories}</p>
-        </div>
-
-        {/* Active */}
-        <div className="bg-white border border-[#E2E8F0] shadow-sm rounded-2xl p-4 hover:shadow-md transition-all">
-          <p className="text-xs text-[#64748B] mb-1">Active</p>
-          <p className="text-2xl font-bold text-green-600">{activeCategories}</p>
-        </div>
-
-        {/* Total Courses */}
-        <div className="bg-white border border-[#E2E8F0] shadow-sm rounded-2xl p-4 hover:shadow-md transition-all">
-          <p className="text-xs text-[#64748B] mb-1">মোট Course</p>
-          <p className="text-2xl font-bold text-[#1E9CD7]">{totalCourses}</p>
-        </div>
-
-        {/* Total Exams */}
-        <div className="bg-white border border-[#E2E8F0] shadow-sm rounded-2xl p-4 hover:shadow-md transition-all">
-          <p className="text-xs text-[#64748B] mb-1">মোট Exam</p>
-          <p className="text-2xl font-bold text-[#7C3AED]">{totalExams}</p>
-        </div>
-      </div>
-
-      {/* ─── Category Table (Client Component) ───── */}
-      <CategoryTable initialCategories={categories} />
     </div>
   );
 }

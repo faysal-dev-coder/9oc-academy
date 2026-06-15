@@ -90,7 +90,7 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
   const watchedColor = useWatch({ control, name: "color" });
   const watchedIsActive = useWatch({ control, name: "is_active" });
 
-  // ⭐ Reset form when modal opens / category changes
+  // ⭐ Reset form on open
   useEffect(() => {
     if (isOpen) {
       if (category) {
@@ -129,7 +129,6 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
     setSubmitting(true);
     try {
       const url = isEditMode ? `/api/admin/categories/${category.id}` : "/api/admin/categories";
-
       const method = isEditMode ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -149,7 +148,6 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
         result.message || (isEditMode ? "Category আপডেট হয়েছে!" : "Category যোগ হয়েছে!")
       );
 
-      // ⭐ Pass updated data to parent (instant UI update!)
       if (isEditMode) {
         onEditSuccess(result.category);
       } else {
@@ -174,10 +172,10 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0]">
           <div>
             <h2 className="text-lg font-bold text-[#1F2937]">
-              {isEditMode ? "✏️ Category Edit" : "➕ নতুন Category"}
+              {isEditMode ? "Edit Category" : "Add New Category"}
             </h2>
             <p className="text-xs text-[#64748B] mt-0.5">
-              {isEditMode ? "তথ্য পরিবর্তন করে Save করুন" : "নতুন category তৈরি করুন"}
+              {isEditMode ? "ক্যাটাগরির তথ্য আপডেট করুন" : "নতুন category তৈরি করুন"}
             </p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-[#F1F5F9] rounded-lg transition-colors">
@@ -189,7 +187,9 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
         <form onSubmit={handleSubmit(onSubmit)} className="flex-1 overflow-y-auto p-6 space-y-5">
           {/* ─── Live Preview Card ─── */}
           <div className="bg-[#FAFBFC] border border-[#E2E8F0] rounded-xl p-4">
-            <p className="text-xs font-semibold text-[#64748B] uppercase mb-3">Live Preview</p>
+            <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wide mb-3">
+              Live Preview
+            </p>
             <div className="flex items-center gap-3">
               <div
                 className="w-14 h-14 rounded-xl flex items-center justify-center"
@@ -259,7 +259,7 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
               <input
                 type="text"
                 {...register("slug")}
-                placeholder="bcs"
+                placeholder="bcs-preparation"
                 className="w-full px-3 py-2 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-[#1E9CD7] focus:ring-2 focus:ring-[#1E9CD7]/10 transition-all font-mono"
               />
               {errors.slug && <p className="text-xs text-red-500 mt-1">{errors.slug.message}</p>}
@@ -365,7 +365,7 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
                   className="w-4 h-4 text-[#1E9CD7] border-[#E2E8F0] rounded focus:ring-[#1E9CD7]"
                 />
                 <span className="text-sm text-[#1F2937]">
-                  {watchedIsActive ? "✅ Active (Public এ দেখাবে)" : "⏸️ Inactive"}
+                  {watchedIsActive ? "Active (Public এ দেখাবে)" : "Inactive (Hidden)"}
                 </span>
               </label>
             </div>
@@ -373,46 +373,54 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
         </form>
 
         {/* ─── Footer Actions ─── */}
-        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#E2E8F0] bg-[#FAFBFC] rounded-b-2xl">
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={submitting}
-            className="px-4 py-2 text-sm font-semibold text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors disabled:opacity-50"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={handleSubmit(onSubmit)}
-            disabled={submitting}
-            className="px-6 py-2 text-sm font-semibold text-white bg-[#1E9CD7] hover:bg-[#0A5A8A] rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            {submitting ? (
-              <>
-                <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                  />
-                </svg>
-                সংরক্ষণ হচ্ছে...
-              </>
-            ) : isEditMode ? (
-              "💾 Update"
-            ) : (
-              "✅ Save"
-            )}
-          </button>
+        <div className="flex items-center justify-between px-6 py-4 border-t border-[#E2E8F0] bg-[#FAFBFC] rounded-b-2xl">
+          {/* Required note — LEFT side */}
+          <p className="text-xs text-[#94A3B8]">
+            <span className="text-red-500">*</span> Required fields
+          </p>
+
+          {/* Buttons — RIGHT side */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={submitting}
+              className="px-4 py-2 text-sm font-semibold text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSubmit(onSubmit)}
+              disabled={submitting}
+              className="px-6 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {submitting ? (
+                <>
+                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    />
+                  </svg>
+                  সংরক্ষণ হচ্ছে...
+                </>
+              ) : isEditMode ? (
+                "Update Category"
+              ) : (
+                "Create Category"
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>
