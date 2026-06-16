@@ -1,39 +1,42 @@
 // app/layout.js
 // ═══════════════════════════════════════════
-// 9OC Academy — Root Layout (Minimal)
+// 9OC Academy — Root Layout (Premium Foundation)
 // ═══════════════════════════════════════════
-// শুধু HTML Wrapper + Fonts + Metadata
-// Navbar/Footer Sub-Layout এ Move হয়েছে
-// ⭐ UserProvider Wrap — Global Auth State
-// ⭐ Sonner Toaster — Global Toast Notifications
-// ⭐ LIGHT THEME — Phase 6B
+// ⭐ PREMIUM TRANSFORMATION — Chat 36
+// ⭐ Fonts: Inter (English) + Hind Siliguri (Bengali) + JetBrains Mono (code)
+// ⭐ Brand Color: Deep Blue #1E40AF
+// ⭐ UserProvider — Global Auth State
+// ⭐ Sonner Toaster — Global Notifications
 // ═══════════════════════════════════════════
 
-import { Plus_Jakarta_Sans, Inter, Hind_Siliguri } from "next/font/google";
+import { Inter, Hind_Siliguri, JetBrains_Mono } from "next/font/google";
 import { UserProvider } from "@/contexts/UserContext";
 import { Toaster } from "sonner";
 import "./globals.css";
 
 // ─── Font Setup ─────────────────────────
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-jakarta",
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-});
-
+// Inter — English UI (buttons, labels, headers)
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
+// Hind Siliguri — Bengali content (helpers, descriptions, toasts)
 const hind = Hind_Siliguri({
   subsets: ["bengali", "latin"],
   variable: "--font-hind",
   display: "swap",
   weight: ["300", "400", "500", "600", "700"],
+});
+
+// JetBrains Mono — Code, slugs, IDs, hex values
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+  weight: ["400", "500", "600"],
 });
 
 // ─── SEO Metadata ───────────────────────
@@ -100,7 +103,7 @@ export const metadata = {
 
 // ─── Viewport Config ──────────────────
 export const viewport = {
-  themeColor: "#1E9CD7",
+  themeColor: "#1E40AF",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -112,12 +115,9 @@ export default function RootLayout({ children }) {
     <html
       lang="bn"
       data-scroll-behavior="smooth"
-      className={`${jakarta.variable} ${inter.variable} ${hind.variable}`}
+      className={`${inter.variable} ${hind.variable} ${jetbrains.variable}`}
     >
-      <body
-        className="bg-white text-[#1F2937] antialiased overflow-x-hidden"
-        style={{ fontFamily: "var(--font-hind), sans-serif" }}
-      >
+      <body className="bg-white text-slate-900 antialiased overflow-x-hidden">
         {/* ⭐ Global User Provider — সব Route এ Auth State Available */}
         <UserProvider>{children}</UserProvider>
 
@@ -134,7 +134,6 @@ export default function RootLayout({ children }) {
               fontSize: "14px",
               borderRadius: "12px",
             },
-            className: "shadow-lg",
           }}
         />
       </body>
