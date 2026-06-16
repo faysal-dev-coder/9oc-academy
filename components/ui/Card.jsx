@@ -159,6 +159,7 @@ function CardDescription({ className = "", children, ...rest }) {
 
 // ─────────────────────────────────────────────
 //  SUB-COMPONENT: Card.Body
+//  ⚠️ NO vertical padding — Header/Footer dividers handle spacing
 // ─────────────────────────────────────────────
 function CardBody({ className = "", children, ...rest }) {
   return (

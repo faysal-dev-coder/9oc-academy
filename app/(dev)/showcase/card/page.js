@@ -188,7 +188,8 @@ export default function CardShowcasePage() {
               </Card.Header>
 
               <Card.Body>
-                <div className="grid grid-cols-3 gap-4">
+                {/* ✅ flex justify-between + px-2 → breathing space from dividers */}
+                <div className="flex items-center justify-between gap-4 px-2">
                   <div className="flex items-center gap-2">
                     <FileText size={16} className="text-slate-400" />
                     <span className="text-sm">200 MCQs</span>
@@ -234,69 +235,75 @@ export default function CardShowcasePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Card 1 — Clickable */}
               <Card variant="default" onClick={() => alert("Exam card clicked!")}>
-                <div className="flex items-center justify-between mb-3">
-                  <Badge variant="success" dot>
-                    Published
-                  </Badge>
-                  <span className="text-xs text-slate-500">Free</span>
-                </div>
-                <Card.Title>BCS 45th Mock Test</Card.Title>
-                <Card.Description className="mt-1">
-                  Full-length practice exam with explanations
-                </Card.Description>
-                <div className="flex items-center gap-4 mt-4 text-xs text-slate-600">
-                  <span className="flex items-center gap-1">
-                    <FileText size={12} /> 200 MCQs
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={12} /> 120 min
-                  </span>
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-3">
+                    <Badge variant="success" dot>
+                      Published
+                    </Badge>
+                    <span className="text-xs text-slate-500">Free</span>
+                  </div>
+                  <Card.Title>BCS 45th Mock Test</Card.Title>
+                  <Card.Description className="mt-1">
+                    Full-length practice exam with explanations
+                  </Card.Description>
+                  <div className="flex items-center gap-4 mt-auto pt-4 text-xs text-slate-600">
+                    <span className="flex items-center gap-1">
+                      <FileText size={12} /> 200 MCQs
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock size={12} /> 120 min
+                    </span>
+                  </div>
                 </div>
               </Card>
 
               {/* Card 2 — As Link */}
               <Card variant="default" href="#bank-job">
-                <div className="flex items-center justify-between mb-3">
-                  <Badge variant="success" dot>
-                    Published
-                  </Badge>
-                  <Badge variant="brand" size="sm">
-                    Popular
-                  </Badge>
-                </div>
-                <Card.Title>Bank Job MCQ Set 12</Card.Title>
-                <Card.Description className="mt-1">
-                  Comprehensive practice for bank exams
-                </Card.Description>
-                <div className="flex items-center gap-4 mt-4 text-xs text-slate-600">
-                  <span className="flex items-center gap-1">
-                    <FileText size={12} /> 100 MCQs
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={12} /> 60 min
-                  </span>
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-3">
+                    <Badge variant="success" dot>
+                      Published
+                    </Badge>
+                    <Badge variant="brand" size="sm">
+                      Popular
+                    </Badge>
+                  </div>
+                  <Card.Title>Bank Job MCQ Set 12</Card.Title>
+                  <Card.Description className="mt-1">
+                    Comprehensive practice for bank exams
+                  </Card.Description>
+                  <div className="flex items-center gap-4 mt-auto pt-4 text-xs text-slate-600">
+                    <span className="flex items-center gap-1">
+                      <FileText size={12} /> 100 MCQs
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock size={12} /> 60 min
+                    </span>
+                  </div>
                 </div>
               </Card>
 
               {/* Card 3 — Premium */}
               <Card variant="elevated" onClick={() => alert("Premium exam!")}>
-                <div className="flex items-center justify-between mb-3">
-                  <Badge variant="brand" icon={Sparkles}>
-                    Premium
-                  </Badge>
-                  <span className="text-xs font-medium text-brand-700">৳499</span>
-                </div>
-                <Card.Title>NTRCA Complete Course</Card.Title>
-                <Card.Description className="mt-1">
-                  30 mock tests + video solutions
-                </Card.Description>
-                <div className="flex items-center gap-4 mt-4 text-xs text-slate-600">
-                  <span className="flex items-center gap-1">
-                    <BookOpen size={12} /> 30 tests
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Users size={12} /> 1.2k students
-                  </span>
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-3">
+                    <Badge variant="brand" icon={Sparkles}>
+                      Premium
+                    </Badge>
+                    <span className="text-xs font-medium text-brand-700">৳499</span>
+                  </div>
+                  <Card.Title>NTRCA Complete Course</Card.Title>
+                  <Card.Description className="mt-1">
+                    30 mock tests + video solutions
+                  </Card.Description>
+                  <div className="flex items-center gap-4 mt-auto pt-4 text-xs text-slate-600">
+                    <span className="flex items-center gap-1">
+                      <BookOpen size={12} /> 30 tests
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Users size={12} /> 1.2k students
+                    </span>
+                  </div>
                 </div>
               </Card>
             </div>
