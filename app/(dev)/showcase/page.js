@@ -67,14 +67,6 @@ const components = [
     variants: "4",
   },
   {
-    href: "/showcase/stat-card",
-    name: "StatCard",
-    description: "Dashboard metrics with trend indicators",
-    icon: LayoutGrid,
-    status: "ready",
-    variants: "4",
-  },
-  {
     href: "/showcase/page-header",
     name: "PageHeader",
     description: "Page title with breadcrumbs and actions",
@@ -85,23 +77,26 @@ const components = [
   {
     href: "/showcase/filter-bar",
     name: "FilterBar",
-    description: "Search + filter chips combo",
+    description: "Search + filter + sort dropdown bar",
     icon: Filter,
-    status: "soon",
+    status: "ready",
+    variants: "3",
   },
   {
     href: "/showcase/empty-state",
     name: "EmptyState",
     description: "No data placeholder with action button",
     icon: Inbox,
-    status: "soon",
+    status: "ready",
+    variants: "3",
   },
   {
     href: "/showcase/confirm-dialog",
     name: "ConfirmDialog",
     description: "Delete/action confirmation dialog",
     icon: AlertCircle,
-    status: "soon",
+    status: "ready",
+    variants: "4",
   },
 ];
 

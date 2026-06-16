@@ -2,7 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 
-// ─────────────────────────────────────────────
+/// ─────────────────────────────────────────────
 //  VARIANT STYLES
 // ─────────────────────────────────────────────
 const variantStyles = {
@@ -30,6 +30,16 @@ const variantStyles = {
     "bg-white text-slate-700 border border-slate-300 shadow-sm " +
     "hover:bg-slate-50 hover:border-slate-400 active:bg-slate-100 " +
     "focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2",
+
+  warning:
+    "bg-yellow-500 text-slate-900 shadow-sm " +
+    "hover:bg-yellow-600 active:bg-yellow-700 " +
+    "focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2",
+
+  success:
+    "bg-emerald-600 text-white shadow-sm " +
+    "hover:bg-emerald-500 active:bg-emerald-700 " +
+    "focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2",
 };
 
 // ─────────────────────────────────────────────
@@ -98,7 +108,7 @@ export default function Button({
       className={[
         // ── Base styles ──
         "inline-flex items-center justify-center",
-        "font-medium rounded-lg",
+        "font-medium rounded-lg whitespace-nowrap",
         "transition-all duration-150 ease-out",
         "outline-none select-none",
         "cursor-pointer",
