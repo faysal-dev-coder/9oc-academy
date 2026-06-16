@@ -63,7 +63,16 @@ const components = [
     name: "StatCard",
     description: "Dashboard metrics with trend indicators",
     icon: LayoutGrid,
-    status: "soon",
+    status: "ready",
+    variants: "4",
+  },
+  {
+    href: "/showcase/stat-card",
+    name: "StatCard",
+    description: "Dashboard metrics with trend indicators",
+    icon: LayoutGrid,
+    status: "ready",
+    variants: "4",
   },
   {
     href: "/showcase/page-header",

@@ -36,7 +36,7 @@ const navSections = [
   {
     title: "Admin Shared",
     items: [
-      { href: "/showcase/stat-card", label: "StatCard", icon: LayoutGrid, status: "soon" },
+      { href: "/showcase/stat-card", label: "StatCard", icon: LayoutGrid, status: "ready" },
       { href: "/showcase/page-header", label: "PageHeader", icon: FormInput, status: "soon" },
       { href: "/showcase/filter-bar", label: "FilterBar", icon: Filter, status: "soon" },
       { href: "/showcase/empty-state", label: "EmptyState", icon: Inbox, status: "soon" },
