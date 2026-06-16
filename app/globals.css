@@ -25,20 +25,16 @@
   --color-brand-900: #1e3a8a;
 
   /* ===== 🅰️ Font Stacks ===== */
+  /* ⭐ FIX: --font-mono now uses --font-jetbrains (no circular ref) */
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-bangla: var(--font-hind), var(--font-inter), sans-serif;
-  --font-mono: var(--font-mono), "Courier New", monospace;
+  --font-mono: var(--font-jetbrains), "Courier New", monospace;
 
   /* ===== ✨ Premium Shadows ===== */
   --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
   --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
   --shadow-modal: 0 20px 60px rgba(15, 23, 42, 0.15), 0 8px 24px rgba(15, 23, 42, 0.08);
   --shadow-focus: 0 0 0 3px rgba(30, 64, 175, 0.15);
-
-  /* ===== 🎬 Animations ===== */
-  --animate-fade-in: fadeIn 0.4s ease-out;
-  --animate-slide-up: slideUp 0.4s ease-out;
-  --animate-float: floatY 6s ease-in-out infinite;
 
   /* ===== 📱 Custom Breakpoint ===== */
   --breakpoint-xs: 475px;
@@ -140,7 +136,7 @@ kbd,
 pre,
 samp,
 .font-mono {
-  font-family: var(--font-mono), "Courier New", monospace;
+  font-family: var(--font-jetbrains), "Courier New", monospace;
   font-feature-settings: "calt", "liga";
 }
 
@@ -282,6 +278,16 @@ select:focus-visible {
 /* ── Card Reveal ── */
 .card-reveal {
   animation: slideUp 0.5s ease-out forwards;
+}
+
+/* ── Fade In Animation ── */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* ── Slide Up Animation ── */
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out forwards;
 }
 
 /* ============================================

@@ -32,9 +32,10 @@ const hind = Hind_Siliguri({
 });
 
 // JetBrains Mono — Code, slugs, IDs, hex values
+// ⭐ FIX: renamed to --font-jetbrains (was --font-mono, caused circular ref)
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains",
   display: "swap",
   weight: ["400", "500", "600"],
 });
@@ -117,7 +118,7 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={`${inter.variable} ${hind.variable} ${jetbrains.variable}`}
     >
-      <body className="bg-white text-slate-900 antialiased overflow-x-hidden">
+      <body className="font-sans bg-white text-slate-900 antialiased overflow-x-hidden">
         {/* ⭐ Global User Provider — সব Route এ Auth State Available */}
         <UserProvider>{children}</UserProvider>
 
