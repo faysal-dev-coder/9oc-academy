@@ -30,7 +30,7 @@ const navSections = [
       { href: "/showcase/input", label: "Input", icon: TextCursorInput, status: "ready" },
       { href: "/showcase/badge", label: "Badge", icon: Tag, status: "ready" },
       { href: "/showcase/card", label: "Card", icon: Square, status: "ready" },
-      { href: "/showcase/modal", label: "Modal", icon: Layers, status: "soon" },
+      { href: "/showcase/modal", label: "Modal", icon: Layers, status: "ready" },
     ],
   },
   {
@@ -119,12 +119,12 @@ export default function ShowcaseLayout({ children }) {
 
         {/* Footer */}
         <div className="p-4 border-t border-slate-200">
-          <div className="text-xs text-slate-500">
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <span className="font-medium text-slate-700">Phase 2</span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+            <div className="min-w-0">
+              <div className="text-xs font-semibold text-slate-700">Phase 2</div>
+              <div className="text-xs text-slate-500 truncate">Building Components...</div>
             </div>
-            <div className="mt-1">Building Components...</div>
           </div>
         </div>
       </aside>

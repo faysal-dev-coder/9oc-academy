@@ -55,7 +55,8 @@ const components = [
     name: "Modal",
     description: "Overlay dialogs with focus trap and animations",
     icon: Layers,
-    status: "soon",
+    status: "ready",
+    variants: "4",
   },
   {
     href: "/showcase/stat-card",
