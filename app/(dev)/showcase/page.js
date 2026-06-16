@@ -79,7 +79,8 @@ const components = [
     name: "PageHeader",
     description: "Page title with breadcrumbs and actions",
     icon: FormInput,
-    status: "soon",
+    status: "ready",
+    variants: "5",
   },
   {
     href: "/showcase/filter-bar",
