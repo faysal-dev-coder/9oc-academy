@@ -1,32 +1,32 @@
 // app/admin/categories/page.js
-// ═══════════════════════════════════════════
-// Admin Categories — Main List Page
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// 📁 Admin Categories — Main List Page
+// ═══════════════════════════════════════════════════════════════
 // Server Component → Fetch data → Pass to Client
-// ⭐ Real-time counts from courses + exams
-// ⭐ Matches Exam page pattern exactly (consistency!)
-// ═══════════════════════════════════════════
+// ⭐ Uses: PageHeader (server) + CategoriesStats (client) + CategoryTable (client)
+// ⭐ Pattern: Server fetches DB → Pure data passed to Client components
+// ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import CategoryTable from "@/components/admin/categories/CategoryTable";
-import {
-  HiOutlineFolder,
-  HiOutlineCheckCircle,
-  HiOutlineBookOpen,
-  HiOutlineClipboardDocumentList,
-} from "react-icons/hi2";
 
-// Force dynamic — always fresh data
+import PageHeader from "@/components/admin/shared/PageHeader";
+import CategoriesStats from "@/components/admin/categories/CategoriesStats";
+import CategoryTable from "@/components/admin/categories/CategoryTable";
+
+// ─────────────────────────────────────────────
+//  PAGE CONFIG (always fresh data)
+// ─────────────────────────────────────────────
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-// ──────────────────────────────────────────
-// Data Fetch Function
-// ──────────────────────────────────────────
+// ─────────────────────────────────────────────
+//  DATA FETCHING
+// ─────────────────────────────────────────────
 async function getCategoriesWithCounts() {
   const supabase = await createClient();
 
+  // Fetch all categories (ordered)
   const { data: categories, error: catError } = await supabase
     .from("categories")
     .select("*")
@@ -37,6 +37,7 @@ async function getCategoriesWithCounts() {
     return [];
   }
 
+  // Fetch related counts
   const { data: courses } = await supabase
     .from("courses")
     .select("category_id")
@@ -44,44 +45,35 @@ async function getCategoriesWithCounts() {
 
   const { data: exams } = await supabase.from("exams").select("category_id");
 
-  const categoriesWithCounts = categories.map((cat) => ({
+  // Merge counts into categories
+  return categories.map((cat) => ({
     ...cat,
     courses_count: courses?.filter((c) => c.category_id === cat.id).length || 0,
     exams_count: exams?.filter((e) => e.category_id === cat.id).length || 0,
   }));
-
-  return categoriesWithCounts;
 }
 
-// ──────────────────────────────────────────
-// Page Component
-// ──────────────────────────────────────────
+// ─────────────────────────────────────────────
+//  PAGE COMPONENT
+// ─────────────────────────────────────────────
 export default async function CategoriesPage() {
   const supabase = await createClient();
 
-  // ════════════════════════════════════════════════════════════
-  // 1. AUTH CHECK
-  // ════════════════════════════════════════════════════════════
+  // ── 1. Auth Check ──
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) redirect("/login");
 
-  // ════════════════════════════════════════════════════════════
-  // 2. ADMIN CHECK
-  // ════════════════════════════════════════════════════════════
+  // ── 2. Admin Check ──
   const { data: isAdmin } = await supabase.rpc("is_admin");
   if (!isAdmin) redirect("/");
 
-  // ════════════════════════════════════════════════════════════
-  // 3. FETCH DATA
-  // ════════════════════════════════════════════════════════════
+  // ── 3. Fetch Data ──
   const categories = await getCategoriesWithCounts();
 
-  // ════════════════════════════════════════════════════════════
-  // 4. CALCULATE STATS
-  // ════════════════════════════════════════════════════════════
+  // ── 4. Calculate Stats (plain numbers — safe to pass!) ──
   const stats = {
     total: categories.length,
     active: categories.filter((c) => c.is_active).length,
@@ -89,82 +81,25 @@ export default async function CategoriesPage() {
     exams: categories.reduce((sum, c) => sum + c.exams_count, 0),
   };
 
-  // ════════════════════════════════════════════════════════════
-  // 5. RENDER
-  // ════════════════════════════════════════════════════════════
+  // ── 5. Render ──
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
-      <div className="mx-auto max-w-7xl">
-        {/* HEADER */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Category Management</h1>
-          <p className="mt-1 text-sm text-slate-600 md:text-base">
-            সকল exam category তৈরি, সম্পাদনা এবং পরিচালনা করুন
-          </p>
-        </div>
+    <div className="space-y-6">
+      {/* ═══ Page Header (Server-safe — no icon props) ═══ */}
+      <PageHeader
+        title="Category Management"
+        description="সকল exam category তৈরি, সম্পাদনা এবং পরিচালনা করুন"
+        badge={{
+          label: `${stats.total} Total`,
+          variant: "brand",
+          appearance: "soft",
+        }}
+      />
 
-        {/* STATS CARDS */}
-        <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-          {/* Total Categories */}
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 md:text-sm">Categories</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900 md:text-3xl">{stats.total}</p>
-              </div>
-              <div className="rounded-lg bg-blue-50 p-2 md:p-3">
-                <HiOutlineFolder className="size-5 text-blue-600 md:size-6" />
-              </div>
-            </div>
-          </div>
+      {/* ═══ Stats Grid (Client Component — icons inside) ═══ */}
+      <CategoriesStats stats={stats} />
 
-          {/* Active */}
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 md:text-sm">Active</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-600 md:text-3xl">
-                  {stats.active}
-                </p>
-              </div>
-              <div className="rounded-lg bg-emerald-50 p-2 md:p-3">
-                <HiOutlineCheckCircle className="size-5 text-emerald-600 md:size-6" />
-              </div>
-            </div>
-          </div>
-
-          {/* Courses */}
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 md:text-sm">Courses</p>
-                <p className="mt-1 text-2xl font-bold text-amber-600 md:text-3xl">
-                  {stats.courses}
-                </p>
-              </div>
-              <div className="rounded-lg bg-amber-50 p-2 md:p-3">
-                <HiOutlineBookOpen className="size-5 text-amber-600 md:size-6" />
-              </div>
-            </div>
-          </div>
-
-          {/* Exams */}
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 md:text-sm">Exams</p>
-                <p className="mt-1 text-2xl font-bold text-purple-600 md:text-3xl">{stats.exams}</p>
-              </div>
-              <div className="rounded-lg bg-purple-50 p-2 md:p-3">
-                <HiOutlineClipboardDocumentList className="size-5 text-purple-600 md:size-6" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CATEGORY TABLE */}
-        <CategoryTable initialCategories={categories} />
-      </div>
+      {/* ═══ Category Table (Client Component) ═══ */}
+      <CategoryTable initialCategories={categories} />
     </div>
   );
 }

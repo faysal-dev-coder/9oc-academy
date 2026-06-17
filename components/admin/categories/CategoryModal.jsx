@@ -1,30 +1,30 @@
 "use client";
 
 // components/admin/categories/CategoryModal.jsx
-// ═══════════════════════════════════════════
-// Category Modal — Add/Edit Form
-// ═══════════════════════════════════════════
-// Features:
-// ├── React Hook Form + Zod validation
-// ├── useWatch (Compiler friendly!)
-// ├── Icon Picker integration
-// ├── Color Picker (preset + custom)
-// ├── Auto-slug generation
-// ├── Live preview
-// ├── Bengali support
-// └── ⭐ Instant local state update (no refresh needed)
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// 📝 Premium Category Modal — Add/Edit Form
+// ⭐ Phase 4: Categories CRUD
+// ⭐ Uses: Modal + Input + Button + Card + Badge + IconPickerGrid
+// ⭐ Form: React Hook Form + Zod validation
+// ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import * as Hi2Icons from "react-icons/hi2";
-import { HiXMark, HiQuestionMarkCircle } from "react-icons/hi2";
-import IconPickerGrid from "./IconPickerGrid";
+import { Save, Plus } from "lucide-react";
 
-// ⭐ Validation Schema
+import Modal from "@/components/ui/Modal";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import IconPickerGrid, { DynamicIcon } from "./IconPickerGrid";
+
+// ─────────────────────────────────────────────
+//  VALIDATION SCHEMA (Zod)
+// ─────────────────────────────────────────────
 const categorySchema = z.object({
   name: z.string().min(2, "নাম কমপক্ষে ২ অক্ষরের হতে হবে").max(100),
   slug: z
@@ -39,19 +39,23 @@ const categorySchema = z.object({
   is_active: z.boolean().default(true),
 });
 
-// ⭐ Preset Brand Colors
+// ─────────────────────────────────────────────
+//  PRESET BRAND COLORS
+// ─────────────────────────────────────────────
 const PRESET_COLORS = [
-  { hex: "#1E9CD7", name: "Brand Blue" },
-  { hex: "#059669", name: "Green" },
+  { hex: "#1E40AF", name: "Brand Blue" },
+  { hex: "#059669", name: "Emerald" },
   { hex: "#7C3AED", name: "Purple" },
   { hex: "#D97706", name: "Amber" },
   { hex: "#DC2626", name: "Red" },
   { hex: "#EC4899", name: "Pink" },
-  { hex: "#0A5A8A", name: "Dark Blue" },
-  { hex: "#FBBF24", name: "Yellow" },
+  { hex: "#0891B2", name: "Cyan" },
+  { hex: "#EAB308", name: "Yellow" },
 ];
 
-// ⭐ Auto-slug helper
+// ─────────────────────────────────────────────
+//  AUTO-SLUG HELPER
+// ─────────────────────────────────────────────
 const generateSlug = (text) =>
   text
     .toLowerCase()
@@ -60,10 +64,14 @@ const generateSlug = (text) =>
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
 
+// ─────────────────────────────────────────────
+//  CATEGORY MODAL COMPONENT
+// ─────────────────────────────────────────────
 export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuccess, category }) {
   const isEditMode = !!category;
   const [submitting, setSubmitting] = useState(false);
 
+  // ── React Hook Form ──
   const {
     register,
     handleSubmit,
@@ -77,54 +85,47 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
       name: "",
       slug: "",
       description: "",
-      icon: "HiAcademicCap",
-      color: "#1E9CD7",
+      icon: "GraduationCap",
+      color: "#1E40AF",
       display_order: 0,
       is_active: true,
     },
   });
 
-  // ⭐ useWatch — React Compiler friendly!
+  // ── Watch values (React Compiler friendly) ──
   const watchedName = useWatch({ control, name: "name" });
   const watchedIcon = useWatch({ control, name: "icon" });
   const watchedColor = useWatch({ control, name: "color" });
   const watchedIsActive = useWatch({ control, name: "is_active" });
 
-  // ⭐ Reset form on open
+  // ── Reset form when modal opens ──
   useEffect(() => {
-    if (isOpen) {
-      if (category) {
-        reset({
-          name: category.name || "",
-          slug: category.slug || "",
-          description: category.description || "",
-          icon: category.icon || "HiAcademicCap",
-          color: category.color || "#1E9CD7",
-          display_order: category.display_order || 0,
-          is_active: category.is_active ?? true,
-        });
-      } else {
-        reset({
-          name: "",
-          slug: "",
-          description: "",
-          icon: "HiAcademicCap",
-          color: "#1E9CD7",
-          display_order: 0,
-          is_active: true,
-        });
-      }
+    if (!isOpen) return;
+
+    if (category) {
+      reset({
+        name: category.name || "",
+        slug: category.slug || "",
+        description: category.description || "",
+        icon: category.icon || "GraduationCap",
+        color: category.color || "#1E40AF",
+        display_order: category.display_order || 0,
+        is_active: category.is_active ?? true,
+      });
+    } else {
+      reset({
+        name: "",
+        slug: "",
+        description: "",
+        icon: "GraduationCap",
+        color: "#1E40AF",
+        display_order: 0,
+        is_active: true,
+      });
     }
   }, [isOpen, category, reset]);
 
-  // ⭐ ESC key to close
-  useEffect(() => {
-    const handleEsc = (e) => e.key === "Escape" && onClose();
-    if (isOpen) window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, [isOpen, onClose]);
-
-  // ⭐ Submit Handler
+  // ── Submit Handler ──
   const onSubmit = async (data) => {
     setSubmitting(true);
     try {
@@ -161,160 +162,151 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
     }
   };
 
-  if (!isOpen) return null;
-
-  const PreviewIcon = Hi2Icons[watchedIcon] || HiQuestionMarkCircle;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
-        {/* ─── Header ─── */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0]">
-          <div>
-            <h2 className="text-lg font-bold text-[#1F2937]">
-              {isEditMode ? "Edit Category" : "Add New Category"}
-            </h2>
-            <p className="text-xs text-[#64748B] mt-0.5">
-              {isEditMode ? "ক্যাটাগরির তথ্য আপডেট করুন" : "নতুন category তৈরি করুন"}
-            </p>
-          </div>
-          <button onClick={onClose} className="p-2 hover:bg-[#F1F5F9] rounded-lg transition-colors">
-            <HiXMark className="w-5 h-5 text-[#64748B]" />
-          </button>
-        </div>
+    <Modal isOpen={isOpen} onClose={onClose} size="lg" closeOnBackdrop={!submitting}>
+      {/* ─── HEADER ─── */}
+      <Modal.Header title={isEditMode ? "Edit Category" : "Add New Category"} onClose={onClose} />
 
-        {/* ─── Form Body (Scrollable) ─── */}
-        <form onSubmit={handleSubmit(onSubmit)} className="flex-1 overflow-y-auto p-6 space-y-5">
-          {/* ─── Live Preview Card ─── */}
-          <div className="bg-[#FAFBFC] border border-[#E2E8F0] rounded-xl p-4">
-            <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wide mb-3">
+      {/* ─── BODY (Scrollable Form) ─── */}
+      <Modal.Body className="space-y-5">
+        <form id="category-form" onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* ═══ Live Preview Card ═══ */}
+          <Card variant="default" padding="sm" className="bg-slate-50">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
               Live Preview
             </p>
+
             <div className="flex items-center gap-3">
+              {/* Icon Box */}
               <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center"
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl"
                 style={{
                   backgroundColor: `${watchedColor}15`,
                   border: `1px solid ${watchedColor}30`,
                   boxShadow: `0 4px 12px ${watchedColor}20`,
                 }}
               >
-                <PreviewIcon className="w-7 h-7" style={{ color: watchedColor }} />
+                <DynamicIcon name={watchedIcon} size={28} style={{ color: watchedColor }} />
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-[#1F2937] truncate">
+
+              {/* Name + Status */}
+              <div className="min-w-0 flex-1">
+                <div className="truncate font-semibold text-slate-900">
                   {watchedName || "Category Name"}
                 </div>
-                <div className="flex items-center gap-2 mt-1">
-                  <span
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border ${
-                      watchedIsActive
-                        ? "bg-green-50 border-green-200 text-green-700"
-                        : "bg-gray-50 border-gray-200 text-gray-600"
-                    }`}
+                <div className="mt-1.5">
+                  <Badge
+                    variant={watchedIsActive ? "success" : "default"}
+                    appearance="soft"
+                    size="sm"
+                    dot
                   >
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        watchedIsActive ? "bg-green-500" : "bg-gray-400"
-                      }`}
-                    />
                     {watchedIsActive ? "Active" : "Inactive"}
-                  </span>
+                  </Badge>
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
 
-          {/* ─── Name + Slug Row ─── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* ═══ Name + Slug Row ═══ */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {/* Name */}
-            <div>
-              <label className="block text-sm font-semibold text-[#1F2937] mb-1.5">
-                Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                {...register("name")}
-                placeholder="যেমন: BCS প্রস্তুতি"
-                className="w-full px-3 py-2 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-[#1E9CD7] focus:ring-2 focus:ring-[#1E9CD7]/10 transition-all"
-              />
-              {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
-            </div>
+            <Input
+              label="Name"
+              required
+              placeholder="যেমন: BCS প্রস্তুতি"
+              {...register("name")}
+              error={errors.name?.message}
+            />
 
             {/* Slug */}
             <div>
-              <label className="block text-sm font-semibold text-[#1F2937] mb-1.5">
-                Slug <span className="text-red-500">*</span>
+              <div className="mb-1.5 flex items-center justify-between">
+                <label className="text-sm font-medium text-slate-700">
+                  Slug
+                  <span className="ml-0.5 text-red-500">*</span>
+                </label>
                 <button
                   type="button"
                   onClick={() => {
                     const generated = generateSlug(watchedName || "");
                     setValue("slug", generated, { shouldValidate: true });
                   }}
-                  className="ml-2 text-xs text-[#1E9CD7] hover:underline font-normal"
+                  className="text-xs font-medium text-brand-700 hover:text-brand-800 hover:underline"
                 >
                   Auto Generate
                 </button>
-              </label>
-              <input
-                type="text"
-                {...register("slug")}
+              </div>
+              <Input
                 placeholder="bcs-preparation"
-                className="w-full px-3 py-2 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-[#1E9CD7] focus:ring-2 focus:ring-[#1E9CD7]/10 transition-all font-mono"
+                {...register("slug")}
+                error={errors.slug?.message}
+                helper={
+                  !errors.slug ? "lowercase, hyphen-separated (URL এ ব্যবহার হবে)" : undefined
+                }
+                className="font-mono"
               />
-              {errors.slug && <p className="text-xs text-red-500 mt-1">{errors.slug.message}</p>}
-              <p className="text-xs text-[#94A3B8] mt-1">
-                lowercase, hyphen-separated (URL এ ব্যবহার হবে)
-              </p>
             </div>
           </div>
 
-          {/* ─── Description ─── */}
+          {/* ═══ Description ═══ */}
           <div>
-            <label className="block text-sm font-semibold text-[#1F2937] mb-1.5">Description</label>
+            <label className="mb-1.5 block text-sm font-medium text-slate-700">Description</label>
             <textarea
               {...register("description")}
               rows={2}
               placeholder="সংক্ষিপ্ত বিবরণ (optional)"
-              className="w-full px-3 py-2 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-[#1E9CD7] focus:ring-2 focus:ring-[#1E9CD7]/10 transition-all resize-none"
+              className={[
+                "w-full resize-none rounded-lg border bg-white px-3.5 py-2 text-sm text-slate-900",
+                "transition-all duration-150 outline-none",
+                "placeholder:text-slate-400",
+                errors.description
+                  ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
+                  : "border-slate-300 hover:border-slate-400 focus:border-brand-700 focus:ring-2 focus:ring-brand-100",
+              ].join(" ")}
             />
             {errors.description && (
-              <p className="text-xs text-red-500 mt-1">{errors.description.message}</p>
+              <p className="mt-1.5 text-xs text-red-600">{errors.description.message}</p>
             )}
           </div>
 
-          {/* ─── Icon Picker ─── */}
+          {/* ═══ Icon Picker ═══ */}
           <div>
-            <label className="block text-sm font-semibold text-[#1F2937] mb-1.5">
-              Icon <span className="text-red-500">*</span>
+            <label className="mb-1.5 block text-sm font-medium text-slate-700">
+              Icon
+              <span className="ml-0.5 text-red-500">*</span>
             </label>
             <IconPickerGrid
               selectedIcon={watchedIcon}
               onSelect={(iconName) => setValue("icon", iconName, { shouldValidate: true })}
               color={watchedColor}
             />
-            {errors.icon && <p className="text-xs text-red-500 mt-1">{errors.icon.message}</p>}
+            {errors.icon && <p className="mt-1.5 text-xs text-red-600">{errors.icon.message}</p>}
           </div>
 
-          {/* ─── Color Picker ─── */}
+          {/* ═══ Color Picker ═══ */}
           <div>
-            <label className="block text-sm font-semibold text-[#1F2937] mb-1.5">
-              Color <span className="text-red-500">*</span>
+            <label className="mb-1.5 block text-sm font-medium text-slate-700">
+              Color
+              <span className="ml-0.5 text-red-500">*</span>
             </label>
 
             {/* Preset Colors */}
-            <div className="grid grid-cols-8 gap-2 mb-3">
+            <div className="mb-3 grid grid-cols-8 gap-2">
               {PRESET_COLORS.map((preset) => (
                 <button
                   key={preset.hex}
                   type="button"
                   onClick={() => setValue("color", preset.hex, { shouldValidate: true })}
                   title={preset.name}
-                  className={`aspect-square rounded-lg border-2 transition-all hover:scale-110 ${
+                  className={[
+                    "aspect-square rounded-lg border-2 transition-all duration-150",
+                    "hover:scale-110 cursor-pointer",
+                    "outline-none focus-visible:ring-2 focus-visible:ring-brand-800 focus-visible:ring-offset-2",
                     watchedColor === preset.hex
-                      ? "ring-2 ring-offset-2 ring-[#1E9CD7] border-white scale-110"
-                      : "border-transparent"
-                  }`}
+                      ? "scale-110 border-white ring-2 ring-offset-2 ring-brand-800"
+                      : "border-transparent",
+                  ].join(" ")}
                   style={{ backgroundColor: preset.hex }}
                 />
               ))}
@@ -326,103 +318,77 @@ export default function CategoryModal({ isOpen, onClose, onAddSuccess, onEditSuc
                 type="color"
                 value={watchedColor}
                 onChange={(e) => setValue("color", e.target.value, { shouldValidate: true })}
-                className="w-12 h-10 border border-[#E2E8F0] rounded-lg cursor-pointer"
+                className="h-10 w-12 cursor-pointer rounded-lg border border-slate-300"
               />
-              <input
-                type="text"
-                {...register("color")}
-                placeholder="#1E9CD7"
-                className="flex-1 px-3 py-2 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-[#1E9CD7] focus:ring-2 focus:ring-[#1E9CD7]/10 transition-all font-mono"
-              />
+              <div className="flex-1">
+                <Input
+                  placeholder="#1E40AF"
+                  {...register("color")}
+                  error={errors.color?.message}
+                  className="font-mono"
+                />
+              </div>
             </div>
-            {errors.color && <p className="text-xs text-red-500 mt-1">{errors.color.message}</p>}
           </div>
 
-          {/* ─── Display Order + Active Toggle ─── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* ═══ Display Order + Active Toggle ═══ */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {/* Display Order */}
-            <div>
-              <label className="block text-sm font-semibold text-[#1F2937] mb-1.5">
-                Display Order
-              </label>
-              <input
-                type="number"
-                {...register("display_order")}
-                placeholder="0"
-                min={0}
-                className="w-full px-3 py-2 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-[#1E9CD7] focus:ring-2 focus:ring-[#1E9CD7]/10 transition-all"
-              />
-              <p className="text-xs text-[#94A3B8] mt-1">ছোট সংখ্যা আগে দেখাবে</p>
-            </div>
+            <Input
+              label="Display Order"
+              type="number"
+              min={0}
+              placeholder="0"
+              {...register("display_order")}
+              helper="ছোট সংখ্যা আগে দেখাবে"
+            />
 
             {/* Active Toggle */}
             <div>
-              <label className="block text-sm font-semibold text-[#1F2937] mb-1.5">Status</label>
-              <label className="flex items-center gap-3 px-3 py-2 border border-[#E2E8F0] rounded-lg cursor-pointer hover:bg-[#FAFBFC] transition-all">
+              <label className="mb-1.5 block text-sm font-medium text-slate-700">Status</label>
+              <label
+                className={[
+                  "flex h-10 cursor-pointer items-center gap-3 rounded-lg border px-3",
+                  "transition-all duration-150",
+                  "border-slate-300 hover:border-slate-400 hover:bg-slate-50",
+                ].join(" ")}
+              >
                 <input
                   type="checkbox"
                   {...register("is_active")}
-                  className="w-4 h-4 text-[#1E9CD7] border-[#E2E8F0] rounded focus:ring-[#1E9CD7]"
+                  className="h-4 w-4 cursor-pointer rounded border-slate-300 text-brand-800 focus:ring-brand-800"
                 />
-                <span className="text-sm text-[#1F2937]">
+                <span className="text-sm text-slate-700">
                   {watchedIsActive ? "Active (Public এ দেখাবে)" : "Inactive (Hidden)"}
                 </span>
               </label>
             </div>
           </div>
         </form>
+      </Modal.Body>
 
-        {/* ─── Footer Actions ─── */}
-        <div className="flex items-center justify-between px-6 py-4 border-t border-[#E2E8F0] bg-[#FAFBFC] rounded-b-2xl">
-          {/* Required note — LEFT side */}
-          <p className="text-xs text-[#94A3B8]">
-            <span className="text-red-500">*</span> Required fields
-          </p>
+      {/* ─── FOOTER ─── */}
+      <Modal.Footer className="justify-between">
+        {/* Required note — LEFT */}
+        <p className="text-xs text-slate-500">
+          <span className="text-red-500">*</span> Required fields
+        </p>
 
-          {/* Buttons — RIGHT side */}
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={submitting}
-              className="px-4 py-2 text-sm font-semibold text-[#64748B] hover:bg-[#F1F5F9] rounded-lg transition-colors disabled:opacity-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={handleSubmit(onSubmit)}
-              disabled={submitting}
-              className="px-6 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              {submitting ? (
-                <>
-                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                    />
-                  </svg>
-                  সংরক্ষণ হচ্ছে...
-                </>
-              ) : isEditMode ? (
-                "Update Category"
-              ) : (
-                "Create Category"
-              )}
-            </button>
-          </div>
+        {/* Buttons — RIGHT */}
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={onClose} disabled={submitting}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            icon={isEditMode ? Save : Plus}
+            loading={submitting}
+            onClick={handleSubmit(onSubmit)}
+          >
+            {isEditMode ? "Update Category" : "Create Category"}
+          </Button>
         </div>
-      </div>
-    </div>
+      </Modal.Footer>
+    </Modal>
   );
 }
