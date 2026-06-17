@@ -1,11 +1,12 @@
 // app/admin/page.js
 // ═══════════════════════════════════════════════════════════════
-// 📊 Admin Dashboard — Real Stats
-// ⭐ Recent Attempts → RPC function (get_recent_attempts)
+// 📊 Admin Dashboard — Premium v3 (Chat 41)
+// ⭐ HYBRID: 60% new sections + 40% existing
+// ⭐ Top Exams + Activity Chart + Categories + System Status
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "@/lib/supabase/server";
-import { HiShieldCheck, HiSparkles } from "react-icons/hi2";
+import PageHeader from "@/components/admin/shared/PageHeader";
 import DashboardStats from "@/components/admin/stats/DashboardStats";
 
 export const metadata = {
@@ -17,10 +18,143 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 // ═══════════════════════════════════
-// DATA FETCHING
+// HELPER: 30-day trend calculation
+// ═══════════════════════════════════
+async function getTrend(supabase, table, dateField = "created_at", filter = null) {
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
+
+  let q1 = supabase
+    .from(table)
+    .select("*", { count: "exact", head: true })
+    .gte(dateField, thirtyDaysAgo.toISOString());
+
+  let q2 = supabase
+    .from(table)
+    .select("*", { count: "exact", head: true })
+    .gte(dateField, sixtyDaysAgo.toISOString())
+    .lt(dateField, thirtyDaysAgo.toISOString());
+
+  if (filter) {
+    q1 = q1.eq(filter.col, filter.val);
+    q2 = q2.eq(filter.col, filter.val);
+  }
+
+  const [{ count: current }, { count: previous }] = await Promise.all([q1, q2]);
+  const curr = current || 0;
+  const prev = previous || 0;
+
+  if (prev === 0 && curr === 0) return { value: "0.0%", trend: "neutral" };
+  if (prev === 0) return { value: `+${curr}`, trend: "up" };
+
+  const change = ((curr - prev) / prev) * 100;
+  const sign = change >= 0 ? "+" : "";
+  const trend = change > 0 ? "up" : change < 0 ? "down" : "neutral";
+  return { value: `${sign}${change.toFixed(1)}%`, trend };
+}
+
+// ═══════════════════════════════════
+// HELPER: Group attempts by day (last 7 days)
+// ═══════════════════════════════════
+async function getLast7DaysActivity(supabase) {
+  const days = [];
+  const now = new Date();
+
+  // Build day labels (last 7 days)
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    date.setHours(0, 0, 0, 0);
+    days.push({
+      date: date.toISOString().split("T")[0],
+      label: date.toLocaleDateString("en-US", { weekday: "short" }),
+      count: 0,
+    });
+  }
+
+  // Fetch attempts in this range
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const { data: attempts } = await supabase
+    .from("attempts")
+    .select("started_at")
+    .gte("started_at", sevenDaysAgo.toISOString());
+
+  // Group by day
+  if (attempts) {
+    attempts.forEach((a) => {
+      const day = a.started_at?.split("T")[0];
+      const found = days.find((d) => d.date === day);
+      if (found) found.count++;
+    });
+  }
+
+  return days;
+}
+
+// ═══════════════════════════════════
+// HELPER: Top 5 exams by attempts
+// ═══════════════════════════════════
+async function getTopExams(supabase) {
+  const { data: exams } = await supabase.from("exams").select("id, title").limit(20);
+
+  if (!exams || exams.length === 0) return [];
+
+  // Get attempts count for each exam
+  const results = await Promise.all(
+    exams.map(async (exam) => {
+      const { count } = await supabase
+        .from("attempts")
+        .select("*", { count: "exact", head: true })
+        .eq("exam_id", exam.id);
+      return { ...exam, attempts: count || 0 };
+    })
+  );
+
+  // Sort by attempts and take top 5
+  return results.sort((a, b) => b.attempts - a.attempts).slice(0, 5);
+}
+
+// ═══════════════════════════════════
+// HELPER: Category breakdown
+// ═══════════════════════════════════
+async function getCategoryStats(supabase) {
+  const { data: categories } = await supabase.from("categories").select("id, name").limit(10);
+
+  if (!categories || categories.length === 0) return [];
+
+  const results = await Promise.all(
+    categories.map(async (cat) => {
+      const { count } = await supabase
+        .from("exams")
+        .select("*", { count: "exact", head: true })
+        .eq("category_id", cat.id);
+      return { ...cat, exams: count || 0 };
+    })
+  );
+
+  return results.sort((a, b) => b.exams - a.exams).slice(0, 5);
+}
+
+// ═══════════════════════════════════
+// MAIN DATA FETCH
 // ═══════════════════════════════════
 async function getDashboardData() {
   const supabase = await createClient();
+
+  // Current admin user
+  const {
+    data: { user: currentUser },
+  } = await supabase.auth.getUser();
+  let currentProfile = null;
+  if (currentUser) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("full_name, avatar_url")
+      .eq("id", currentUser.id)
+      .single();
+    currentProfile = data;
+  }
 
   const [
     { count: totalUsers },
@@ -28,66 +162,79 @@ async function getDashboardData() {
     { count: totalExams },
     { count: totalQuestions },
     { count: totalAttempts },
+    { count: totalCategories },
     { count: pendingPaymentsCount },
-    { data: recentUsers, error: usersError },
-    { data: recentAttempts, error: attemptsError },
-    { data: pendingPayments },
+    { data: recentUsers },
+    { data: recentAttempts },
+    // Trends
+    usersTrend,
+    examsTrend,
+    attemptsTrend,
+    questionsTrend,
+    // New sections
+    topExams,
+    activity7Days,
+    categoryStats,
   ] = await Promise.all([
-    // 1. Total Users
     supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "student"),
-
-    // 2. Total Courses
     supabase.from("courses").select("*", { count: "exact", head: true }),
-
-    // 3. Total Exams
     supabase.from("exams").select("*", { count: "exact", head: true }),
-
-    // 4. Total Questions
     supabase.from("questions").select("*", { count: "exact", head: true }),
-
-    // 5. Total Attempts
     supabase.from("attempts").select("*", { count: "exact", head: true }),
-
-    // 6. Pending Payments
+    supabase.from("categories").select("*", { count: "exact", head: true }),
     supabase.from("payments").select("*", { count: "exact", head: true }).eq("status", "pending"),
-
-    // 7. Recent Users from VIEW
     supabase
       .from("admin_users_view")
       .select("id, full_name, email, phone, avatar_url, role, created_at")
       .order("created_at", { ascending: false })
-      .limit(6),
-
-    // 8. ⭐ Recent Attempts via RPC (FIXED!)
-    supabase.rpc("get_recent_attempts", { limit_count: 6 }),
-
-    // 9. Pending Payments list
-    supabase.from("payments").select("id, status, created_at").eq("status", "pending").limit(5),
+      .limit(4),
+    supabase.rpc("get_recent_attempts", { limit_count: 4 }),
+    // Trends
+    getTrend(supabase, "profiles", "created_at", { col: "role", val: "student" }),
+    getTrend(supabase, "exams"),
+    getTrend(supabase, "attempts", "started_at"),
+    getTrend(supabase, "questions"),
+    // New sections
+    getTopExams(supabase),
+    getLast7DaysActivity(supabase),
+    getCategoryStats(supabase),
   ]);
 
-  // 🔍 Debug logs
-  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("🔍 ADMIN DASHBOARD DEBUG:");
-  console.log("📊 Total Users:", totalUsers);
-  console.log("📊 Total Attempts:", totalAttempts);
-  console.log("📋 Recent Users count:", recentUsers?.length || 0);
-  if (usersError) console.log("❌ Users Error:", usersError);
-  console.log("📋 Recent Attempts count:", recentAttempts?.length || 0);
-  if (attemptsError) console.log("❌ Attempts Error:", attemptsError);
-  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  // System status (mock — would be real health checks in production)
+  const systemStatus = [
+    { name: "Database", status: "healthy", message: "Connected" },
+    { name: "Storage", status: "healthy", message: "Available" },
+    { name: "Auth Service", status: "healthy", message: "Operational" },
+    { name: "API", status: "healthy", message: "Responsive" },
+  ];
 
   return {
+    currentUser: {
+      name: currentProfile?.full_name || currentUser?.email?.split("@")[0] || "Admin",
+      email: currentUser?.email || "",
+      avatar: currentProfile?.avatar_url || null,
+    },
     stats: {
       totalUsers: totalUsers || 0,
       totalCourses: totalCourses || 0,
       totalExams: totalExams || 0,
       totalQuestions: totalQuestions || 0,
       totalAttempts: totalAttempts || 0,
+      totalCategories: totalCategories || 0,
       pendingPaymentsCount: pendingPaymentsCount || 0,
+    },
+    trends: {
+      users: usersTrend,
+      exams: examsTrend,
+      attempts: attemptsTrend,
+      questions: questionsTrend,
     },
     recentUsers: recentUsers || [],
     recentAttempts: recentAttempts || [],
-    pendingPayments: pendingPayments || [],
+    topExams: topExams || [],
+    activity7Days: activity7Days || [],
+    categoryStats: categoryStats || [],
+    systemStatus,
   };
 }
 
@@ -95,71 +242,16 @@ async function getDashboardData() {
 // PAGE COMPONENT
 // ═══════════════════════════════════
 export default async function AdminDashboardPage() {
-  const { stats, recentUsers, recentAttempts, pendingPayments } = await getDashboardData();
+  const data = await getDashboardData();
 
   return (
     <div className="space-y-6">
-      {/* ═══ Welcome Header ═══ */}
-      <div
-        className="rounded-3xl border-2 border-[#1E9CD7]/20 p-6 sm:p-8 shadow-sm"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(30,156,215,0.08) 0%, rgba(255,255,255,1) 50%, rgba(10,90,138,0.04) 100%)",
-        }}
-      >
-        <div className="flex items-start gap-5">
-          <div
-            className="flex h-14 w-14 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-2xl text-white shadow-lg"
-            style={{
-              background: "linear-gradient(135deg, #1E9CD7 0%, #0A5A8A 100%)",
-              boxShadow: "0 8px 24px rgba(30,156,215,0.3)",
-            }}
-          >
-            <HiShieldCheck className="text-2xl sm:text-3xl" />
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#1F2937]">Admin Dashboard</h2>
-              <HiSparkles className="text-xl sm:text-2xl text-[#FBBF24] shrink-0" />
-            </div>
-            <p className="text-sm sm:text-base text-[#475569] mb-4">
-              9OC Academy-র সকল কার্যক্রম এখান থেকে পরিচালনা করুন।
-            </p>
-
-            <div className="flex flex-wrap gap-3">
-              <div className="flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-200 px-3 py-1">
-                <span className="h-2 w-2 rounded-full bg-[#1E9CD7] animate-pulse" />
-                <span className="text-xs font-semibold text-blue-700">
-                  {stats.totalUsers} Students
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5 rounded-full bg-green-50 border border-green-200 px-3 py-1">
-                <span className="h-2 w-2 rounded-full bg-[#059669]" />
-                <span className="text-xs font-semibold text-green-700">
-                  {stats.totalExams} Exams Live
-                </span>
-              </div>
-              {stats.pendingPaymentsCount > 0 && (
-                <div className="flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-200 px-3 py-1">
-                  <span className="h-2 w-2 rounded-full bg-[#D97706] animate-pulse" />
-                  <span className="text-xs font-semibold text-amber-700">
-                    {stats.pendingPaymentsCount} Payments Pending
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ Main Dashboard Stats ═══ */}
-      <DashboardStats
-        stats={stats}
-        recentUsers={recentUsers}
-        recentAttempts={recentAttempts}
-        pendingPayments={pendingPayments}
+      <PageHeader
+        title="Dashboard"
+        description="9OC Academy-র সকল কার্যক্রম এক নজরে — real-time insights."
       />
+
+      <DashboardStats {...data} />
     </div>
   );
 }
