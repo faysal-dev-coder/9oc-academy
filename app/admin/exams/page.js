@@ -1,12 +1,15 @@
+// app/admin/exams/page.js
+// ═══════════════════════════════════════════════════════════════
+// 📋 Admin Exams Page — Server Component
+// ⭐ Phase 4: Exams CRUD
+// ⭐ Auth check + DB queries + Pass plain data to Client components
+// ═══════════════════════════════════════════════════════════════
+
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import PageHeader from "@/components/admin/shared/PageHeader";
+import ExamsStats from "@/components/admin/exams/ExamsStats";
 import ExamTable from "@/components/admin/exams/ExamTable";
-import {
-  HiOutlineClipboardDocumentList,
-  HiOutlineCheckCircle,
-  HiOutlineGift,
-  HiOutlineStar,
-} from "react-icons/hi2";
 
 // Force dynamic — always fresh data
 export const dynamic = "force-dynamic";
@@ -60,7 +63,7 @@ export default async function AdminExamsPage() {
   const courses = coursesResult.data || [];
 
   // ════════════════════════════════════════════════════════════
-  // 4. CALCULATE STATS
+  // 4. CALCULATE STATS (Plain numbers only!)
   // ════════════════════════════════════════════════════════════
   const stats = {
     total: exams.length,
@@ -70,81 +73,22 @@ export default async function AdminExamsPage() {
   };
 
   // ════════════════════════════════════════════════════════════
-  // 5. RENDER
+  // 5. RENDER (No icon props from Server!)
   // ════════════════════════════════════════════════════════════
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
-      <div className="mx-auto max-w-7xl">
-        {/* HEADER */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Exam Management</h1>
-          <p className="mt-1 text-sm text-slate-600 md:text-base">
-            পরীক্ষা তৈরি, সম্পাদনা ও পরিচালনা করুন
-          </p>
-        </div>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <PageHeader
+        title="Exam Management"
+        description="পরীক্ষা তৈরি, সম্পাদনা ও পরিচালনা করুন"
+        badge={`${stats.total} Total`}
+      />
 
-        {/* STATS CARDS */}
-        <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-          {/* Total Exams */}
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 md:text-sm">Total Exams</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900 md:text-3xl">{stats.total}</p>
-              </div>
-              <div className="rounded-lg bg-blue-50 p-2 md:p-3">
-                <HiOutlineClipboardDocumentList className="size-5 text-blue-600 md:size-6" />
-              </div>
-            </div>
-          </div>
+      {/* Stats Cards (Client wrapper for icons) */}
+      <ExamsStats stats={stats} />
 
-          {/* Active Exams */}
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 md:text-sm">Active</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-600 md:text-3xl">
-                  {stats.active}
-                </p>
-              </div>
-              <div className="rounded-lg bg-emerald-50 p-2 md:p-3">
-                <HiOutlineCheckCircle className="size-5 text-emerald-600 md:size-6" />
-              </div>
-            </div>
-          </div>
-
-          {/* Free Exams */}
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 md:text-sm">Free</p>
-                <p className="mt-1 text-2xl font-bold text-amber-600 md:text-3xl">{stats.free}</p>
-              </div>
-              <div className="rounded-lg bg-amber-50 p-2 md:p-3">
-                <HiOutlineGift className="size-5 text-amber-600 md:size-6" />
-              </div>
-            </div>
-          </div>
-
-          {/* Premium Exams */}
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md md:p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 md:text-sm">Premium</p>
-                <p className="mt-1 text-2xl font-bold text-purple-600 md:text-3xl">
-                  {stats.premium}
-                </p>
-              </div>
-              <div className="rounded-lg bg-purple-50 p-2 md:p-3">
-                <HiOutlineStar className="size-5 text-purple-600 md:size-6" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* EXAM TABLE */}
-        <ExamTable initialExams={exams} categories={categories} courses={courses} />
-      </div>
+      {/* Exams Table (Client component) */}
+      <ExamTable initialExams={exams} categories={categories} courses={courses} />
     </div>
   );
 }

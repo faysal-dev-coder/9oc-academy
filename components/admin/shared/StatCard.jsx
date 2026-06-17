@@ -4,6 +4,7 @@
 // ⭐ Phase 2: Admin Shared Component
 // ⭐ Uses: Card.jsx wrapper
 // ⭐ Style: Modern dashboard (Stripe/Vercel inspired)
+// ⭐ FIXED (Chat 43): renderIcon() now supports Lucide v1+ (forwardRef objects)
 // ═══════════════════════════════════════════════════════════════
 
 "use client";
@@ -41,12 +42,19 @@ const trendStyles = {
 };
 
 // ─────────────────────────────────────────────
-//  HELPER: Render Icon
-//  Supports both:
-//    icon={Users}      → Component reference
+//  HELPER: Render Icon (Lucide v1+ compatible!)
+//  Supports:
+//    icon={Users}      → Component reference (function OR forwardRef object)
 //    icon={<Users />}  → JSX element
+//    icon={null}       → Fallback to BarChart3
 // ─────────────────────────────────────────────
 function renderIcon(icon) {
+  // No icon → fallback
+  if (!icon) {
+    return <BarChart3 className="h-6 w-6" aria-hidden="true" />;
+  }
+
+  // Already a JSX element → clone with our classes
   if (isValidElement(icon)) {
     return cloneElement(icon, {
       className: ["h-6 w-6", icon.props.className].filter(Boolean).join(" "),
@@ -54,12 +62,10 @@ function renderIcon(icon) {
     });
   }
 
-  if (typeof icon === "function") {
-    const Icon = icon;
-    return <Icon className="h-6 w-6" aria-hidden="true" />;
-  }
-
-  return <BarChart3 className="h-6 w-6" aria-hidden="true" />;
+  // Component reference (handles BOTH function AND forwardRef object)
+  // Lucide v1+ icons are forwardRef objects, not plain functions!
+  const Icon = icon;
+  return <Icon className="h-6 w-6" aria-hidden="true" />;
 }
 
 // ─────────────────────────────────────────────
