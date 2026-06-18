@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 // ═══════════════════════════════════════════════════════════
-// GET → List all courses with filters
+// GET → List all courses with category join
 // ═══════════════════════════════════════════════════════════
 export async function GET(request) {
   try {
@@ -108,7 +108,7 @@ export async function POST(request) {
       return NextResponse.json({ error: "এই Slug ইতিমধ্যে ব্যবহৃত হয়েছে" }, { status: 400 });
     }
 
-    // 6. Prepare insert data
+    // 6. Prepare insert data (using correct DB column names!)
     const insertData = {
       title: body.title,
       slug: body.slug,
@@ -122,16 +122,16 @@ export async function POST(request) {
       instructor_name: body.instructor_name || null,
       instructor_image: body.instructor_image || null,
       total_lessons: body.total_lessons || 0,
-      total_duration: body.total_duration || 0,
-      difficulty_level: body.difficulty_level || "beginner",
+      duration_minutes: body.duration_minutes || 0, // ✅ Correct column
+      level: body.level || "beginner", // ✅ Correct column
       global_order: body.global_order || 0,
       category_order: body.category_order || 0,
       is_featured: body.is_featured || false,
-      is_popular: body.is_popular || false,
       status: body.status || "draft",
       validity_days: body.validity_days || 365,
       expiry_date: body.expiry_date || null,
       published_at: body.status === "active" ? new Date().toISOString() : null,
+      created_by: user.id,
     };
 
     // 7. Insert course

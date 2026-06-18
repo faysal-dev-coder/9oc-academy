@@ -44,14 +44,14 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: "এই Slug অন্য কোর্সে ব্যবহৃত হয়েছে" }, { status: 400 });
     }
 
-    // 6. Check if status changed to active (set published_at)
+    // 6. Get current course (for status comparison)
     const { data: currentCourse } = await supabase
       .from("courses")
       .select("status, published_at")
       .eq("id", id)
       .single();
 
-    // 7. Prepare update data
+    // 7. Prepare update data (correct DB column names!)
     const updateData = {
       title: body.title,
       slug: body.slug,
@@ -65,12 +65,11 @@ export async function PUT(request, { params }) {
       instructor_name: body.instructor_name || null,
       instructor_image: body.instructor_image || null,
       total_lessons: body.total_lessons || 0,
-      total_duration: body.total_duration || 0,
-      difficulty_level: body.difficulty_level || "beginner",
+      duration_minutes: body.duration_minutes || 0, // ✅ Correct
+      level: body.level || "beginner", // ✅ Correct
       global_order: body.global_order || 0,
       category_order: body.category_order || 0,
       is_featured: body.is_featured || false,
-      is_popular: body.is_popular || false,
       status: body.status || "draft",
       validity_days: body.validity_days || 365,
       expiry_date: body.expiry_date || null,

@@ -153,9 +153,10 @@ export default function QuestionModal({ isOpen, onClose, editingQuestion, exams,
   // ──────────────────────────────────────────────────────────
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
-      <Modal.Header onClose={onClose}>
-        {isEdit ? "প্রশ্ন এডিট করুন" : "নতুন প্রশ্ন যোগ করুন"}
-      </Modal.Header>
+      <Modal.Header
+        title={isEdit ? "প্রশ্ন এডিট করুন" : "নতুন প্রশ্ন যোগ করুন"}
+        onClose={onClose}
+      />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body className="space-y-5 max-h-[70vh] overflow-y-auto">
