@@ -1,16 +1,16 @@
+// components/home/HeroVisual.jsx
+// ═══════════════════════════════════
+// 🎴 Hero Visual — MCQ Card Preview
+// Lucide icons | CSS animations | brand colors
+// ═══════════════════════════════════
+
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
-import { gsap } from "gsap";
-import { HiCheckCircle, HiXCircle } from "react-icons/hi2";
+import { useMemo } from "react";
+import { CheckCircle, XCircle } from "lucide-react";
 import { toBanglaNumber } from "@/lib/utils";
 
 export default function HeroVisual() {
-  const containerRef = useRef(null);
-  const mcqCardRef = useRef(null);
-  const statCardsRef = useRef([]);
-  const progressRef = useRef(null);
-
   const mcqOptions = useMemo(
     () => [
       { letter: "ক", text: "৪ নভেম্বর ১৯৭২", status: "correct" },
@@ -21,102 +21,30 @@ export default function HeroVisual() {
     []
   );
 
-  // Entrance Animation
-  useEffect(() => {
-    const mcqCard = mcqCardRef.current;
-    const statCardElements = statCardsRef.current;
-    if (!mcqCard) return;
-
-    const tl = gsap.timeline({ delay: 1 });
-    tl.fromTo(
-      mcqCard,
-      { opacity: 0, scale: 0.8, y: 40 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(1.4)" }
-    );
-    statCardElements.forEach((card) => {
-      if (!card) return;
-      tl.fromTo(
-        card,
-        { opacity: 0, scale: 0.8, y: 20 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "back.out(1.2)" },
-        "-=0.3"
-      );
-    });
-    return () => {
-      tl.kill();
-    };
-  }, []);
-
-  // Floating Animation
-  useEffect(() => {
-    const cards = statCardsRef.current;
-    cards.forEach((card, index) => {
-      if (!card) return;
-      gsap.to(card, {
-        y: gsap.utils.random(-10, 10),
-        duration: gsap.utils.random(2, 4),
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: index * 0.5,
-      });
-    });
-    return () => {
-      cards.forEach((card) => {
-        if (card) gsap.killTweensOf(card);
-      });
-    };
-  }, []);
-
-  // Progress Bar Animation
-  useEffect(() => {
-    const progress = progressRef.current;
-    if (!progress) return;
-    gsap.fromTo(
-      progress,
-      { width: "0%" },
-      { width: "78%", duration: 2, ease: "power2.out", delay: 1.8 }
-    );
-    return () => {
-      gsap.killTweensOf(progress);
-    };
-  }, []);
-
   return (
-    <div ref={containerRef} className="relative mx-auto w-full max-w-lg lg:mx-0">
-      {/* ══════════════════════════════════════════ */}
-      {/* ██  MCQ Card Preview — Light             */}
-      {/* ══════════════════════════════════════════ */}
-      <div
-        ref={mcqCardRef}
-        className="relative rounded-2xl border border-[#E2E8F0] bg-white p-6 opacity-0 shadow-xl"
-        style={{
-          boxShadow: "0 20px 50px -12px rgba(30, 156, 215, 0.15)",
-        }}
-      >
+    <div className="animate-in fade-in slide-in-from-right-8 relative mx-auto w-full max-w-lg duration-700 delay-300 lg:mx-0">
+      {/* ══════════════════════════════════ */}
+      {/* ██  MCQ Card Preview             */}
+      {/* ══════════════════════════════════ */}
+      <div className="relative rounded-2xl border border-slate-200 bg-white p-6 shadow-xl shadow-brand-800/10">
         {/* ── Card Header ── */}
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {/* Question Icon Box */}
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold text-white"
-              style={{
-                backgroundImage: "linear-gradient(135deg, #1E9CD7, #0A5A8A)",
-              }}
-            >
+            {/* Q Icon */}
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-brand-800 to-brand-900 text-sm font-bold text-white">
               Q
             </div>
             <div>
-              <p className="text-sm font-semibold text-[#1F2937]">বাংলাদেশ বিষয়াবলি</p>
-              <p className="text-xs text-[#64748B]">
+              <p className="text-sm font-semibold text-slate-900">বাংলাদেশ বিষয়াবলি</p>
+              <p className="text-xs text-slate-500">
                 প্রশ্ন {toBanglaNumber(15)}/{toBanglaNumber(50)}
               </p>
             </div>
           </div>
 
           {/* Timer Badge */}
-          <div className="flex items-center gap-1 rounded-full border border-[#FBBF24]/30 bg-[#FBBF24]/10 px-3 py-1">
-            <span className="text-xs font-bold text-[#D97706]">
+          <div className="flex items-center gap-1 rounded-full border border-amber-300/50 bg-amber-400/10 px-3 py-1">
+            <span className="text-xs font-bold text-amber-600">
               ⏱ {toBanglaNumber(24)}:{toBanglaNumber(35)}
             </span>
           </div>
@@ -124,132 +52,117 @@ export default function HeroVisual() {
 
         {/* ── Question Text ── */}
         <div className="mb-4">
-          <p className="text-sm font-medium leading-relaxed text-[#1F2937]">
+          <p className="text-sm font-medium leading-relaxed text-slate-800">
             বাংলাদেশের সংবিধান কত তারিখে গণপরিষদে গৃহীত হয়?
           </p>
         </div>
 
-        {/* ── Options List ── */}
+        {/* ── Options ── */}
         <div className="space-y-2">
           {mcqOptions.map((option, index) => (
             <div
               key={index}
-              className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-all duration-300 ${
+              className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-all duration-150 ${
                 option.status === "correct"
-                  ? "border-[#059669]/40 bg-[#059669]/8"
+                  ? "border-emerald-500/40 bg-emerald-500/8"
                   : option.status === "wrong"
-                    ? "border-[#DC2626]/40 bg-[#DC2626]/8"
-                    : "border-[#E2E8F0] bg-[#F8FAFC]"
+                    ? "border-red-500/40 bg-red-500/8"
+                    : "border-slate-200 bg-slate-50"
               }`}
             >
-              {/* Option Letter */}
+              {/* Letter */}
               <span
-                className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
+                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold ${
                   option.status === "correct"
-                    ? "bg-[#059669]/15 text-[#059669]"
+                    ? "bg-emerald-500/15 text-emerald-600"
                     : option.status === "wrong"
-                      ? "bg-[#DC2626]/15 text-[#DC2626]"
-                      : "bg-[#E2E8F0] text-[#64748B]"
+                      ? "bg-red-500/15 text-red-600"
+                      : "bg-slate-200 text-slate-500"
                 }`}
               >
                 {option.letter}
               </span>
 
-              {/* Option Text */}
+              {/* Text */}
               <span
                 className={`flex-1 text-sm ${
                   option.status === "correct"
-                    ? "font-medium text-[#059669]"
+                    ? "font-medium text-emerald-600"
                     : option.status === "wrong"
-                      ? "font-medium text-[#DC2626]"
-                      : "text-[#475569]"
+                      ? "font-medium text-red-600"
+                      : "text-slate-500"
                 }`}
               >
                 {option.text}
               </span>
 
               {/* Status Icon */}
-              {option.status === "correct" && <HiCheckCircle className="h-5 w-5 text-[#059669]" />}
-              {option.status === "wrong" && <HiXCircle className="h-5 w-5 text-[#DC2626]" />}
+              {option.status === "correct" && (
+                <CheckCircle className="h-5 w-5 shrink-0 text-emerald-500" />
+              )}
+              {option.status === "wrong" && <XCircle className="h-5 w-5 shrink-0 text-red-500" />}
             </div>
           ))}
         </div>
 
         {/* ── Progress Bar ── */}
-        <div className="mt-4 border-t border-[#E2E8F0] pt-4">
+        <div className="mt-4 border-t border-slate-200 pt-4">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs text-[#64748B]">অগ্রগতি</span>
-            <span className="text-xs font-bold text-[#059669]">{toBanglaNumber(78)}%</span>
+            <span className="text-xs text-slate-500">অগ্রগতি</span>
+            <span className="text-xs font-bold text-emerald-600">{toBanglaNumber(78)}%</span>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-[#F1F5F9]">
+          {/* CSS transition: animate on mount */}
+          <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
             <div
-              ref={progressRef}
-              className="h-full rounded-full"
-              style={{
-                backgroundImage: "linear-gradient(90deg, #1E9CD7, #059669)",
-                width: "0%",
-              }}
+              className="h-full animate-in fade-in rounded-full bg-linear-to-r from-brand-800 to-emerald-500 duration-1000 delay-700"
+              style={{ width: "78%" }}
             />
           </div>
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════ */}
-      {/* ██  Floating Stat Card 1 — Top Right     */}
-      {/* ══════════════════════════════════════════ */}
-      <div
-        ref={(el) => {
-          statCardsRef.current[0] = el;
-        }}
-        className="absolute -right-4 -top-4 rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 opacity-0 shadow-lg"
-      >
+      {/* ══════════════════════════════════ */}
+      {/* ██  Floating Card 1 — Top Right  */}
+      {/* ══════════════════════════════════ */}
+      <div className="absolute -right-4 -top-4 animate-in fade-in slide-in-from-right-4 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg duration-500 delay-500">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#059669]/15">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15">
             <span className="text-lg">✅</span>
           </div>
           <div>
-            <p className="text-sm font-bold text-[#1F2937]">{toBanglaNumber(85)}%</p>
-            <p className="text-[10px] text-[#64748B]">সঠিক উত্তর</p>
+            <p className="text-sm font-bold text-slate-900">{toBanglaNumber(85)}%</p>
+            <p className="text-[10px] text-slate-500">সঠিক উত্তর</p>
           </div>
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════ */}
-      {/* ██  Floating Stat Card 2 — Bottom Left   */}
-      {/* ══════════════════════════════════════════ */}
-      <div
-        ref={(el) => {
-          statCardsRef.current[1] = el;
-        }}
-        className="absolute -bottom-4 -left-4 rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 opacity-0 shadow-lg"
-      >
+      {/* ══════════════════════════════════ */}
+      {/* ██  Floating Card 2 — Bot Left   */}
+      {/* ══════════════════════════════════ */}
+      <div className="absolute -bottom-4 -left-4 animate-in fade-in slide-in-from-left-4 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg duration-500 delay-700">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1E9CD7]/15">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-800/10">
             <span className="text-lg">🏆</span>
           </div>
           <div>
-            <p className="text-sm font-bold text-[#1F2937]">#{toBanglaNumber(12)}</p>
-            <p className="text-[10px] text-[#64748B]">লিডারবোর্ড</p>
+            <p className="text-sm font-bold text-slate-900">#{toBanglaNumber(12)}</p>
+            <p className="text-[10px] text-slate-500">লিডারবোর্ড</p>
           </div>
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════ */}
-      {/* ██  Floating Stat Card 3 — Middle Left   */}
-      {/* ══════════════════════════════════════════ */}
-      <div
-        ref={(el) => {
-          statCardsRef.current[2] = el;
-        }}
-        className="absolute -left-8 top-1/3 hidden rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 opacity-0 shadow-lg lg:block"
-      >
+      {/* ══════════════════════════════════ */}
+      {/* ██  Floating Card 3 — Mid Left   */}
+      {/* (lg only)                        */}
+      {/* ══════════════════════════════════ */}
+      <div className="absolute -left-8 top-1/3 hidden animate-in fade-in slide-in-from-left-4 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg duration-500 delay-1000 lg:block">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#FBBF24]/15">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-400/15">
             <span className="text-lg">🔥</span>
           </div>
           <div>
-            <p className="text-sm font-bold text-[#1F2937]">{toBanglaNumber(7)} দিন</p>
-            <p className="text-[10px] text-[#64748B]">ধারাবাহিক</p>
+            <p className="text-sm font-bold text-slate-900">{toBanglaNumber(7)} দিন</p>
+            <p className="text-[10px] text-slate-500">ধারাবাহিক</p>
           </div>
         </div>
       </div>

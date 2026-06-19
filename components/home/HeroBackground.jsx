@@ -1,176 +1,94 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+// components/home/HeroBackground.jsx
+// ═══════════════════════════════════
+// 🎨 Hero Background — CSS Animations
+// No GSAP | Tailwind v4 | brand colors
+// ═══════════════════════════════════
 
 export default function HeroBackground() {
-  const containerRef = useRef(null);
-  const orbsRef = useRef([]);
-  const particlesRef = useRef([]);
-
-  // Orbs Animation
-  useEffect(() => {
-    const orbs = orbsRef.current;
-    orbs.forEach((orb, index) => {
-      if (!orb) return;
-      gsap.to(orb, {
-        x: () => gsap.utils.random(-100, 100),
-        y: () => gsap.utils.random(-100, 100),
-        duration: gsap.utils.random(6, 12),
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: index * 0.5,
-      });
-    });
-    return () => {
-      orbs.forEach((orb) => {
-        if (orb) gsap.killTweensOf(orb);
-      });
-    };
-  }, []);
-
-  // Particles Animation
-  useEffect(() => {
-    const particles = particlesRef.current;
-    particles.forEach((particle, index) => {
-      if (!particle) return;
-      gsap.to(particle, {
-        y: gsap.utils.random(-80, 80),
-        x: gsap.utils.random(-40, 40),
-        opacity: gsap.utils.random(0.3, 0.8),
-        duration: gsap.utils.random(4, 8),
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: index * 0.3,
-      });
-    });
-    return () => {
-      particles.forEach((particle) => {
-        if (particle) gsap.killTweensOf(particle);
-      });
-    };
-  }, []);
-
   const particleData = [
-    { top: "10%", left: "5%", size: 3 },
-    { top: "20%", left: "80%", size: 2 },
-    { top: "35%", left: "15%", size: 4 },
-    { top: "45%", left: "90%", size: 2 },
-    { top: "55%", left: "40%", size: 3 },
-    { top: "65%", left: "70%", size: 2 },
-    { top: "75%", left: "25%", size: 3 },
-    { top: "80%", left: "60%", size: 4 },
-    { top: "15%", left: "50%", size: 2 },
-    { top: "85%", left: "85%", size: 3 },
-    { top: "30%", left: "35%", size: 2 },
-    { top: "70%", left: "55%", size: 3 },
+    { top: "10%", left: "5%", size: "h-1 w-1" },
+    { top: "20%", left: "80%", size: "h-0.5 w-0.5" },
+    { top: "35%", left: "15%", size: "h-1.5 w-1.5" },
+    { top: "45%", left: "90%", size: "h-0.5 w-0.5" },
+    { top: "55%", left: "40%", size: "h-1 w-1" },
+    { top: "65%", left: "70%", size: "h-0.5 w-0.5" },
+    { top: "75%", left: "25%", size: "h-1 w-1" },
+    { top: "80%", left: "60%", size: "h-1.5 w-1.5" },
+    { top: "15%", left: "50%", size: "h-0.5 w-0.5" },
+    { top: "85%", left: "85%", size: "h-1 w-1" },
+    { top: "30%", left: "35%", size: "h-0.5 w-0.5" },
+    { top: "70%", left: "55%", size: "h-1 w-1" },
+  ];
+
+  // CSS animation delays for variety
+  const delays = [
+    "delay-0",
+    "delay-300",
+    "delay-700",
+    "delay-1000",
+    "delay-500",
+    "delay-200",
+    "delay-800",
+    "delay-400",
+    "delay-600",
+    "delay-100",
+    "delay-900",
+    "delay-1100",
   ];
 
   return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0 overflow-hidden bg-[#FAFBFC]"
-      aria-hidden="true"
-    >
-      {/* ── Light Grid Pattern ── */}
+    <div className="absolute inset-0 overflow-hidden bg-slate-50" aria-hidden="true">
+      {/* ── Grid Pattern ── */}
       <div
-        className="absolute inset-0 opacity-[0.4]"
+        className="absolute inset-0 opacity-40"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(30, 156, 215, 0.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(30, 156, 215, 0.08) 1px, transparent 1px)
+            linear-gradient(rgba(30,64,175,0.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(30,64,175,0.06) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
         }}
       />
 
-      {/* ── Glowing Orb 1 — Primary Blue (top-left) ── */}
+      {/* ── Orb 1 — brand (top-left) ── */}
       <div
-        ref={(el) => {
-          orbsRef.current[0] = el;
-        }}
-        className="absolute rounded-full blur-[120px]"
-        style={{
-          width: "500px",
-          height: "500px",
-          top: "-10%",
-          left: "-5%",
-          background: "radial-gradient(circle, rgba(30, 156, 215, 0.18) 0%, transparent 70%)",
-        }}
+        className="absolute -left-16 -top-16 h-125 w-125 animate-pulse rounded-full bg-brand-800/10 blur-[120px]"
+        style={{ animationDuration: "8s" }}
       />
 
-      {/* ── Glowing Orb 2 — Cyan (right) ── */}
+      {/* ── Orb 2 — brand lighter (right) ── */}
       <div
-        ref={(el) => {
-          orbsRef.current[1] = el;
-        }}
-        className="absolute rounded-full blur-[120px]"
-        style={{
-          width: "400px",
-          height: "400px",
-          top: "50%",
-          right: "-10%",
-          background: "radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%)",
-        }}
+        className="absolute -right-16 top-1/2 h-100 w-100 animate-pulse rounded-full bg-brand-700/8 blur-[120px]"
+        style={{ animationDuration: "10s", animationDelay: "2s" }}
       />
 
-      {/* ── Glowing Orb 3 — Accent Yellow (bottom) ── */}
+      {/* ── Orb 3 — amber (bottom) ── */}
       <div
-        ref={(el) => {
-          orbsRef.current[2] = el;
-        }}
-        className="absolute rounded-full blur-[120px]"
-        style={{
-          width: "350px",
-          height: "350px",
-          bottom: "-5%",
-          left: "30%",
-          background: "radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 70%)",
-        }}
+        className="absolute bottom-0 left-1/3 h-87.5 w-87.5 animate-pulse rounded-full bg-amber-400/8 blur-[120px]"
+        style={{ animationDuration: "12s", animationDelay: "4s" }}
       />
 
-      {/* ── Glowing Orb 4 — Light Blue (top-right) ── */}
+      {/* ── Orb 4 — brand soft (top-right) ── */}
       <div
-        ref={(el) => {
-          orbsRef.current[3] = el;
-        }}
-        className="absolute rounded-full blur-[100px]"
-        style={{
-          width: "300px",
-          height: "300px",
-          top: "20%",
-          right: "20%",
-          background: "radial-gradient(circle, rgba(30, 156, 215, 0.12) 0%, transparent 70%)",
-        }}
+        className="absolute right-1/4 top-1/4 h-75 w-75 animate-pulse rounded-full bg-brand-900/6 blur-[100px]"
+        style={{ animationDuration: "9s", animationDelay: "1s" }}
       />
 
-      {/* ── Floating Particles (Blue tint) ── */}
+      {/* ── Floating Particles ── */}
       {particleData.map((particle, index) => (
         <div
           key={index}
-          ref={(el) => {
-            particlesRef.current[index] = el;
-          }}
-          className="absolute rounded-full"
+          className={`absolute animate-bounce rounded-full bg-brand-700/40 ${particle.size} ${delays[index % delays.length]}`}
           style={{
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
             top: particle.top,
             left: particle.left,
-            background: "rgba(30, 156, 215, 0.4)",
+            animationDuration: `${3 + (index % 4)}s`,
           }}
         />
       ))}
 
-      {/* ── Bottom Gradient Fade ── */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32"
-        style={{
-          background: "linear-gradient(to top, #FFFFFF, transparent)",
-        }}
-      />
+      {/* ── Bottom Fade ── */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-white to-transparent" />
     </div>
   );
 }
