@@ -1,74 +1,65 @@
 // components/shared/Logo.jsx
-// ═══════════════════════════════════════════
-// 9OC Academy — Logo Component
-// (Fixed for Tailwind v4 — Zero Warnings)
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// 9OC Academy — Premium Logo Component
+// ✅ Brand color: #1E40AF (brand-800)
+// ✅ Lucide icon for visual identity
+// ✅ Tailwind v4 standards
+// ═══════════════════════════════════════════════════════════
 
-import Link from 'next/link';
+import Link from "next/link";
+import { GraduationCap } from "lucide-react";
 
-export default function Logo({ size = 'default' }) {
-  // ─── Size অনুযায়ী Style বদলাবে ─────
+export default function Logo({ size = "default" }) {
+  // ─── Size variants ─────────────────
   const sizes = {
     small: {
-      container: 'gap-2',
-      icon: 'w-9 h-9 text-xs',
-      text: 'text-lg',
-      tagline: 'hidden',
+      container: "gap-2",
+      icon: "h-9 w-9",
+      iconInner: "h-5 w-5",
+      text: "text-lg",
+      tagline: "hidden",
     },
     default: {
-      container: 'gap-2.5',
-      icon: 'w-10 h-10 text-sm',
-      text: 'text-xl',
-      tagline: 'text-[10px]',
+      container: "gap-2.5",
+      icon: "h-10 w-10",
+      iconInner: "h-5 w-5",
+      text: "text-xl",
+      tagline: "text-[10px]",
     },
     large: {
-      container: 'gap-3',
-      icon: 'w-14 h-14 text-xl',
-      text: 'text-3xl',
-      tagline: 'text-xs',
+      container: "gap-3",
+      icon: "h-14 w-14",
+      iconInner: "h-7 w-7",
+      text: "text-3xl",
+      tagline: "text-xs",
     },
   };
 
   const s = sizes[size] || sizes.default;
 
   return (
-    <Link href="/" className={`flex items-center ${s.container} group`}>
-      {/* ─── Logo Icon (গ্রেডিয়েন্ট বক্স) ─── */}
+    <Link
+      href="/"
+      className={`group flex items-center ${s.container}`}
+      aria-label="9OC Academy Home"
+    >
+      {/* ─── Logo Icon Box ─── */}
       <div
-        className={`
-          ${s.icon}
-          rounded-xl
-          bg-linear-to-br from-[#6C63FF] to-[#00D4AA]
-          flex items-center justify-center
-          font-bold text-white
-          shadow-lg shadow-[#6C63FF]/30
-          group-hover:shadow-[#6C63FF]/50
-          group-hover:scale-110
-          group-hover:rotate-3
-          transition-all duration-300
-        `}
+        className={`${s.icon} flex shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-brand-700 to-brand-900 shadow-md shadow-brand-800/20 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-brand-800/40`}
       >
-        9OC
+        <GraduationCap className={`${s.iconInner} text-white`} strokeWidth={2.5} />
       </div>
 
-      {/* ─── Logo Text (নাম + Tagline) ─── */}
+      {/* ─── Logo Text + Tagline ─── */}
       <div className="flex flex-col leading-tight">
         <span
-          className={`
-            ${s.text}
-            font-bold
-            bg-linear-to-r from-[#6C63FF] via-[#00D4AA] to-[#FFB800]
-            bg-clip-text text-transparent
-            group-hover:opacity-90
-            transition-opacity duration-300
-          `}
+          className={`${s.text} font-bold text-brand-800 transition-colors duration-300 group-hover:text-brand-900`}
         >
           9OC Academy
         </span>
 
-        {/* Tagline — Small size এ লুকানো থাকবে */}
-        {s.tagline !== 'hidden' && (
-          <span className={`${s.tagline} text-gray-500 tracking-wider uppercase`}>
+        {s.tagline !== "hidden" && (
+          <span className={`${s.tagline} font-medium uppercase tracking-wider text-slate-500`}>
             সরকারি চাকরি প্রস্তুতি
           </span>
         )}
