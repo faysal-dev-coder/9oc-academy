@@ -1,313 +1,255 @@
+// components/home/TestimonialsSection.jsx
+// ═══════════════════════════════════════════════════════════════
+// 💬 Testimonials Section — Apple Style Premium (NO EMOJIS!)
+// Phase 5 — Chat 50 FINAL
+// ├── Single line title (NO subtitle!)
+// ├── Centered hero card layout
+// ├── NO avatar carousel (only arrows!)
+// ├── Initials avatar (no emojis)
+// └── Lucide icons everywhere
+// ═══════════════════════════════════════════════════════════════
+
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { FaStar } from "react-icons/fa";
+import { useState, useEffect, useMemo } from "react";
 import {
-  HiArrowLeft,
-  HiArrowRight,
-  HiOutlineUsers,
-  HiOutlineAcademicCap,
-  HiOutlineSparkles,
-} from "react-icons/hi2";
-import { TESTIMONIALS } from "../../constants";
+  Quote,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+  Users,
+  Trophy,
+  TrendingUp,
+  Award,
+  BookOpen,
+} from "lucide-react";
+import { TESTIMONIALS } from "@/constants";
 
-const slideVariants = {
-  enter: (direction) => ({
-    x: direction > 0 ? 80 : -80,
-    opacity: 0,
-    scale: 0.96,
-  }),
-  center: { x: 0, opacity: 1, scale: 1 },
-  exit: (direction) => ({
-    x: direction > 0 ? -80 : 80,
-    opacity: 0,
-    scale: 0.96,
-  }),
+// ─── Avatar Color Palette ─────────────────
+const AVATAR_GRADIENTS = [
+  "from-brand-700 to-brand-900",
+  "from-emerald-600 to-emerald-800",
+  "from-amber-600 to-amber-800",
+  "from-red-600 to-red-800",
+  "from-slate-700 to-slate-900",
+];
+
+// ─── Get initials from Bengali name ───────
+const getInitials = (name) => {
+  const words = name.trim().split(/\s+/);
+  if (words.length >= 2) {
+    return words[0].charAt(0) + words[1].charAt(0);
+  }
+  return words[0].charAt(0) + (words[0].charAt(1) || "");
+};
+
+// ─── Get gradient based on ID ─────────────
+const getGradient = (id) => {
+  return AVATAR_GRADIENTS[id % AVATAR_GRADIENTS.length];
 };
 
 export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
 
   const totalTestimonials = TESTIMONIALS.length;
-
   const activeTestimonial = useMemo(() => TESTIMONIALS[currentIndex], [currentIndex]);
 
-  const previewTestimonials = useMemo(() => {
-    return Array.from({ length: 3 }, (_, offset) => {
-      const index = (currentIndex + offset + 1) % totalTestimonials;
-      return TESTIMONIALS[index];
-    });
-  }, [currentIndex, totalTestimonials]);
+  // ─── Auto-rotate ──────────────────────────
+  useEffect(() => {
+    if (isPaused || totalTestimonials <= 1) return undefined;
 
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % totalTestimonials);
+    }, 6000);
+
+    return () => clearInterval(intervalId);
+  }, [isPaused, totalTestimonials]);
+
+  // ─── Handlers ─────────────────────────────
   const handleNext = () => {
-    setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % totalTestimonials);
   };
 
   const handlePrev = () => {
-    setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + totalTestimonials) % totalTestimonials);
   };
 
-  const handleDotClick = (index) => {
-    if (index === currentIndex) return;
-    setDirection(index > currentIndex ? 1 : -1);
-    setCurrentIndex(index);
-  };
-
-  const handlePreviewClick = (id) => {
-    const nextIndex = TESTIMONIALS.findIndex((item) => item.id === id);
-    if (nextIndex === -1 || nextIndex === currentIndex) return;
-    setDirection(nextIndex > currentIndex ? 1 : -1);
-    setCurrentIndex(nextIndex);
-  };
-
-  useEffect(() => {
-    if (isPaused || totalTestimonials <= 1) return undefined;
-    const intervalId = setInterval(() => {
-      setDirection(1);
-      setCurrentIndex((prev) => (prev + 1) % totalTestimonials);
-    }, 5000);
-    return () => clearInterval(intervalId);
-  }, [isPaused, totalTestimonials]);
-
   return (
-    <section className="relative overflow-hidden bg-[#F8FAFC] py-20">
-      {/* Background Blobs */}
-      <div className="absolute -top-24 left-0 h-72 w-72 rounded-full bg-primary/8 blur-3xl" />
-      <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-secondary/8 blur-3xl" />
+    <section className="relative overflow-hidden bg-slate-50 py-24">
+      {/* ═══════════════════════════════════ */}
+      {/* 🌟 Subtle Background                 */}
+      {/* ═══════════════════════════════════ */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/4 top-0 h-96 w-96 rounded-full bg-brand-700/5 blur-3xl" />
+        <div className="absolute right-1/4 bottom-0 h-96 w-96 rounded-full bg-amber-500/5 blur-3xl" />
+      </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* ═══════════════════════════════════ */}
-        {/* Header — Compact                   */}
+        {/* 🎯 Header — Eyebrow + Title ONLY   */}
         {/* ═══════════════════════════════════ */}
-        <div className="mb-10 flex flex-col gap-4 text-center lg:flex-row lg:items-end lg:justify-between lg:text-left">
-          <div className="max-w-3xl mx-auto lg:mx-0">
-            <span className="inline-flex items-center rounded-full border border-secondary/30 bg-secondary/10 px-4 py-1.5 text-sm font-semibold text-secondary">
-              💬 সফলদের গল্প
-            </span>
+        <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+          {/* Eyebrow */}
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
+            Testimonials
+          </p>
 
-            <h2 className="mt-4 text-3xl font-bold text-[#1F2937] sm:text-4xl lg:text-5xl">
-              আমাদের শিক্ষার্থীদের{" "}
-              <span className="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
-                সাফল্যের অভিজ্ঞতা
-              </span>
-            </h2>
-
-            <p className="mt-3 text-base leading-7 text-[#475569]">
-              BCS, ব্যাংক, NTRCA, প্রাইমারি ও Non-Cadre — সফল শিক্ষার্থীদের বাস্তব অভিজ্ঞতা থেকে
-              দেখুন কীভাবে সঠিক গাইডলাইন ক্যারিয়ার বদলে দেয়।
-            </p>
-          </div>
-
-          {/* Nav Buttons */}
-          <div className="flex items-center justify-center gap-3 lg:justify-end">
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="আগের রিভিউ"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E2E8F0] bg-white text-[#475569] shadow-sm transition-all duration-300 hover:border-primary/40 hover:bg-primary/10 hover:text-primary cursor-pointer"
-            >
-              <HiArrowLeft className="text-lg" />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="পরের রিভিউ"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E2E8F0] bg-white text-[#475569] shadow-sm transition-all duration-300 hover:border-primary/40 hover:bg-primary/10 hover:text-primary cursor-pointer"
-            >
-              <HiArrowRight className="text-lg" />
-            </button>
-          </div>
+          {/* Title — ONE LINE, two-tone */}
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+            কৃতীদের কণ্ঠে <span className="text-slate-500">সাফল্যের গল্প</span>
+          </h2>
+          {/* ❌ NO subtitle! */}
         </div>
 
         {/* ═══════════════════════════════════ */}
-        {/* Content Grid — Compact Layout      */}
+        {/* 🎴 Main Testimonial Card             */}
         {/* ═══════════════════════════════════ */}
         <div
-          className="grid gap-5 lg:grid-cols-3"
+          className="relative mt-20 animate-in fade-in slide-in-from-bottom-6 duration-1000"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* ─── Main Active Card ─────────── */}
-          <div className="lg:col-span-2 flex flex-col">
-            <div className="relative flex-1 overflow-hidden rounded-3xl border border-[#E2E8F0] shadow-lg">
-              {/* Colorful gradient background */}
-              <div className={`absolute inset-0 bg-linear-to-br ${activeTestimonial.bgGradient}`} />
-              <div className="absolute inset-0 bg-black/15" />
-
-              {/* Decorative quote icon */}
-              <div className="absolute top-6 right-6 text-7xl font-serif text-white/15 leading-none select-none">
-                &ldquo;
-              </div>
-
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.article
-                  key={activeTestimonial.id}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.45, ease: "easeInOut" }}
-                  className="relative z-10 flex h-full flex-col p-6 sm:p-8"
-                >
-                  {/* Top: Exam badge + Stars */}
-                  <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                    <span className="inline-flex items-center rounded-full border border-accent/30 bg-accent/15 px-3 py-1.5 text-xs font-semibold text-accent backdrop-blur-sm">
-                      🏆 {activeTestimonial.examPassed}
-                    </span>
-
-                    <div className="flex items-center gap-1.5">
-                      <div className="flex items-center gap-0.5">
-                        {Array.from({ length: 5 }, (_, index) => (
-                          <FaStar
-                            key={index}
-                            className={`h-3.5 w-3.5 ${
-                              index < activeTestimonial.rating ? "text-accent" : "text-white/30"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-xs font-medium text-white/85">
-                        {activeTestimonial.rating}.০
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Quote */}
-                  <blockquote className="flex-1 text-lg leading-8 text-white sm:text-xl sm:leading-9">
-                    &ldquo;{activeTestimonial.quote}&rdquo;
-                  </blockquote>
-
-                  {/* Footer: Avatar + Course Badge */}
-                  <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-white/20 pt-5">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 bg-white/15 text-2xl shadow-lg backdrop-blur-sm">
-                        {activeTestimonial.avatar}
-                      </div>
-
-                      <div>
-                        <h3 className="text-base font-bold text-white">{activeTestimonial.name}</h3>
-                        <p className="text-xs text-white/75">{activeTestimonial.designation}</p>
-                      </div>
-                    </div>
-
-                    <span className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
-                      📚 {activeTestimonial.courseTaken}
-                    </span>
-                  </div>
-                </motion.article>
-              </AnimatePresence>
-            </div>
-
-            {/* Dots */}
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-              {TESTIMONIALS.map((item, index) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => handleDotClick(index)}
-                  aria-label={`${item.name} রিভিউ দেখুন`}
-                  className={`transition-all duration-300 cursor-pointer ${
-                    index === currentIndex
-                      ? "h-2.5 w-8 rounded-full bg-primary"
-                      : "h-2.5 w-2.5 rounded-full bg-[#CBD5E1] hover:bg-[#94A3B8]"
-                  }`}
-                />
-              ))}
+          {/* Quote Icon — Floating */}
+          <div className="absolute -top-7 left-1/2 z-10 -translate-x-1/2">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-brand-700 to-brand-900 shadow-xl shadow-brand-800/30 ring-4 ring-slate-50">
+              <Quote className="h-6 w-6 text-white" />
             </div>
           </div>
 
-          {/* ─── Preview Side Cards ───────── */}
-          <div className="flex flex-col gap-4">
-            {previewTestimonials.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handlePreviewClick(item.id)}
-                className="group flex-1 rounded-2xl border border-[#E2E8F0] bg-white p-4 text-left shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md hover:-translate-y-1 cursor-pointer"
-              >
-                {/* Avatar Row */}
-                <div className="mb-3 flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] text-xl">
-                    {item.avatar}
-                  </div>
+          {/* Card */}
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-8 pt-16 pb-10 shadow-xl shadow-slate-900/5 sm:px-12 sm:pt-20 sm:pb-12">
+            {/* Decorative blurs */}
+            <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-brand-700/5 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-amber-500/5 blur-3xl" />
 
-                  <div className="min-w-0 flex-1">
-                    <h4 className="truncate text-sm font-semibold text-[#1F2937]">{item.name}</h4>
-                    <p className="truncate text-xs text-[#64748B]">{item.designation}</p>
-                  </div>
+            <div className="relative" key={activeTestimonial.id}>
+              {/* Stars Row */}
+              <div className="flex justify-center gap-1 animate-in fade-in zoom-in-50 duration-500">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    className={`h-5 w-5 ${
+                      star <= activeTestimonial.rating
+                        ? "fill-amber-400 text-amber-400"
+                        : "fill-slate-200 text-slate-200"
+                    }`}
+                  />
+                ))}
+              </div>
 
-                  <div className="flex items-center gap-0.5 shrink-0">
-                    {Array.from({ length: 5 }, (_, index) => (
-                      <FaStar
-                        key={index}
-                        className={`h-3 w-3 ${
-                          index < item.rating ? "text-accent" : "text-[#CBD5E1]"
-                        }`}
-                      />
-                    ))}
+              {/* Quote */}
+              <blockquote className="mx-auto mt-6 max-w-3xl text-center text-xl font-medium leading-9 text-slate-700 sm:text-2xl sm:leading-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                &ldquo;{activeTestimonial.quote}&rdquo;
+              </blockquote>
+
+              {/* Divider */}
+              <div className="mx-auto mt-10 h-px w-16 bg-slate-200" />
+
+              {/* Author Info */}
+              <div className="mt-8 flex flex-col items-center gap-4 animate-in fade-in duration-700">
+                {/* Initials Avatar */}
+                <div className="relative">
+                  {/* Glow */}
+                  <div
+                    className={`absolute -inset-1 rounded-full bg-linear-to-br ${getGradient(
+                      activeTestimonial.id
+                    )} opacity-30 blur-md`}
+                  />
+
+                  {/* Avatar Circle */}
+                  <div
+                    className={`relative flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br ${getGradient(
+                      activeTestimonial.id
+                    )} text-xl font-black text-white shadow-lg ring-4 ring-white`}
+                  >
+                    {getInitials(activeTestimonial.name)}
                   </div>
                 </div>
 
-                {/* Quote preview */}
-                <p className="mb-3 line-clamp-3 text-xs leading-6 text-[#475569]">
-                  &ldquo;{item.quote}&rdquo;
-                </p>
+                {/* Name + Title */}
+                <div className="text-center">
+                  <h3 className="text-lg font-bold text-slate-900">{activeTestimonial.name}</h3>
+                  <p className="mt-1 text-sm text-slate-500">{activeTestimonial.designation}</p>
+                </div>
 
-                {/* Exam badge */}
-                <span className="inline-flex items-center rounded-full border border-secondary/20 bg-secondary/10 px-2.5 py-1 text-[10px] font-semibold text-secondary">
-                  🎯 {item.examPassed}
-                </span>
-              </button>
-            ))}
+                {/* Badges with Lucide Icons */}
+                <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700">
+                    <Award className="h-3.5 w-3.5" />
+                    {activeTestimonial.examPassed}
+                  </span>
+
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-xs font-bold text-brand-700">
+                    <BookOpen className="h-3.5 w-3.5" />
+                    {activeTestimonial.courseTaken}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* ═══════════════════════════════════ */}
+          {/* ⬅️ ➡️ Navigation Arrows              */}
+          {/* ═══════════════════════════════════ */}
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="আগের রিভিউ"
+            className="absolute left-0 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full border border-slate-200 bg-white p-3 shadow-md transition-all duration-200 hover:border-brand-700/40 hover:bg-brand-50 hover:shadow-lg sm:p-4"
+          >
+            <ChevronLeft className="h-5 w-5 text-slate-700" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="পরের রিভিউ"
+            className="absolute right-0 top-1/2 z-20 -translate-y-1/2 translate-x-1/2 cursor-pointer rounded-full border border-slate-200 bg-white p-3 shadow-md transition-all duration-200 hover:border-brand-700/40 hover:bg-brand-50 hover:shadow-lg sm:p-4"
+          >
+            <ChevronRight className="h-5 w-5 text-slate-700" />
+          </button>
         </div>
 
         {/* ═══════════════════════════════════ */}
-        {/* Bottom Stats — Premium Cards       */}
+        {/* 📊 Trust Stats Strip                 */}
         {/* ═══════════════════════════════════ */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-3">
-          {/* Card 1 */}
-          <div className="group relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+        <div className="mt-16 grid gap-4 sm:grid-cols-3 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
+          {/* Stat 1 — Users (Lucide!) */}
+          <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-200 hover:border-brand-700/30 hover:shadow-lg">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <HiOutlineUsers className="h-6 w-6" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition-all duration-200 group-hover:scale-110">
+                <Users className="h-6 w-6" />
               </div>
               <div>
-                <div className="text-2xl font-bold text-[#1F2937]">৫০,০০০+</div>
-                <p className="text-sm text-[#64748B]">মোট শিক্ষার্থী</p>
+                <p className="text-2xl font-black text-slate-900">৫০,০০০+</p>
+                <p className="mt-0.5 text-sm font-medium text-slate-500">সফল শিক্ষার্থী</p>
               </div>
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="group relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm transition-all duration-300 hover:border-secondary/30 hover:shadow-md">
+          {/* Stat 2 — Trophy (Lucide!) */}
+          <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-200 hover:border-emerald-500/30 hover:shadow-lg">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
-                <HiOutlineAcademicCap className="h-6 w-6" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-all duration-200 group-hover:scale-110">
+                <Trophy className="h-6 w-6" />
               </div>
               <div>
-                <div className="text-2xl font-bold text-[#1F2937]">১০,০০০+</div>
-                <p className="text-sm text-[#64748B]">দৈনিক MCQ প্র্যাক্টিস</p>
+                <p className="text-2xl font-black text-slate-900">১,২০০+</p>
+                <p className="mt-0.5 text-sm font-medium text-slate-500">সরকারি চাকরিপ্রাপ্ত</p>
               </div>
             </div>
           </div>
 
-          {/* Card 3 */}
-          <div className="group relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-md">
+          {/* Stat 3 — TrendingUp (Lucide!) */}
+          <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-200 hover:border-amber-500/30 hover:shadow-lg">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                <HiOutlineSparkles className="h-6 w-6" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-all duration-200 group-hover:scale-110">
+                <TrendingUp className="h-6 w-6" />
               </div>
               <div>
-                <div className="text-2xl font-bold text-[#1F2937]">৯৫%</div>
-                <p className="text-sm text-[#64748B]">শিক্ষার্থী সন্তুষ্টি</p>
+                <p className="text-2xl font-black text-slate-900">৯৫%</p>
+                <p className="mt-0.5 text-sm font-medium text-slate-500">সন্তুষ্টি হার</p>
               </div>
             </div>
           </div>
