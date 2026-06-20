@@ -1,142 +1,179 @@
+// components/courses/CourseCard.jsx
+// ═══════════════════════════════════════════════════════════════
+// 🎓 CourseCard — Apple Style Premium
+// ├── NO emojis (Lucide icons + Initials avatar)
+// ├── NO framer-motion (CSS animations only)
+// ├── Lucide icons (NO react-icons/hi2)
+// └── Brand colors (brand-800 primary)
+// ═══════════════════════════════════════════════════════════════
+
 "use client";
 
-import { useRef, useCallback } from "react";
-import { motion } from "framer-motion";
+import Link from "next/link";
 import {
-  HiOutlineStar,
-  HiOutlineUsers,
-  HiOutlineClock,
-  HiOutlineBookOpen,
-  HiOutlineArrowRight,
-} from "react-icons/hi2";
-import { INSTRUCTORS, THUMBNAIL_GRADIENTS, getDiscountPercent } from "@/constants";
+  Star,
+  Users,
+  Clock,
+  BookOpen,
+  ArrowRight,
+  Flame,
+  Sparkles,
+  Landmark,
+  Building2,
+  GraduationCap,
+  FileText,
+  Calculator,
+  Monitor,
+  Map,
+  Globe,
+  Mic,
+  Languages,
+  Library,
+} from "lucide-react";
+import { INSTRUCTORS, toBanglaNumber, getDiscountPercent } from "@/constants";
 
 // ═══════════════════════════════════════════
-// 🛠️ Utility Functions
+// 🗺️ Thumbnail Icon Map (NO emoji!)
 // ═══════════════════════════════════════════
-
-const toBangla = (num) => {
-  const banglaDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
-  return num
-    .toString()
-    .split("")
-    .map((d) => (/[0-9]/.test(d) ? banglaDigits[Number(d)] : d))
-    .join("");
+const THUMBNAIL_ICONS = {
+  bcs: Landmark,
+  bank: Building2,
+  ntrca: GraduationCap,
+  primary: BookOpen,
+  noncadre: FileText,
+  bangla: Languages,
+  english: Languages,
+  math: Calculator,
+  computer: Monitor,
+  bangladesh: Map,
+  international: Globe,
+  bankviva: Mic,
 };
 
+// ═══════════════════════════════════════════
+// 🎨 Gradient Map (Lucide colors)
+// ═══════════════════════════════════════════
+const THUMBNAIL_BG = {
+  bcs: "from-indigo-500 to-indigo-700",
+  bank: "from-emerald-500 to-emerald-700",
+  ntrca: "from-amber-500 to-amber-700",
+  primary: "from-rose-500 to-rose-700",
+  noncadre: "from-violet-500 to-violet-700",
+  bangla: "from-cyan-500 to-cyan-700",
+  english: "from-emerald-500 to-emerald-700",
+  math: "from-amber-500 to-amber-700",
+  computer: "from-red-500 to-red-700",
+  bangladesh: "from-indigo-500 to-indigo-700",
+  international: "from-emerald-500 to-emerald-700",
+  bankviva: "from-violet-500 to-violet-700",
+};
+
+// ═══════════════════════════════════════════
+// 🛠️ Helpers
+// ═══════════════════════════════════════════
 const formatStudents = (num) => {
   if (num >= 1000) {
     const k = (num / 1000).toFixed(1);
-    return `${toBangla(k)}k`;
+    return `${toBanglaNumber(k)}k`;
   }
-  return toBangla(num);
+  return toBanglaNumber(num);
 };
+
+const getInitials = (name) => {
+  if (!name) return "??";
+  const words = name.trim().split(/\s+/);
+  const first = words[0]?.charAt(0) ?? "";
+  const second = words[1]?.charAt(0) ?? "";
+  return first + second || "??";
+};
+
+// Initials avatar gradient rotation (5 colors)
+const AVATAR_GRADIENTS = [
+  "from-brand-700 to-brand-900",
+  "from-emerald-600 to-emerald-800",
+  "from-amber-600 to-amber-800",
+  "from-rose-600 to-rose-800",
+  "from-violet-600 to-violet-800",
+];
 
 // ═══════════════════════════════════════════
 // 🃏 CourseCard Component
 // ═══════════════════════════════════════════
-
 export default function CourseCard({ course, index = 0 }) {
-  const cardRef = useRef(null);
-
-  // ─── Instructor খুঁজে বের করো ────────────
   const instructor = INSTRUCTORS.find((i) => i.id === course.instructor);
-
-  // ─── Thumbnail Gradient ───────────────────
-  const gradient = THUMBNAIL_GRADIENTS[course.thumbnail] ?? {
-    from: "#6C63FF",
-    to: "#4834D4",
-    emoji: "📚",
-  };
-
-  // ─── Discount হিসাব ──────────────────────
+  const ThumbIcon = THUMBNAIL_ICONS[course.thumbnail] ?? BookOpen;
+  const thumbBg = THUMBNAIL_BG[course.thumbnail] ?? "from-slate-600 to-slate-800";
   const discount = getDiscountPercent(course.originalPrice, course.price);
 
-  // ─── Rating Stars ─────────────────────────
-  const renderStars = useCallback((rating) => {
-    const fullStars = Math.floor(rating);
+  // Instructor avatar gradient (deterministic)
+  const avatarGradient = instructor
+    ? AVATAR_GRADIENTS[
+        Math.abs(instructor.id.split("").reduce((a, c) => a + c.charCodeAt(0), 0)) %
+          AVATAR_GRADIENTS.length
+      ]
+    : AVATAR_GRADIENTS[0];
+
+  // Render rating stars (Lucide)
+  const renderStars = (rating) => {
+    const full = Math.floor(rating);
     const hasHalf = rating % 1 >= 0.5;
-
     return Array.from({ length: 5 }, (_, i) => {
-      let opacity = "text-[#CBD5E1]";
-      if (i < fullStars) opacity = "text-[#FFB800]";
-      else if (i === fullStars && hasHalf) opacity = "text-[#FFB800]/50";
-
+      const isFull = i < full;
+      const isHalf = i === full && hasHalf;
       return (
-        <HiOutlineStar
+        <Star
           key={i}
-          className={`h-3.5 w-3.5 ${opacity} ${i < fullStars ? "fill-[#FFB800]" : ""}`}
+          className={`h-3.5 w-3.5 ${
+            isFull
+              ? "fill-amber-400 text-amber-400"
+              : isHalf
+                ? "fill-amber-400/50 text-amber-400"
+                : "text-slate-300"
+          }`}
         />
       );
     });
-  }, []);
+  };
 
   return (
-    <motion.article
-      ref={cardRef}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.08,
-        ease: "easeOut",
-      }}
-      whileHover={{ y: -8 }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm transition-all duration-300 hover:border-[#1E9CD7]/30 hover:shadow-xl"
+    <article
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl animate-in fade-in slide-in-from-bottom-4"
+      style={{ animationDelay: `${index * 80}ms`, animationFillMode: "both" }}
     >
-      {/* ─── Outer Glow (Hover) ───────────── */}
-      <div
-        className="pointer-events-none absolute -inset-1 -z-10 rounded-2xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-60"
-        style={{
-          background: `linear-gradient(135deg, ${gradient.from}15, ${gradient.to}10)`,
-        }}
-      />
-
-      {/* ─── Inner Glow (Hover) ───────────── */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          boxShadow: `0 20px 60px -10px ${gradient.from}20`,
-        }}
-      />
-
       {/* ═══════════════════════════════════ */}
-      {/* 🖼️ Thumbnail Area                  */}
+      {/* 🖼️ Thumbnail Area (Lucide icon!)   */}
       {/* ═══════════════════════════════════ */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-44 overflow-hidden">
         {/* Gradient Background */}
         <div
-          className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
-          style={{
-            background: `linear-gradient(135deg, ${gradient.from}, ${gradient.to})`,
-          }}
+          className={`absolute inset-0 bg-linear-to-br ${thumbBg} transition-transform duration-500 group-hover:scale-110`}
         />
 
-        {/* Dot Pattern Overlay */}
+        {/* Dot Pattern */}
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-15"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 25% 50%, rgba(255,255,255,0.4) 1px, transparent 1px)," +
-              "radial-gradient(circle at 75% 25%, rgba(255,255,255,0.3) 1px, transparent 1px)",
-            backgroundSize: "28px 28px, 38px 38px",
+              "radial-gradient(circle at 25% 50%, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
           }}
         />
 
-        {/* Radial Glow Overlay */}
+        {/* Radial Glow */}
         <div
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0"
           style={{
-            background: `radial-gradient(circle at 30% 50%, rgba(255,255,255,0.25), transparent 65%)`,
+            background:
+              "radial-gradient(circle at 30% 50%, rgba(255,255,255,0.25), transparent 65%)",
           }}
         />
 
-        {/* Center Emoji */}
+        {/* Center Lucide Icon (NO emoji!) */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-7xl opacity-30 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:opacity-50">
-            {gradient.emoji}
-          </span>
+          <ThumbIcon
+            className="h-20 w-20 text-white/30 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:text-white/50"
+            strokeWidth={1.5}
+          />
         </div>
 
         {/* ─── Top Badges ──────────────────── */}
@@ -146,27 +183,28 @@ export default function CourseCard({ course, index = 0 }) {
             {course.categoryLabel}
           </span>
 
-          {/* Free / Discount Badge */}
+          {/* Free / Discount */}
           {course.isFree ? (
-            <span className="rounded-full bg-[#00D4AA] px-3 py-1 text-xs font-bold text-[#0A0A1A] shadow-lg">
-              ফ্রি ✨
+            <span className="flex items-center gap-1 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
+              <Sparkles className="h-3 w-3" />
+              ফ্রি
             </span>
           ) : discount > 0 ? (
-            <span className="rounded-full bg-[#FF6B6B] px-3 py-1 text-xs font-bold text-white shadow-lg">
-              {toBangla(discount)}% ছাড়
+            <span className="rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
+              {toBanglaNumber(discount)}% ছাড়
             </span>
           ) : null}
         </div>
 
-        {/* ─── Bottom Left: Popular / Level ── */}
+        {/* ─── Bottom Left: Popular Badge ─── */}
         <div className="absolute bottom-3 left-3 flex items-center gap-2">
-          {course.isPopular && (
-            <span className="flex items-center gap-1 rounded-full border border-[#FFB800]/50 bg-[#FFB800]/20 px-2.5 py-1 text-xs font-semibold text-[#FFB800] backdrop-blur-md">
-              🔥 জনপ্রিয়
+          {course.isPopular ? (
+            <span className="flex items-center gap-1 rounded-full border border-amber-300/60 bg-amber-400/20 px-2.5 py-1 text-xs font-semibold text-amber-100 backdrop-blur-md">
+              <Flame className="h-3 w-3" />
+              জনপ্রিয়
             </span>
-          )}
-          {!course.isPopular && (
-            <span className="rounded-md bg-black/30 px-2 py-0.5 text-[10px] font-semibold text-white/80 backdrop-blur-sm">
+          ) : (
+            <span className="rounded-md bg-black/40 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur-sm">
               {course.levelLabel}
             </span>
           )}
@@ -174,9 +212,9 @@ export default function CourseCard({ course, index = 0 }) {
 
         {/* ─── Bottom Right: Lessons ───────── */}
         <div className="absolute bottom-3 right-3">
-          <span className="flex items-center gap-1 rounded-md bg-black/30 px-2 py-0.5 text-[10px] text-white/70 backdrop-blur-sm">
-            <HiOutlineBookOpen className="h-3 w-3" />
-            {toBangla(course.lessons)} পাঠ
+          <span className="flex items-center gap-1 rounded-md bg-black/40 px-2 py-0.5 text-[10px] text-white/90 backdrop-blur-sm">
+            <BookOpen className="h-3 w-3" />
+            {toBanglaNumber(course.lessons)} পাঠ
           </span>
         </div>
       </div>
@@ -186,78 +224,67 @@ export default function CourseCard({ course, index = 0 }) {
       {/* ═══════════════════════════════════ */}
       <div className="flex flex-1 flex-col p-5">
         {/* Title */}
-        <h3 className="mb-2 line-clamp-2 text-base font-bold leading-snug text-[#1F2937] transition-colors duration-300 group-hover:text-[#1E9CD7]">
+        <h3 className="mb-2 line-clamp-2 text-base font-bold leading-snug text-slate-900 transition-colors duration-200 group-hover:text-brand-800">
           {course.title}
         </h3>
 
         {/* Description */}
-        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-[#475569]">
+        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-slate-600">
           {course.shortDesc}
         </p>
 
         {/* ─── Rating Row ──────────────────── */}
         <div className="mb-3 flex items-center gap-2">
           <div className="flex items-center gap-0.5">{renderStars(course.rating)}</div>
-          <span className="text-sm font-bold text-[#FFB800]">{toBangla(course.rating)}</span>
-          <span className="text-xs text-[#94A3B8]">({toBangla(course.totalRatings)} রিভিউ)</span>
+          <span className="text-sm font-bold text-amber-600">{toBanglaNumber(course.rating)}</span>
+          <span className="text-xs text-slate-400">
+            ({toBanglaNumber(course.totalRatings)} রিভিউ)
+          </span>
         </div>
 
         {/* ─── Stats Row ───────────────────── */}
-        <div className="mb-4 flex items-center gap-4 text-xs text-[#64748B]">
+        <div className="mb-4 flex items-center gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-1">
-            <HiOutlineUsers className="h-3.5 w-3.5" />
+            <Users className="h-3.5 w-3.5" />
             <span>{formatStudents(course.students)}</span>
           </div>
           <div className="flex items-center gap-1">
-            <HiOutlineClock className="h-3.5 w-3.5" />
+            <Clock className="h-3.5 w-3.5" />
             <span>{course.duration}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span
-              className="rounded px-1.5 py-0.5 text-[10px] font-semibold"
-              style={{
-                background: `${gradient.from}18`,
-                color: gradient.from,
-              }}
-            >
-              {course.levelLabel}
-            </span>
           </div>
         </div>
 
-        {/* ─── Instructor ──────────────────── */}
+        {/* ─── Instructor (Initials!) ──────── */}
         {instructor && (
-          <div className="mb-4 flex items-center gap-2 border-t border-[#E2E8F0] pt-4">
+          <div className="mb-4 flex items-center gap-2 border-t border-slate-100 pt-4">
             <div
-              className="flex h-8 w-8 items-center justify-center rounded-full text-base"
-              style={{
-                background: `linear-gradient(135deg, ${gradient.from}30, ${gradient.to}20)`,
-                border: `1px solid ${gradient.from}25`,
-              }}
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br ${avatarGradient} text-xs font-black text-white shadow-sm ring-2 ring-white`}
             >
-              {instructor.avatar}
+              {getInitials(instructor.name)}
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="truncate text-xs font-semibold text-[#374151]">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-semibold text-slate-700">
                 {instructor.shortName}
               </p>
-              <p className="truncate text-[10px] text-[#64748B]">{instructor.title}</p>
+              <p className="truncate text-[10px] text-slate-500">{instructor.title}</p>
             </div>
           </div>
         )}
 
         {/* ─── Price + CTA ─────────────────── */}
-        <div className="mt-auto flex items-center justify-between border-t border-[#E2E8F0] pt-4">
+        <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4">
           {/* Price */}
           <div className="flex items-baseline gap-2">
             {course.isFree ? (
-              <span className="text-xl font-bold text-[#059669]">ফ্রি</span>
+              <span className="text-xl font-black text-emerald-600">ফ্রি</span>
             ) : (
               <>
-                <span className="text-xl font-bold text-[#1F2937]">৳{toBangla(course.price)}</span>
+                <span className="text-xl font-black text-slate-900">
+                  ৳{toBanglaNumber(course.price)}
+                </span>
                 {course.originalPrice > course.price && (
-                  <span className="text-sm text-[#94A3B8] line-through">
-                    ৳{toBangla(course.originalPrice)}
+                  <span className="text-sm text-slate-400 line-through">
+                    ৳{toBanglaNumber(course.originalPrice)}
                   </span>
                 )}
               </>
@@ -265,23 +292,20 @@ export default function CourseCard({ course, index = 0 }) {
           </div>
 
           {/* CTA Button */}
-          <button
-            type="button"
-            className="group/btn flex items-center gap-1.5 rounded-full bg-[#F1F5F9] px-4 py-2 text-sm font-semibold text-[#475569] transition-all duration-300 hover:bg-[#1E9CD7] hover:text-white hover:shadow-lg hover:shadow-[#1E9CD7]/30 cursor-pointer"
+          <Link
+            href={`/courses/${course.id}`}
+            className="group/btn flex items-center gap-1.5 rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 hover:bg-brand-800 hover:text-white hover:shadow-lg"
           >
             <span>দেখুন</span>
-            <HiOutlineArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
-          </button>
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
+          </Link>
         </div>
       </div>
 
       {/* ─── Bottom Gradient Line (Hover) ─── */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          background: `linear-gradient(to right, ${gradient.from}, ${gradient.to})`,
-        }}
+        className={`absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r ${thumbBg} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
       />
-    </motion.article>
+    </article>
   );
 }

@@ -1,220 +1,198 @@
+// components/about/WhyChooseUs.jsx
+// ═══════════════════════════════════════════
+// ⭐ Why Choose Us — Apple Style
+// ├── 6-feature grid (3-col on lg)
+// ├── Number badge (01-06)
+// ├── Bottom stats bar
+// └── Lucide icons only
+// ═══════════════════════════════════════════
+
 "use client";
 
-import { motion } from "framer-motion";
 import {
-  FaGraduationCap,
-  FaSyncAlt,
-  FaStopwatch,
-  FaChartLine,
-  FaWallet,
-  FaHeadset,
-} from "react-icons/fa";
-import { HiSparkles } from "react-icons/hi2";
+  GraduationCap,
+  RefreshCw,
+  Timer,
+  LineChart,
+  Wallet,
+  Headset,
+  Sparkles,
+} from "lucide-react";
 import { WHY_CHOOSE_US } from "@/constants";
 
-// Icon Map
 const ICON_MAP = {
-  academic: FaGraduationCap,
-  refresh: FaSyncAlt,
-  timer: FaStopwatch,
-  chart: FaChartLine,
-  wallet: FaWallet,
-  support: FaHeadset,
+  academic: GraduationCap,
+  refresh: RefreshCw,
+  timer: Timer,
+  chart: LineChart,
+  wallet: Wallet,
+  support: Headset,
 };
 
-// Brand Color Cycle — Light Theme
-const COLORS = [
-  "#1E9CD7", // Brand Blue
-  "#059669", // Brand Green
-  "#D97706", // Brand Amber
-  "#DC2626", // Brand Red
-  "#7C3AED", // Purple
-  "#EA580C", // Orange
+const COLOR_VARIANTS = [
+  {
+    bg: "bg-brand-50",
+    border: "border-brand-200",
+    text: "text-brand-800",
+    accent: "text-brand-700",
+    line: "from-brand-700 to-brand-900",
+  },
+  {
+    bg: "bg-emerald-50",
+    border: "border-emerald-200",
+    text: "text-emerald-700",
+    accent: "text-emerald-700",
+    line: "from-emerald-600 to-emerald-800",
+  },
+  {
+    bg: "bg-amber-50",
+    border: "border-amber-200",
+    text: "text-amber-700",
+    accent: "text-amber-700",
+    line: "from-amber-600 to-amber-800",
+  },
+  {
+    bg: "bg-rose-50",
+    border: "border-rose-200",
+    text: "text-rose-700",
+    accent: "text-rose-700",
+    line: "from-rose-600 to-rose-800",
+  },
+  {
+    bg: "bg-violet-50",
+    border: "border-violet-200",
+    text: "text-violet-700",
+    accent: "text-violet-700",
+    line: "from-violet-600 to-violet-800",
+  },
+  {
+    bg: "bg-cyan-50",
+    border: "border-cyan-200",
+    text: "text-cyan-700",
+    accent: "text-cyan-700",
+    line: "from-cyan-600 to-cyan-800",
+  },
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section className="relative py-20 sm:py-28 bg-[#F8FAFC] overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 z-0">
-        {/* Gradient Base */}
-        <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-[#F8FAFC] to-[#F0F9FF]" />
-
-        {/* Center Orb */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-primary/5 rounded-full blur-3xl" />
-
-        {/* Dot Pattern */}
+    <section className="relative overflow-hidden bg-slate-50 py-24">
+      {/* ─── Background ─────────────────── */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-linear-to-br from-brand-50/40 via-slate-50 to-emerald-50/20" />
+        <div className="absolute left-1/2 top-1/2 h-144 w-xl -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-200/15 blur-3xl" />
         <div
           className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `radial-gradient(circle, #1E9CD715 1px, transparent 1px)`,
+            backgroundImage: "radial-gradient(circle, rgba(30,64,175,0.08) 1px, transparent 1px)",
             backgroundSize: "36px 36px",
           }}
         />
       </div>
 
-      {/* Container */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-primary/8 border border-primary/20 rounded-full">
-            <HiSparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">কেন আমাদের বেছে নিবেন</span>
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+        {/* ═══ Apple Header ═══════════════ */}
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5">
+            <Sparkles className="h-4 w-4 text-brand-700" />
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">
+              কেন আমাদের বেছে নিবেন
+            </p>
           </div>
 
-          {/* Title */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2937] mb-4">
-            আমাদের{" "}
-            <span className="bg-linear-to-r from-primary via-[#0A5A8A] to-amber-500 bg-clip-text text-transparent">
-              বিশেষত্ব
-            </span>
+          <h2 className="mt-6 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+            আমাদের <span className="text-slate-500">বিশেষত্ব</span>
           </h2>
 
-          {/* Subtitle */}
-          <p className="text-[#64748B] text-base sm:text-lg leading-relaxed">
+          <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
             ৫০,০০০+ শিক্ষার্থীর আস্থা ও ভালোবাসায় আমরা পৌঁছেছি এখানে। জানুন কেন আমরা সেরা পরীক্ষা
             প্রস্তুতি প্ল্যাটফর্ম।
           </p>
-        </motion.div>
+        </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* ═══ Features Grid ══════════════ */}
+        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {WHY_CHOOSE_US.map((feature, index) => {
-            const Icon = ICON_MAP[feature.icon] || FaGraduationCap;
-            const color = COLORS[index % COLORS.length];
+            const Icon = ICON_MAP[feature.icon] ?? GraduationCap;
+            const colors = COLOR_VARIANTS[index % COLOR_VARIANTS.length];
 
             return (
-              <motion.div
+              <article
                 key={feature.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.1,
+                className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-7 transition-all duration-300 hover:-translate-y-2 hover:border-brand-300 hover:shadow-xl animate-in fade-in slide-in-from-bottom-4"
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                  animationFillMode: "both",
                 }}
-                whileHover={{ y: -8 }}
-                className="group relative"
               >
-                {/* Hover Glow */}
-                <div
-                  className="absolute -inset-1 rounded-3xl blur-2xl opacity-0 group-hover:opacity-15 transition-opacity duration-500"
-                  style={{ backgroundColor: color }}
-                />
+                {/* Number Badge (top-left) */}
+                <span
+                  className={`absolute left-4 top-4 text-xs font-black opacity-30 group-hover:opacity-70 transition-opacity ${colors.accent}`}
+                >
+                  ০{feature.id}
+                </span>
 
-                {/* Card */}
-                <div className="relative h-full p-7 bg-white border border-[#E2E8F0] rounded-3xl overflow-hidden transition-all duration-300 group-hover:border-primary/25 group-hover:shadow-lg group-hover:shadow-primary/8">
-                  {/* Top Right Decoration */}
+                {/* Header — Icon + Stat */}
+                <div className="mb-5 flex items-start justify-between">
+                  {/* Icon Box */}
                   <div
-                    className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-2xl opacity-8 group-hover:opacity-15 transition-opacity"
-                    style={{ backgroundColor: color }}
-                  />
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl border ${colors.bg} ${colors.border} transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}
+                  >
+                    <Icon className={`h-7 w-7 ${colors.text}`} />
+                  </div>
 
-                  {/* Header — Icon + Stat */}
-                  <div className="flex items-start justify-between mb-5">
-                    {/* Icon Circle */}
-                    <motion.div
-                      whileHover={{ rotate: 12, scale: 1.1 }}
-                      transition={{ duration: 0.3 }}
-                      className="relative w-14 h-14 rounded-2xl flex items-center justify-center"
-                      style={{
-                        backgroundColor: `${color}15`,
-                        border: `1px solid ${color}35`,
-                      }}
+                  {/* Stat */}
+                  <div className="text-right">
+                    <div
+                      className={`text-3xl font-black leading-none sm:text-4xl ${colors.accent}`}
                     >
-                      <Icon className="w-7 h-7" style={{ color: color }} />
-
-                      {/* Glow Behind Icon */}
-                      <span
-                        className="absolute inset-0 rounded-2xl blur-md opacity-20 group-hover:opacity-35 transition-opacity -z-10"
-                        style={{ backgroundColor: color }}
-                      />
-                    </motion.div>
-
-                    {/* Stat */}
-                    <div className="text-right">
-                      <div
-                        className="text-3xl sm:text-4xl font-bold leading-none"
-                        style={{ color: color }}
-                      >
-                        {feature.stat}
-                      </div>
-                      <div className="text-xs text-[#94A3B8] mt-1 font-medium">
-                        {feature.statLabel}
-                      </div>
+                      {feature.stat}
+                    </div>
+                    <div className="mt-1 text-xs font-medium text-slate-500">
+                      {feature.statLabel}
                     </div>
                   </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-[#1F2937] mb-3">{feature.title}</h3>
-
-                  {/* Description */}
-                  <p className="text-[#64748B] text-sm leading-relaxed group-hover:text-[#475569] transition-colors">
-                    {feature.description}
-                  </p>
-
-                  {/* Bottom Accent Line (Hover Expand) */}
-                  <div
-                    className="absolute bottom-0 left-0 h-1 rounded-tr-full transition-all duration-500 group-hover:w-full"
-                    style={{
-                      width: "20%",
-                      background: `linear-gradient(90deg, ${color}, transparent)`,
-                    }}
-                  />
-
-                  {/* Number Badge */}
-                  <div className="absolute top-3 left-3 opacity-20 group-hover:opacity-70 transition-opacity">
-                    <span className="text-xs font-bold" style={{ color: color }}>
-                      0{feature.id}
-                    </span>
-                  </div>
                 </div>
-              </motion.div>
+
+                {/* Title */}
+                <h3 className="mb-3 text-xl font-black text-slate-900">{feature.title}</h3>
+
+                {/* Description */}
+                <p className="text-sm leading-relaxed text-slate-600">{feature.description}</p>
+
+                {/* Bottom Accent (Expand on hover) */}
+                <div
+                  className={`absolute bottom-0 left-0 h-1 w-1/5 rounded-tr-full bg-linear-to-r ${colors.line} transition-all duration-500 group-hover:w-full`}
+                />
+              </article>
             );
           })}
         </div>
 
-        {/* Bottom Stats Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 max-w-4xl mx-auto"
+        {/* ═══ Bottom Stats Bar ══════════ */}
+        <div
+          className="mx-auto mt-16 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-700"
+          style={{ animationDelay: "700ms", animationFillMode: "both" }}
         >
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-0 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm overflow-hidden">
-            {/* Stat 1 */}
-            <div className="text-center p-6 border-r border-[#E2E8F0]">
-              <div className="text-2xl sm:text-3xl font-bold text-primary">৫০K+</div>
-              <div className="text-xs text-[#64748B] mt-1 font-medium">শিক্ষার্থী</div>
+          <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:grid-cols-4">
+            <div className="border-r border-slate-200 p-6 text-center">
+              <div className="text-2xl font-black text-brand-800 sm:text-3xl">৫০K+</div>
+              <div className="mt-1 text-xs font-medium text-slate-500">শিক্ষার্থী</div>
             </div>
-
-            {/* Stat 2 */}
-            <div className="text-center p-6 sm:border-r border-[#E2E8F0]">
-              <div className="text-2xl sm:text-3xl font-bold text-[#059669]">৯৮%</div>
-              <div className="text-xs text-[#64748B] mt-1 font-medium">সন্তুষ্টি</div>
+            <div className="border-slate-200 p-6 text-center sm:border-r">
+              <div className="text-2xl font-black text-emerald-700 sm:text-3xl">৯৮%</div>
+              <div className="mt-1 text-xs font-medium text-slate-500">সন্তুষ্টি</div>
             </div>
-
-            {/* Stat 3 */}
-            <div className="text-center p-6 border-r border-t sm:border-t-0 border-[#E2E8F0]">
-              <div className="text-2xl sm:text-3xl font-bold text-[#D97706]">১,২০০+</div>
-              <div className="text-xs text-[#64748B] mt-1 font-medium">চাকরি</div>
+            <div className="border-r border-t border-slate-200 p-6 text-center sm:border-t-0">
+              <div className="text-2xl font-black text-amber-700 sm:text-3xl">১,২০০+</div>
+              <div className="mt-1 text-xs font-medium text-slate-500">চাকরি</div>
             </div>
-
-            {/* Stat 4 */}
-            <div className="text-center p-6 border-t sm:border-t-0 border-[#E2E8F0]">
-              <div className="text-2xl sm:text-3xl font-bold text-[#DC2626]">২৪/৭</div>
-              <div className="text-xs text-[#64748B] mt-1 font-medium">সাপোর্ট</div>
+            <div className="border-t border-slate-200 p-6 text-center sm:border-t-0">
+              <div className="text-2xl font-black text-rose-700 sm:text-3xl">২৪/৭</div>
+              <div className="mt-1 text-xs font-medium text-slate-500">সাপোর্ট</div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

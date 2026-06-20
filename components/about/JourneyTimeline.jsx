@@ -1,172 +1,176 @@
+// components/about/JourneyTimeline.jsx
+// ═══════════════════════════════════════════
+// 🛤️ Journey Timeline — Apple Style
+// ├── Center vertical line + colored dots
+// ├── Alternating left/right cards (desktop)
+// ├── Lucide icons (NO react-icons!)
+// └── CSS animations only
+// ═══════════════════════════════════════════
+
 "use client";
 
-import { motion } from "framer-motion";
-import { FaRocket, FaUsers, FaStar, FaTrophy, FaBrain } from "react-icons/fa";
+import { Rocket, Users, Star, Trophy, Brain } from "lucide-react";
 import { TIMELINE_DATA } from "@/constants";
 
-// Icon Map
 const ICON_MAP = {
-  rocket: FaRocket,
-  users: FaUsers,
-  star: FaStar,
-  trophy: FaTrophy,
-  brain: FaBrain,
+  rocket: Rocket,
+  users: Users,
+  star: Star,
+  trophy: Trophy,
+  brain: Brain,
 };
 
-// Brand Color Cycle — Light Theme
-const COLORS = [
-  "#1E9CD7", // Brand Blue
-  "#059669", // Brand Green
-  "#D97706", // Brand Amber
-  "#DC2626", // Brand Red
-  "#7C3AED", // Purple
+// 5-color cycle (Tailwind safe)
+const COLOR_VARIANTS = [
+  {
+    bg: "bg-brand-50",
+    border: "border-brand-200",
+    text: "text-brand-800",
+    ring: "ring-brand-200",
+    shadow: "shadow-brand-200/50",
+    gradient: "from-brand-700 to-brand-900",
+  },
+  {
+    bg: "bg-emerald-50",
+    border: "border-emerald-200",
+    text: "text-emerald-700",
+    ring: "ring-emerald-200",
+    shadow: "shadow-emerald-200/50",
+    gradient: "from-emerald-600 to-emerald-800",
+  },
+  {
+    bg: "bg-amber-50",
+    border: "border-amber-200",
+    text: "text-amber-700",
+    ring: "ring-amber-200",
+    shadow: "shadow-amber-200/50",
+    gradient: "from-amber-600 to-amber-800",
+  },
+  {
+    bg: "bg-rose-50",
+    border: "border-rose-200",
+    text: "text-rose-700",
+    ring: "ring-rose-200",
+    shadow: "shadow-rose-200/50",
+    gradient: "from-rose-600 to-rose-800",
+  },
+  {
+    bg: "bg-violet-50",
+    border: "border-violet-200",
+    text: "text-violet-700",
+    ring: "ring-violet-200",
+    shadow: "shadow-violet-200/50",
+    gradient: "from-violet-600 to-violet-800",
+  },
 ];
 
 export default function JourneyTimeline() {
   return (
-    <section className="relative py-20 sm:py-28 bg-white overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 z-0">
-        {/* Gradient Base */}
-        <div className="absolute inset-0 bg-linear-to-b from-primary/4 via-white to-[#F8FAFC]" />
-
-        {/* Orbs */}
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-primary/6 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#059669]/6 rounded-full blur-3xl" />
-
-        {/* Dot Pattern */}
+    <section className="relative overflow-hidden bg-white py-24">
+      {/* ─── Background ─────────────────── */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-linear-to-b from-brand-50/30 via-white to-slate-50" />
+        <div className="absolute left-0 top-1/2 h-96 w-96 rounded-full bg-brand-200/20 blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-emerald-200/20 blur-3xl" />
         <div
-          className="absolute inset-0 opacity-25"
+          className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `radial-gradient(circle, #1E9CD718 1px, transparent 1px)`,
+            backgroundImage: "radial-gradient(circle, rgba(30,64,175,0.08) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />
       </div>
 
-      {/* Container */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-20"
-        >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-[#059669]/8 border border-[#059669]/20 rounded-full">
-            <span className="w-2 h-2 bg-[#059669] rounded-full animate-pulse" />
-            <span className="text-sm font-medium text-[#059669]">আমাদের যাত্রা</span>
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+        {/* ═══ Apple Header ═══════════════ */}
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-600" />
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+              আমাদের যাত্রা
+            </p>
           </div>
 
-          {/* Title */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2937] mb-4">
-            আমাদের{" "}
-            <span className="bg-linear-to-r from-[#059669] to-primary bg-clip-text text-transparent">
-              জার্নি
-            </span>
+          <h2 className="mt-6 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+            আমাদের <span className="text-slate-500">জার্নি</span>
           </h2>
 
-          {/* Subtitle */}
-          <p className="text-[#64748B] text-base sm:text-lg leading-relaxed">
+          <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
             ২০২৩ থেকে আজ পর্যন্ত আমাদের অর্জন ও মাইলস্টোনগুলো দেখুন। প্রতিটা পদক্ষেপ আমাদের
             শিক্ষার্থীদের সাফল্যের জন্য।
           </p>
-        </motion.div>
+        </div>
 
-        {/* Timeline */}
-        <div className="relative max-w-5xl mx-auto">
+        {/* ═══ Timeline ═══════════════════ */}
+        <div className="relative mx-auto mt-20 max-w-5xl">
           {/* Center Line (Desktop) */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0.5 bg-linear-to-b from-transparent via-primary/20 to-transparent" />
+          <div className="absolute bottom-0 left-1/2 top-0 hidden w-0.5 -translate-x-1/2 bg-linear-to-b from-transparent via-slate-200 to-transparent md:block" />
 
           {/* Left Line (Mobile) */}
-          <div className="md:hidden absolute left-6 top-0 bottom-0 w-0.5 bg-linear-to-b from-transparent via-primary/20 to-transparent" />
+          <div className="absolute bottom-0 left-7 top-0 w-0.5 bg-linear-to-b from-transparent via-slate-200 to-transparent md:hidden" />
 
           {/* Timeline Items */}
           <div className="space-y-12 md:space-y-20">
             {TIMELINE_DATA.map((item, index) => {
-              const Icon = ICON_MAP[item.icon] || FaRocket;
-              const color = COLORS[index % COLORS.length];
+              const Icon = ICON_MAP[item.icon] ?? Rocket;
+              const colors = COLOR_VARIANTS[index % COLOR_VARIANTS.length];
               const isLeft = index % 2 === 0;
 
               return (
-                <motion.div
+                <div
                   key={item.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="relative"
+                  className="relative animate-in fade-in slide-in-from-bottom-6 duration-700"
+                  style={{
+                    animationDelay: `${index * 120}ms`,
+                    animationFillMode: "both",
+                  }}
                 >
-                  {/* Desktop Layout */}
-                  <div className="hidden md:flex items-center justify-between gap-8">
-                    {/* Left Card */}
+                  {/* ── Desktop Layout ── */}
+                  <div className="hidden items-center justify-between gap-8 md:flex">
                     {isLeft && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="w-5/12"
-                      >
-                        <TimelineCard item={item} color={color} align="right" />
-                      </motion.div>
+                      <div className="w-5/12">
+                        <TimelineCard item={item} colors={colors} align="right" />
+                      </div>
                     )}
-
-                    {/* Right Placeholder */}
                     {!isLeft && <div className="w-5/12" />}
 
-                    {/* Center Icon */}
-                    <div className="relative shrink-0 z-10">
-                      <CenterIcon Icon={Icon} color={color} highlight={item.highlight} />
+                    <div className="relative z-10 shrink-0">
+                      <CenterDot Icon={Icon} colors={colors} highlight={item.highlight} />
                     </div>
 
-                    {/* Right Card */}
                     {!isLeft && (
-                      <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="w-5/12"
-                      >
-                        <TimelineCard item={item} color={color} align="left" />
-                      </motion.div>
+                      <div className="w-5/12">
+                        <TimelineCard item={item} colors={colors} align="left" />
+                      </div>
                     )}
-
-                    {/* Left Placeholder */}
                     {isLeft && <div className="w-5/12" />}
                   </div>
 
-                  {/* Mobile Layout */}
-                  <div className="md:hidden flex gap-4">
-                    <div className="relative shrink-0 z-10">
-                      <CenterIcon Icon={Icon} color={color} highlight={item.highlight} />
+                  {/* ── Mobile Layout ── */}
+                  <div className="flex gap-5 md:hidden">
+                    <div className="relative z-10 shrink-0">
+                      <CenterDot Icon={Icon} colors={colors} highlight={item.highlight} />
                     </div>
                     <div className="flex-1">
-                      <TimelineCard item={item} color={color} align="left" />
+                      <TimelineCard item={item} colors={colors} align="left" />
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
 
           {/* End Marker */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative mt-12 flex justify-center"
+          <div
+            className="relative mt-16 flex justify-center animate-in fade-in zoom-in-95 duration-700"
+            style={{ animationDelay: "800ms", animationFillMode: "both" }}
           >
-            <div className="flex items-center gap-3 px-6 py-3 bg-white border border-[#E2E8F0] rounded-full shadow-sm">
-              <span className="w-2 h-2 bg-[#059669] rounded-full animate-pulse" />
-              <span className="text-sm font-bold text-[#1F2937]">আরও অনেক কিছু আসছে...</span>
-              <span className="w-2 h-2 bg-[#059669] rounded-full animate-pulse" />
+            <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-6 py-3 shadow-sm">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-600" />
+              <span className="text-sm font-bold text-slate-900">আরও অনেক কিছু আসছে...</span>
+              <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-600" />
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
@@ -174,98 +178,65 @@ export default function JourneyTimeline() {
 }
 
 // ═══════════════════════════════════════════
-// Sub-Component: Center Icon (Timeline Dot)
+// Sub-Component: Center Dot (Timeline)
 // ═══════════════════════════════════════════
-
-function CenterIcon({ Icon, color, highlight }) {
+function CenterDot({ Icon, colors, highlight }) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.1, rotate: 5 }}
-      transition={{ duration: 0.3 }}
-      className="relative"
-    >
-      {/* Pulse Ring — Highlight only */}
+    <div className="relative">
       {highlight && (
         <>
-          <span
-            className="absolute inset-0 rounded-full animate-ping opacity-25"
-            style={{ backgroundColor: color }}
-          />
-          <span
-            className="absolute -inset-2 rounded-full blur-md opacity-30"
-            style={{ backgroundColor: color }}
-          />
+          <span className={`absolute inset-0 animate-ping rounded-full ${colors.bg} opacity-50`} />
+          <span className={`absolute -inset-2 rounded-full ${colors.bg} opacity-30 blur-md`} />
         </>
       )}
-
-      {/* Icon Container */}
       <div
-        className="relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center border-4 border-white"
-        style={{
-          backgroundColor: `${color}15`,
-          borderColor: highlight ? color : `${color}40`,
-          boxShadow: highlight ? `0 0 24px ${color}40` : `0 0 0 1px ${color}20`,
-        }}
+        className={`relative flex h-14 w-14 items-center justify-center rounded-full border-4 border-white ${colors.bg} ${
+          highlight ? `shadow-lg ${colors.shadow}` : ""
+        } transition-transform duration-300 hover:scale-110 md:h-16 md:w-16`}
       >
-        <Icon className="w-6 h-6 md:w-7 md:h-7" style={{ color: color }} />
+        <Icon className={`h-6 w-6 ${colors.text} md:h-7 md:w-7`} />
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 // ═══════════════════════════════════════════
 // Sub-Component: Timeline Card
 // ═══════════════════════════════════════════
-
-function TimelineCard({ item, color, align }) {
-  const isRightAlign = align === "right";
+function TimelineCard({ item, colors, align }) {
+  const isRight = align === "right";
 
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.3 }}
-      className="group relative p-6 bg-white border border-[#E2E8F0] rounded-2xl hover:border-primary/25 hover:shadow-md hover:shadow-primary/8 transition-all duration-300"
-      style={{
-        boxShadow: `0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px ${color}10`,
-      }}
+    <div
+      className={`group relative rounded-2xl border ${colors.border} bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}
     >
-      {/* Top Accent Line */}
+      {/* Top Accent */}
       <div
-        className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl"
-        style={{
-          background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
-        }}
+        className={`absolute left-0 right-0 top-0 h-1 rounded-t-2xl bg-linear-to-r ${colors.gradient}`}
       />
 
       {/* Arrow Pointer (Desktop) */}
       <div
-        className={`hidden md:block absolute top-1/2 -translate-y-1/2 w-4 h-4 rotate-45 bg-white border-[#E2E8F0] ${
-          isRightAlign ? "-right-2 border-r border-t" : "-left-2 border-l border-b"
+        className={`absolute top-1/2 hidden h-3 w-3 -translate-y-1/2 rotate-45 border-slate-200 bg-white md:block ${
+          isRight ? "-right-1.5 border-r border-t" : "-left-1.5 border-b border-l"
         }`}
       />
 
       {/* Badges Row */}
-      <div
-        className={`flex flex-wrap items-center gap-2 mb-3 ${isRightAlign ? "md:justify-end" : ""}`}
-      >
-        {/* Year + Month Badge */}
+      <div className={`mb-3 flex flex-wrap items-center gap-2 ${isRight ? "md:justify-end" : ""}`}>
+        {/* Year + Month */}
         <span
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold"
-          style={{
-            backgroundColor: `${color}12`,
-            color: color,
-            border: `1px solid ${color}30`,
-          }}
+          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold ${colors.bg} ${colors.border} ${colors.text}`}
         >
           <span>{item.year}</span>
-          <span className="w-1 h-1 rounded-full bg-current opacity-50" />
+          <span className="h-1 w-1 rounded-full bg-current opacity-50" />
           <span>{item.month}</span>
         </span>
 
-        {/* Highlight Badge */}
+        {/* Highlight Badge (Lucide Star, NO emoji!) */}
         {item.highlight && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
-            <span>⭐</span>
+          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-700">
+            <Star className="h-3 w-3 fill-amber-500 text-amber-500" />
             <span>মাইলস্টোন</span>
           </span>
         )}
@@ -273,8 +244,8 @@ function TimelineCard({ item, color, align }) {
 
       {/* Title */}
       <h3
-        className={`text-xl sm:text-2xl font-bold text-[#1F2937] mb-2 ${
-          isRightAlign ? "md:text-right" : ""
+        className={`mb-2 text-xl font-black text-slate-900 sm:text-2xl ${
+          isRight ? "md:text-right" : ""
         }`}
       >
         {item.title}
@@ -282,18 +253,12 @@ function TimelineCard({ item, color, align }) {
 
       {/* Description */}
       <p
-        className={`text-[#475569] text-sm sm:text-base leading-relaxed ${
-          isRightAlign ? "md:text-right" : ""
+        className={`text-sm leading-relaxed text-slate-600 sm:text-base ${
+          isRight ? "md:text-right" : ""
         }`}
       >
         {item.description}
       </p>
-
-      {/* Hover Glow */}
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"
-        style={{ backgroundColor: `${color}8` }}
-      />
-    </motion.div>
+    </div>
   );
 }

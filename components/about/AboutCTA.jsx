@@ -1,290 +1,202 @@
+// components/about/AboutCTA.jsx
+// ═══════════════════════════════════════════
+// 🚀 About CTA — Apple Style Premium
+// ├── Brand-800 → brand-900 gradient bg
+// ├── NO emojis anywhere!
+// ├── Lucide icons only
+// ├── Initials in avatar stack
+// └── CSS animations only
+// ═══════════════════════════════════════════
+
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { HiSparkles, HiArrowRight } from "react-icons/hi2";
-import { FaRocket, FaCheckCircle, FaUsers, FaStar, FaShieldAlt } from "react-icons/fa";
+import {
+  Sparkles,
+  ArrowRight,
+  Rocket,
+  CheckCircle2,
+  Star,
+  ShieldCheck,
+  Users,
+  Gift,
+  Flame,
+  User,
+} from "lucide-react";
 
 const TRUST_ITEMS = [
-  { id: 1, icon: FaCheckCircle, text: "১০০% ফ্রি ট্রায়াল" },
-  { id: 2, icon: FaShieldAlt, text: "কোনো ক্রেডিট কার্ড লাগবে না" },
-  { id: 3, icon: FaStar, text: "৪.৯/৫ রেটিং" },
+  { id: 1, icon: CheckCircle2, text: "১০০% ফ্রি ট্রায়াল" },
+  { id: 2, icon: ShieldCheck, text: "কোনো ক্রেডিট কার্ড লাগবে না" },
+  { id: 3, icon: Star, text: "৪.৯/৫ রেটিং" },
 ];
 
 export default function AboutCTA() {
   return (
-    <section className="relative py-20 sm:py-28 bg-white overflow-hidden">
-      {/* Soft Background Decoration */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative overflow-hidden bg-white py-24">
+      {/* ─── Background ─────────────────── */}
+      <div className="absolute inset-0 -z-10">
         <div
           className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `radial-gradient(circle, #1E9CD715 1px, transparent 1px)`,
+            backgroundImage: "radial-gradient(circle, rgba(30,64,175,0.08) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />
       </div>
 
-      {/* Container */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          {/* Main CTA — Premium Gradient Box */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7 }}
-            className="relative p-8 sm:p-12 md:p-16 rounded-3xl overflow-hidden shadow-2xl shadow-primary/30"
-            style={{
-              background: "linear-gradient(135deg, #1E9CD7 0%, #0A5A8A 50%, #1E9CD7 100%)",
-            }}
-          >
-            {/* Animated Orb Layers */}
-            <motion.div
-              animate={{
-                x: [0, 100, 0],
-                y: [0, -50, 0],
-                scale: [1, 1.3, 1],
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute top-0 left-1/4 w-150 h-150 bg-white/10 rounded-full blur-3xl"
-            />
-
-            <motion.div
-              animate={{
-                x: [0, -80, 0],
-                y: [0, 60, 0],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 25,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute bottom-0 right-1/4 w-150 h-150 bg-amber-400/15 rounded-full blur-3xl"
-            />
-
-            <motion.div
-              animate={{
-                x: [0, 50, 0],
-                y: [0, -30, 0],
-              }}
-              transition={{
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/8 rounded-full blur-3xl"
-            />
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          {/* ═══ Premium Gradient CTA Box ═══ */}
+          <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-brand-700 via-brand-800 to-brand-900 p-8 shadow-2xl shadow-brand-800/40 animate-in fade-in zoom-in-95 duration-700 sm:p-12 md:p-16">
+            {/* Static Decorative Orbs */}
+            <div className="absolute left-1/4 top-0 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-amber-400/20 blur-3xl" />
+            <div className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-3xl" />
 
             {/* Grid Overlay */}
             <div
               className="absolute inset-0 opacity-10"
               style={{
-                backgroundImage: `linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
-                                  linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)`,
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)",
                 backgroundSize: "50px 50px",
               }}
             />
 
-            {/* Top Accent Border */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-transparent via-amber-300 to-transparent" />
+            {/* Top Amber Accent */}
+            <div className="absolute left-0 right-0 top-0 h-1 bg-linear-to-r from-transparent via-amber-300 to-transparent" />
 
-            {/* Floating Decorations */}
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-                rotate: [0, 10, 0],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute top-8 right-8 text-amber-300 text-3xl"
-            >
-              ✨
-            </motion.div>
-
-            <motion.div
-              animate={{
-                y: [0, 10, 0],
-                rotate: [0, -10, 0],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute bottom-8 left-8 text-white text-3xl"
-            >
-              🚀
-            </motion.div>
-
-            {/* Content */}
+            {/* ─── Content ─────────────────── */}
             <div className="relative z-10 text-center">
-              {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-white/15 backdrop-blur-md border border-white/30 rounded-full"
+              {/* Eyebrow Badge */}
+              <div
+                className="inline-flex animate-in fade-in slide-in-from-top-4 items-center gap-2 rounded-full border border-white/30 bg-white/15 px-5 py-2 backdrop-blur-md duration-500"
+                style={{ animationDelay: "100ms", animationFillMode: "both" }}
               >
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                >
-                  <HiSparkles className="w-5 h-5 text-amber-300" />
-                </motion.div>
-                <span className="text-sm font-bold text-white">বিশেষ অফার চলছে</span>
-                <span className="px-2 py-0.5 bg-amber-400 text-[#0A5A8A] text-xs font-bold rounded-full">
-                  HOT 🔥
+                <Sparkles className="h-4 w-4 text-amber-300" />
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">
+                  বিশেষ অফার চলছে
                 </span>
-              </motion.div>
+                <span className="flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-black text-brand-900">
+                  <Flame className="h-3 w-3" />
+                  HOT
+                </span>
+              </div>
 
               {/* Heading */}
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
+              <h2
+                className="mt-6 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl animate-in fade-in slide-in-from-bottom-6 duration-700"
+                style={{ animationDelay: "200ms", animationFillMode: "both" }}
               >
                 আপনার স্বপ্নের চাকরির
                 <br />
                 <span className="bg-linear-to-r from-amber-300 via-yellow-200 to-amber-300 bg-clip-text text-transparent">
                   জার্নি শুরু করুন আজই!
                 </span>
-              </motion.h2>
+              </h2>
 
               {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-base sm:text-lg md:text-xl text-white/85 mb-10 max-w-3xl mx-auto leading-relaxed"
+              <p
+                className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-white/85 sm:text-lg md:text-xl animate-in fade-in slide-in-from-bottom-6 duration-700"
+                style={{ animationDelay: "300ms", animationFillMode: "both" }}
               >
                 ৫০,০০০+ শিক্ষার্থীর সাথে যুক্ত হন। আমাদের AI-powered শেখার প্ল্যাটফর্মে সম্পূর্ণ
                 বিনামূল্যে কোর্স শুরু করুন।
-              </motion.p>
+              </p>
 
               {/* CTA Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
+              <div
+                className="mt-10 flex flex-col items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 sm:flex-row"
+                style={{ animationDelay: "400ms", animationFillMode: "both" }}
               >
                 {/* Primary Button */}
-                <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    href="/register"
-                    className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white text-primary font-bold rounded-full shadow-xl hover:shadow-2xl transition-shadow overflow-hidden"
-                  >
-                    {/* Shimmer */}
-                    <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-primary/20 to-transparent" />
-
-                    <FaRocket className="w-5 h-5" />
-                    <span className="relative z-10">ফ্রি শুরু করুন</span>
-                    <HiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </motion.div>
+                <Link
+                  href="/register"
+                  className="group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-bold text-brand-800 shadow-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-2xl"
+                >
+                  <Rocket className="h-5 w-5" />
+                  <span>ফ্রি শুরু করুন</span>
+                  <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
 
                 {/* Secondary Button */}
-                <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    href="/courses"
-                    className="group inline-flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white/40 text-white font-bold rounded-full hover:bg-white/20 hover:border-white/60 transition-all"
-                  >
-                    <span>সব কোর্স দেখুন</span>
-                    <HiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </motion.div>
-              </motion.div>
+                <Link
+                  href="/courses"
+                  style={{ color: "#ffffff" }}
+                  className="group inline-flex items-center gap-3 rounded-full border-2 border-white/40 bg-white/10 px-8 py-4 font-bold backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/20"
+                >
+                  <span style={{ color: "#ffffff" }}>সব কোর্স দেখুন</span>
+                  <ArrowRight
+                    className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1"
+                    style={{ color: "#ffffff" }}
+                  />
+                </Link>
+              </div>
 
               {/* Trust Indicators */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-8"
+              <div
+                className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 animate-in fade-in duration-700"
+                style={{ animationDelay: "500ms", animationFillMode: "both" }}
               >
                 {TRUST_ITEMS.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <div key={item.id} className="flex items-center gap-2 text-white/90 text-sm">
-                      <Icon className="w-4 h-4 text-amber-300" />
+                    <div key={item.id} className="flex items-center gap-2 text-sm text-white/90">
+                      <Icon className="h-4 w-4 text-amber-300" />
                       <span>{item.text}</span>
                     </div>
                   );
                 })}
-              </motion.div>
+              </div>
 
-              {/* Social Proof */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-                className="flex items-center justify-center gap-3 pt-6 border-t border-white/20"
+              {/* ─── Social Proof ──────────── */}
+              <div
+                className="mt-8 flex flex-col items-center justify-center gap-3 border-t border-white/20 pt-6 sm:flex-row animate-in fade-in duration-700"
+                style={{ animationDelay: "600ms", animationFillMode: "both" }}
               >
-                {/* Avatar Stack */}
+                {/* Avatar Stack (NO emoji!) */}
                 <div className="flex -space-x-2">
-                  <span className="w-10 h-10 bg-linear-to-br from-white to-blue-100 rounded-full border-2 border-white/80 flex items-center justify-center text-sm shadow-md">
-                    👨
+                  {/* Initials Avatars */}
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/80 bg-linear-to-br from-brand-500 to-brand-700 text-xs font-black text-white shadow-md">
+                    RA
                   </span>
-                  <span className="w-10 h-10 bg-linear-to-br from-amber-200 to-amber-300 rounded-full border-2 border-white/80 flex items-center justify-center text-sm shadow-md">
-                    👩
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/80 bg-linear-to-br from-emerald-500 to-emerald-700 text-xs font-black text-white shadow-md">
+                    FB
                   </span>
-                  <span className="w-10 h-10 bg-linear-to-br from-green-200 to-emerald-200 rounded-full border-2 border-white/80 flex items-center justify-center text-sm shadow-md">
-                    👨
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/80 bg-linear-to-br from-rose-500 to-rose-700 text-xs font-black text-white shadow-md">
+                    MH
                   </span>
-                  <span className="w-10 h-10 bg-amber-400 rounded-full border-2 border-white/80 flex items-center justify-center text-xs text-[#0A5A8A] font-bold shadow-md">
-                    ৫০K+
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/80 bg-amber-400 text-[10px] font-black text-brand-900 shadow-md">
+                    50K+
                   </span>
                 </div>
 
                 {/* Rating + Text */}
-                <div className="text-left">
-                  <div className="flex items-center gap-1 text-amber-300">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <FaStar key={star} className="w-3 h-3" />
+                <div className="text-center sm:text-left">
+                  <div className="flex items-center justify-center gap-0.5 text-amber-300 sm:justify-start">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star key={s} className="h-3 w-3 fill-amber-300" />
                     ))}
                   </div>
-                  <p className="text-white/85 text-xs sm:text-sm mt-1">
-                    <span className="text-white font-bold">৫০,০০০+</span> শিক্ষার্থী আমাদের ভরসা
+                  <p className="mt-1 text-xs text-white/85 sm:text-sm">
+                    <span className="font-black text-white">৫০,০০০+</span> শিক্ষার্থী আমাদের ভরসা
                     করেন
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Bonus Note */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-                className="mt-8 inline-flex items-center gap-2 px-4 py-2 bg-amber-400/20 backdrop-blur-md border border-amber-300/40 rounded-full"
+              <div
+                className="mt-8 inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-400/20 px-4 py-2 backdrop-blur-md animate-in fade-in zoom-in-95 duration-500"
+                style={{ animationDelay: "700ms", animationFillMode: "both" }}
               >
-                <FaUsers className="w-4 h-4 text-amber-200" />
-                <span className="text-xs sm:text-sm text-amber-50 font-medium">
-                  🎁 আজই সাইন আপ করলে পাবেন ফ্রি Welcome Bonus!
+                <Gift className="h-4 w-4 text-amber-200" />
+                <span className="text-xs font-medium text-amber-50 sm:text-sm">
+                  আজই সাইন আপ করলে পাবেন ফ্রি Welcome Bonus!
                 </span>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

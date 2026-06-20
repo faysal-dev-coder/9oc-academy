@@ -1,22 +1,19 @@
 // components/home/FeaturedCourses.jsx
 // ═══════════════════════════════════════════════════════════════
-// 🎓 Featured Courses — Light Theme
-// Phase 6B+ — Chat 23
-// ├── Light background with subtle gradients
-// ├── Light grid pattern
-// ├── White CTA button with primary color
-// └── Section uses CourseCard (separate file)
+// 🎓 FeaturedCourses Section — Apple Style
+// ├── Centered eyebrow + two-tone title
+// ├── 3-column premium grid
+// ├── CSS animations only (NO framer-motion!)
+// └── Lucide icons everywhere
 // ═══════════════════════════════════════════════════════════════
 
 "use client";
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { HiOutlineArrowRight, HiOutlineFire } from "react-icons/hi2";
+import { Flame, ArrowRight, BookOpen } from "lucide-react";
 import { COURSES } from "@/constants";
 import CourseCard from "@/components/courses/CourseCard";
-import SectionTitle from "@/components/shared/SectionTitle";
 
 export default function FeaturedCourses() {
   // ─── Featured + Popular Top 6 ────────────
@@ -28,85 +25,68 @@ export default function FeaturedCourses() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden border-t border-[#E2E8F0] bg-white py-20 md:py-28">
+    <section className="relative overflow-hidden border-t border-slate-200 bg-slate-50 py-24">
       {/* ─── Background Decoration ───────── */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-1/4 top-0 h-96 w-96 rounded-full bg-[#059669]/8 blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 h-96 w-96 rounded-full bg-[#1E9CD7]/8 blur-3xl" />
+        <div className="absolute right-1/4 top-0 h-96 w-96 rounded-full bg-brand-200/30 blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 h-96 w-96 rounded-full bg-emerald-200/30 blur-3xl" />
       </div>
-
-      {/* ─── Light Grid Pattern ──────────── */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(30, 156, 215, 0.05) 1px, transparent 1px)," +
-            "linear-gradient(90deg, rgba(30, 156, 215, 0.05) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
 
       {/* ─── Content ─────────────────────── */}
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* ═══════════════════════════════ */}
-        {/* 📌 Section Title                */}
+        {/* 📌 Apple Style Header           */}
         {/* ═══════════════════════════════ */}
-        <SectionTitle
-          badge={
-            <span className="flex items-center gap-1.5">
-              <HiOutlineFire className="h-4 w-4" />
+        <div className="mx-auto max-w-3xl text-center">
+          {/* Eyebrow */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5">
+            <Flame className="h-4 w-4 text-brand-700" />
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">
               জনপ্রিয় কোর্স
-            </span>
-          }
-          title={
-            <>
-              আমাদের{" "}
-              <span
-                className="bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: "linear-gradient(135deg, #1E9CD7, #059669, #FBBF24)",
-                }}
-              >
-                সেরা কোর্স
-              </span>
-            </>
-          }
-          subtitle="বিশেষজ্ঞ শিক্ষকদের দ্বারা তৈরি প্রিমিয়াম কোর্স — হাজারো শিক্ষার্থীর পছন্দের"
-        />
+            </p>
+          </div>
+
+          {/* Two-tone Title */}
+          <h2 className="mt-6 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+            আমাদের <span className="text-slate-500">সেরা কোর্স সমূহ</span>
+          </h2>
+
+          {/* Subtitle */}
+          <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
+            বিশেষজ্ঞ শিক্ষকদের দ্বারা তৈরি প্রিমিয়াম কোর্স — হাজারো শিক্ষার্থীর পছন্দের
+          </p>
+        </div>
 
         {/* ═══════════════════════════════ */}
         {/* 🃏 Course Cards Grid            */}
         {/* ═══════════════════════════════ */}
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featuredCourses.map((course, index) => (
             <CourseCard key={course.id} course={course} index={index} />
           ))}
         </div>
 
         {/* ═══════════════════════════════ */}
-        {/* 👉 View All Button              */}
+        {/* 👉 View All CTA                  */}
         {/* ═══════════════════════════════ */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-14 flex flex-col items-center gap-4"
-        >
+        <div className="mt-16 flex flex-col items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <Link
             href="/courses"
-            className="group flex items-center gap-2 rounded-full px-8 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
-            style={{
-              backgroundImage: "linear-gradient(135deg, #1E9CD7, #0A5A8A)",
-              boxShadow: "0 10px 30px -10px rgba(30, 156, 215, 0.4)",
-            }}
+            style={{ color: "#ffffff" }}
+            className="group inline-flex items-center gap-2 rounded-full bg-brand-800 px-8 py-4 text-base font-bold shadow-lg shadow-brand-800/30 transition-all duration-200 hover:bg-brand-900 hover:shadow-xl hover:shadow-brand-800/40"
           >
-            <span>সব কোর্স দেখুন</span>
-            <HiOutlineArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+            <span style={{ color: "#ffffff" }}>সব কোর্স দেখুন</span>
+            <ArrowRight
+              className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1"
+              style={{ color: "#ffffff" }}
+            />
           </Link>
 
-          <p className="text-sm text-[#64748B]">১২+ কোর্স প্রস্তুত আছে আপনার জন্য</p>
-        </motion.div>
+          <p className="flex items-center gap-1.5 text-sm text-slate-500">
+            <BookOpen className="h-4 w-4" />
+            <span>{COURSES.length}+ কোর্স প্রস্তুত আছে আপনার জন্য</span>
+          </p>
+        </div>
       </div>
     </section>
   );

@@ -1,221 +1,138 @@
+// components/about/AboutHero.jsx
+// ═══════════════════════════════════════════
+// 🦸 About Hero — Apple Style Premium
+// ├── Eyebrow + Two-tone title
+// ├── 3 stat cards
+// ├── CSS animations only
+// └── Lucide icons (NO emoji, NO framer!)
+// ═══════════════════════════════════════════
+
 "use client";
 
-import { motion } from "framer-motion";
-import { HiSparkles, HiArrowDown } from "react-icons/hi2";
-import { FaGraduationCap, FaUsers, FaCalendarAlt } from "react-icons/fa";
+import { Sparkles, ArrowDown, Calendar, Users, GraduationCap } from "lucide-react";
 import { COMPANY_INFO } from "@/constants";
 
 const QUICK_STATS = [
   {
     id: 1,
-    icon: FaCalendarAlt,
+    icon: Calendar,
     value: COMPANY_INFO.founded,
     label: "প্রতিষ্ঠিত",
-    color: "#1E9CD7",
+    gradient: "from-brand-700 to-brand-900",
+    bg: "bg-brand-50",
+    text: "text-brand-800",
+    border: "border-brand-200",
   },
   {
     id: 2,
-    icon: FaUsers,
+    icon: Users,
     value: "৫০,০০০+",
     label: "শিক্ষার্থী",
-    color: "#059669",
+    gradient: "from-emerald-600 to-emerald-800",
+    bg: "bg-emerald-50",
+    text: "text-emerald-700",
+    border: "border-emerald-200",
   },
   {
     id: 3,
-    icon: FaGraduationCap,
+    icon: GraduationCap,
     value: "১,২০০+",
     label: "সফল চাকরি",
-    color: "#D97706",
+    gradient: "from-amber-600 to-amber-800",
+    bg: "bg-amber-50",
+    text: "text-amber-700",
+    border: "border-amber-200",
   },
 ];
 
 export default function AboutHero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white pt-24 pb-16">
-      {/* Background Layers */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-white pb-20 pt-32">
+      {/* ─── Background Layers ─────────── */}
+      <div className="absolute inset-0 -z-10">
         {/* Gradient Base */}
-        <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-white to-[#F8FAFC]" />
+        <div className="absolute inset-0 bg-linear-to-br from-brand-50/50 via-white to-emerald-50/30" />
 
-        {/* Floating Orb 1 — Blue */}
-        <motion.div
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-20 left-10 w-96 h-96 bg-primary/8 rounded-full blur-3xl"
-        />
+        {/* Static Orbs (NO framer animation!) */}
+        <div className="absolute left-10 top-20 h-96 w-96 rounded-full bg-brand-200/30 blur-3xl" />
+        <div className="absolute bottom-20 right-10 h-96 w-96 rounded-full bg-emerald-200/30 blur-3xl" />
 
-        {/* Floating Orb 2 — Green */}
-        <motion.div
-          animate={{
-            x: [0, -80, 0],
-            y: [0, 60, 0],
-            scale: [1, 1.3, 1],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute bottom-20 right-10 w-96 h-96 bg-[#059669]/8 rounded-full blur-3xl"
-        />
-
-        {/* Floating Orb 3 — Amber center */}
-        <motion.div
-          animate={{
-            x: [0, 50, 0],
-            y: [0, -80, 0],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-amber-400/5 rounded-full blur-3xl"
-        />
-
-        {/* Dot Pattern Overlay */}
+        {/* Dot Pattern */}
         <div
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-40"
           style={{
-            backgroundImage: `radial-gradient(circle, #1E9CD720 1px, transparent 1px)`,
+            backgroundImage: "radial-gradient(circle, rgba(30,64,175,0.12) 1px, transparent 1px)",
             backgroundSize: "32px 32px",
           }}
         />
 
         {/* Bottom fade */}
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-[#FAFBFC] to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-slate-50 to-transparent" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 mb-8 bg-white border border-primary/20 rounded-full shadow-sm shadow-primary/10"
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            >
-              <HiSparkles className="w-5 h-5 text-amber-500" />
-            </motion.div>
-            <span className="text-sm font-medium text-[#475569]">আমাদের সম্পর্কে জানুন</span>
-            <span className="px-2 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded-full">
-              About Us
+      {/* ─── Content ───────────────────── */}
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl text-center">
+          {/* Eyebrow Badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-5 py-2 shadow-sm animate-in fade-in slide-in-from-top-4 duration-500">
+            <Sparkles className="h-4 w-4 text-amber-500" />
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">
+              আমাদের সম্পর্কে
             </span>
-          </motion.div>
+          </div>
 
-          {/* Heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-          >
-            <span className="block text-[#1F2937] mb-2">বাংলাদেশের প্রথম</span>
-            <span className="block bg-linear-to-r from-primary via-[#0A5A8A] to-amber-500 bg-clip-text text-transparent">
-              AI-Powered শিক্ষা প্ল্যাটফর্ম
-            </span>
-          </motion.h1>
+          {/* Two-tone Heading */}
+          <h1 className="mt-8 text-4xl font-black leading-tight tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-6 duration-700">
+            বাংলাদেশের প্রথম{" "}
+            <span className="block text-slate-500">AI-Powered শিক্ষা প্ল্যাটফর্ম</span>
+          </h1>
 
           {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-base sm:text-lg md:text-xl text-[#475569] max-w-3xl mx-auto mb-12 leading-relaxed"
+          <p
+            className="mx-auto mt-8 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg md:text-xl animate-in fade-in slide-in-from-bottom-6 duration-700"
+            style={{ animationDelay: "200ms", animationFillMode: "both" }}
           >
             {COMPANY_INFO.description}
-          </motion.p>
+          </p>
 
-          {/* Quick Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto"
-          >
+          {/* ─── Quick Stats ─────────────── */}
+          <div className="mx-auto mt-14 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
             {QUICK_STATS.map((stat, index) => {
               const Icon = stat.icon;
               return (
-                <motion.div
+                <div
                   key={stat.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.8 + index * 0.1,
+                  className="group relative rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl animate-in fade-in slide-in-from-bottom-8"
+                  style={{
+                    animationDelay: `${400 + index * 100}ms`,
+                    animationFillMode: "both",
                   }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="group relative p-6 bg-white border border-[#E2E8F0] rounded-2xl hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
                 >
-                  {/* Hover Glow */}
+                  {/* Icon Box */}
                   <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 rounded-2xl blur-xl transition-opacity -z-10"
-                    style={{ backgroundColor: `${stat.color}15` }}
-                  />
-
-                  {/* Icon Circle */}
-                  <div
-                    className="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center"
-                    style={{
-                      backgroundColor: `${stat.color}12`,
-                      border: `1px solid ${stat.color}30`,
-                    }}
+                    className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl ${stat.bg} ${stat.border} border transition-transform duration-300 group-hover:scale-110`}
                   >
-                    <Icon className="w-7 h-7" style={{ color: stat.color }} />
+                    <Icon className={`h-7 w-7 ${stat.text}`} />
                   </div>
 
                   {/* Number */}
-                  <div
-                    className="text-2xl sm:text-3xl font-bold mb-1"
-                    style={{ color: stat.color }}
-                  >
-                    {stat.value}
-                  </div>
+                  <div className={`text-3xl font-black ${stat.text} sm:text-4xl`}>{stat.value}</div>
 
                   {/* Label */}
-                  <div className="text-sm text-[#64748B] font-medium">{stat.label}</div>
-                </motion.div>
+                  <div className="mt-1 text-sm font-medium text-slate-500">{stat.label}</div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
 
           {/* Scroll Indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.5 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          <div
+            className="mt-16 flex flex-col items-center gap-2 text-slate-400 animate-in fade-in duration-1000"
+            style={{ animationDelay: "1000ms", animationFillMode: "both" }}
           >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="flex flex-col items-center gap-2 text-[#94A3B8]"
-            >
-              <span className="text-xs font-medium uppercase tracking-wider">স্ক্রল করুন</span>
-              <HiArrowDown className="w-5 h-5" />
-            </motion.div>
-          </motion.div>
+            <span className="text-xs font-medium uppercase tracking-[0.2em]">স্ক্রল করুন</span>
+            <ArrowDown className="h-5 w-5 animate-bounce" />
+          </div>
         </div>
       </div>
     </section>
